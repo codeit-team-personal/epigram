@@ -1,11 +1,10 @@
-import type { Metadata } from "next";
-import GlobalNavigationBar from "@/components/GlobalNavigationBar";
-import "./globals.css";
-import { pretendard, iropke } from "@/lib/fonts";
+import type { Metadata } from 'next';
+import './globals.css';
+import { pretendard, iropke } from '@/lib/fonts';
 
 export const metadata: Metadata = {
-  title: "Epigram",
-  description: "Sharing feelings",
+  title: 'Epigram',
+  description: 'Sharing feelings',
 };
 
 export default function RootLayout({
@@ -14,9 +13,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko">
+    <html lang='ko'>
       <body className={`${pretendard.variable} ${iropke.variable} font-sans`}>
-        <GlobalNavigationBar />
         {children}
       </body>
     </html>
