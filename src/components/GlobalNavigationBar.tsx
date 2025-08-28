@@ -13,7 +13,7 @@ export default function GlobalNavigationBar() {
             <Image src={'/images/logo.png'} fill alt='logo' />
           </div>
 
-          <span className='lg:text-2xl text-xl'>Epigram</span>
+          <span className='lg:text-2xl text-xl font-bold'>Epigram</span>
         </div>
         <span>
           <User className='lg:size-9 size-5' />
