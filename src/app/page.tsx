@@ -1,7 +1,7 @@
 import { ChevronsDown, EllipsisVertical } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
-import Link from 'next/link';
+import GlobalNavigationBar from '@/components/GlobalNavigationBar';
 
 function LandingStart() {
   return (
@@ -26,52 +26,6 @@ function LandingStart() {
         <span className='sm:text-[16px] text-[12px]'>더 알아보기</span>
         <span className='mx-auto'>
           <ChevronsDown className='size-6' />
-        </span>
-      </div>
-    </div>
-  );
-}
-
-function SectionComponent({
-  imgSrc,
-  text1,
-  text2,
-  isReversed = false,
-}: {
-  imgSrc: string;
-  text1: React.ReactNode;
-  text2: React.ReactNode;
-  isReversed?: boolean;
-}) {
-  return (
-    <div
-      className={`flex lg:justify-between lg:items-end ${
-        isReversed ? 'lg:flex-row-reverse' : 'lg:flex-row'
-      } flex-col justify-between lg:w-[1188px] lg:my-[300px] my-[150px] md:w-[384px] md:h-[390px] w-[312px] h-[372px]`}
-    >
-      <span className='relative lg:w-[744px] lg:h-[388px] md:w-[384px] md:h-[240px] w-[312px] h-[210px] rounded-lg border overflow-hidden'>
-        <Image
-          src={imgSrc}
-          fill
-          alt='landing_image'
-          style={{ objectFit: 'cover' }}
-        />
-      </span>
-
-      <div className='flex flex-col'>
-        <h2
-          className={`${
-            isReversed ? 'text-right' : ''
-          } lg:text-[32px] text-2xl font-bold lg:mb-10 mb-5`}
-        >
-          {text1}
-        </h2>
-        <span
-          className={`${
-            isReversed ? 'text-right' : ''
-          } lg:text-2xl text-[16px] font-[500] text-slate-500`}
-        >
-          {text2}
         </span>
       </div>
     </div>
@@ -172,9 +126,58 @@ function LandingEnd() {
   );
 }
 
+function SectionComponent({
+  imgSrc,
+  text1,
+  text2,
+  isReversed = false,
+}: {
+  imgSrc: string;
+  text1: React.ReactNode;
+  text2: React.ReactNode;
+  isReversed?: boolean;
+}) {
+  return (
+    <div
+      className={`flex lg:justify-between lg:items-end ${
+        isReversed ? 'lg:flex-row-reverse' : 'lg:flex-row'
+      } flex-col justify-between lg:w-[1188px] lg:my-[300px] my-[150px] md:w-[384px] md:h-[390px] w-[312px] h-[372px]`}
+    >
+      <span className='relative lg:w-[744px] lg:h-[388px] md:w-[384px] md:h-[240px] w-[312px] h-[210px] rounded-lg border overflow-hidden'>
+        <Image
+          src={imgSrc}
+          fill
+          alt='landing_image'
+          style={{ objectFit: 'cover' }}
+        />
+      </span>
+
+      <div className='flex flex-col'>
+        <h2
+          className={`${
+            isReversed ? 'text-right' : ''
+          } lg:text-[32px] text-2xl font-bold lg:mb-10 mb-5`}
+        >
+          {text1}
+        </h2>
+        <span
+          className={`${
+            isReversed ? 'text-right' : ''
+          } lg:text-2xl text-[16px] font-[500] text-slate-500`}
+        >
+          {text2}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+
+
 export default function Home() {
   return (
     <>
+      <GlobalNavigationBar />
       <LandingStart />
       <LandingContent />
       <LandingUserEpigram />

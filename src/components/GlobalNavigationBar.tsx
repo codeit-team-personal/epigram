@@ -1,14 +1,19 @@
 import Image from 'next/image';
 import { User, Search } from 'lucide-react';
 
-export default function GlobalNavigationBar() {
+export default function GlobalNavigationBar({
+  isLogin = false,
+}: {
+  isLogin?: boolean;
+}) {
   return (
     <div className='max-w-[1920px] lg:h-[80px] md:h-[60px] h-[52px] flex items-center'>
       <div className='flex lg:px-20 md:px-15 px-5 justify-between items-center grow'>
-        <span>
+        {isLogin ? <></>:(<span>
           <Search className='lg:size-9 size-5' />
-        </span>
-        <div className='flex gap-3 items-center'>
+        </span>)}
+        
+        <div className='flex gap-3 items-center mx-auto'>
           <div className='relative lg:size-9 size-6'>
             <Image src={'/images/logo.png'} fill alt='logo' />
           </div>
@@ -17,9 +22,11 @@ export default function GlobalNavigationBar() {
             <Image src={'/images/logo_text.png'} fill alt='logo' />
           </div>
         </div>
-        <span>
+
+        {isLogin ? <></> : (<span>
           <User className='lg:size-9 size-5' />
-        </span>
+        </span>)}
+        
       </div>
     </div>
   );
