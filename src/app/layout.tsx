@@ -1,10 +1,11 @@
+
 import type { Metadata } from 'next';
 import './globals.css';
 import { pretendard, iropke } from '@/lib/fonts';
 
 export const metadata: Metadata = {
-  title: 'Epigram',
-  description: 'Sharing feelings',
+  title: "Epigram",
+  description: "Sharing feelings",
 };
 
 export default function RootLayout({
