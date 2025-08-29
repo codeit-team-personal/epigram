@@ -1,5 +1,9 @@
-import MainGlobalNavigationBar from '@/components/MainGlobalNavigatinBar';
+import MainWrapper from './components/MainWrapper';
 
 export default function Main() {
-  return <>메인 </>;
+  return (
+    <section>
+      <MainWrapper />
+    </section>
+  );
 }
