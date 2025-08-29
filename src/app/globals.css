@@ -1,5 +1,5 @@
-@import 'tailwindcss';
-@import 'tw-animate-css';
+@import "tailwindcss";
+@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -140,7 +140,7 @@
   --black-950: #373737;
 
   --blue-100: #ffffff;
-  --blue-200: #ecf1f4;
+  --blue-200: #eceff4;
   --blue-300: #cbd3e1;
   --blue-400: #abb8ce;
   --blue-500: #8b9dbc;
