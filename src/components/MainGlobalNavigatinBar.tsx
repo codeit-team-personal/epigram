@@ -1,13 +1,13 @@
-'use client';
-import Image from 'next/image';
-import { Menu, X } from 'lucide-react';
+"use client";
+import Image from "next/image";
+import { Menu, X } from "lucide-react";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/popover';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
+} from "@/components/ui/popover";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
 
 function MobileMenu() {
   const [open, setOpen] = useState(false);
@@ -88,7 +88,7 @@ function UserProfile() {
 
 export default function MainGlobalNavigationBar() {
   return (
-    <header className='max-w-[1920px] lg:h-[80px] md:h-[60px] h-[52px] flex items-center justify-between lg:px-50 md:px-10 px-5 bg-white'>
+    <header className='max-w-[1920px] lg:h-[80px] md:h-[60px] h-[52px] flex items-center justify-between lg:px-50 md:px-10 px-5 bg-white border'>
       <div className='flex items-center'>
         <MobileMenu />
         <Logo />
