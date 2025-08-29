@@ -1,10 +1,55 @@
+'use client';
 import Image from 'next/image';
-import { Menu } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from 'react';
+
+function MobileMenu() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger
+        className='lg:hidden md:hidden text-black mr-5 hover:bg-gray-50 p-2 rounded-md'
+        aria-label='메뉴 열기'
+      >
+        <AnimatePresence mode='wait' initial={false}>
+          {open ? (
+            <motion.div
+              key='x-icon'
+              initial={{ opacity: 0, rotate: -90, scale: 0.8 }}
+              animate={{ opacity: 1, rotate: 0, scale: 1 }}
+              exit={{ opacity: 0, rotate: 90, scale: 0.8 }}
+              transition={{ duration: 0.25 }}
+            >
+              <X className='w-6 h-6' />
+            </motion.div>
+          ) : (
+            <motion.div
+              key='menu-icon'
+              initial={{ opacity: 0, rotate: 90, scale: 0.8 }}
+              animate={{ opacity: 1, rotate: 0, scale: 1 }}
+              exit={{ opacity: 0, rotate: -90, scale: 0.8 }}
+              transition={{ duration: 0.25 }}
+            >
+              <Menu className='w-6 h-6 ' />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </PopoverTrigger>
+
+      <PopoverContent className='w-30 text-center [&>div]:cursor-pointer  [&>div]:py-2 [&>div]:hover:bg-gray-50  [&>div]:hover:rounded-lg'>
+        <div>피드</div>
+        <div>검색</div>
+      </PopoverContent>
+    </Popover>
+  );
+}
 
 function Logo() {
   return (
@@ -27,20 +72,6 @@ function DesktopNav() {
       </span>
       <span className='cursor-pointer hover:text-gray-400'>검색</span>
     </nav>
-  );
-}
-
-function MobileMenu() {
-  return (
-    <Popover>
-      <PopoverTrigger className='lg:hidden md:hidden text-gray-200 mr-5'>
-        <Menu />
-      </PopoverTrigger>
-      <PopoverContent className='w-30 text-center [&>div]:cursor-pointer [&>div]:hover:text-gray-400'>
-        <div className='pb-3'>피드</div>
-        <div>검색</div>
-      </PopoverContent>
-    </Popover>
   );
 }
 
