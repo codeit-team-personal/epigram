@@ -5,7 +5,6 @@ export default function MainLayout({ children }: { children: ReactNode }) {
   return (
     <div>
       <MainGlobalNavigationBar />
-
       {children}
     </div>
   );
