@@ -5,6 +5,22 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { InputField } from "../components/InputField";
 
+function Logo() {
+  return (
+    <Link className='mx-auto lg:mb-20 md:mb-15 mb-10' href='/'>
+      <div className='flex gap-3 items-center'>
+        <div className='relative size-9'>
+          <Image src={"/images/logo.png"} fill alt='logo' />
+        </div>
+
+        <div className='relative w-[110px] h-[28px]'>
+          <Image src={"/images/logo_text.png"} fill alt='logo' />
+        </div>
+      </div>
+    </Link>
+  );
+}
+
 export default function Home() {
   return (
     <div className='flex min-h-screen items-center justify-center'>
@@ -17,17 +33,7 @@ export default function Home() {
       '
       >
         <div className='flex flex-col lg:gap-5 md:gap-4 gap-3'>
-          <Link className='mx-auto lg:mb-20 md:mb-15 mb-10' href='/'>
-            <div className='flex gap-3 items-center'>
-              <div className='relative size-9'>
-                <Image src={"/images/logo.png"} fill alt='logo' />
-              </div>
-
-              <div className='relative w-[110px] h-[28px]'>
-                <Image src={"/images/logo_text.png"} fill alt='logo' />
-              </div>
-            </div>
-          </Link>
+          <Logo />
           <div>
             <Label htmlFor='email'>이메일</Label>
             <InputField type='email' id='email' placeholder='이메일' />

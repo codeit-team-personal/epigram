@@ -4,6 +4,22 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { InputField } from "../components/InputField";
 
+function Logo() {
+  return (
+    <Link className='mx-auto mb-10' href='/'>
+      <div className='flex gap-3 items-center'>
+        <div className='relative size-9'>
+          <Image src={"/images/logo.png"} fill alt='logo' />
+        </div>
+
+        <div className='relative w-[110px] h-[28px]'>
+          <Image src={"/images/logo_text.png"} fill alt='logo' />
+        </div>
+      </div>
+    </Link>
+  );
+}
+
 export default function Home() {
   return (
     <div className='flex min-h-screen items-center justify-center'>
@@ -13,26 +29,16 @@ export default function Home() {
       '
       >
         <div className='flex flex-col'>
-          <Link className='mx-auto mb-10' href='/'>
-            <div className='flex gap-3 items-center'>
-              <div className='relative size-9'>
-                <Image src={"/images/logo.png"} fill alt='logo' />
-              </div>
-
-              <div className='relative w-[110px] h-[28px]'>
-                <Image src={"/images/logo_text.png"} fill alt='logo' />
-              </div>
-            </div>
-          </Link>
+          <Logo />
           <InputField type='email' placeholder='이메일' />
           <InputField type='password' placeholder='비밀번호' />
-
           <Button
             variant='disabled'
             className='lg:text-xl w-full lg:h-[64px] h-[44px] my-8'
           >
             로그인
           </Button>
+
           <span className='lg:text-xl text-right text-blue-400'>
             회원이 아니신가요?{" "}
             <Link className='text-black-500 underline' href='/signup'>
