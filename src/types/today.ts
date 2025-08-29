@@ -11,5 +11,11 @@ export type Epigram = {
   referenceTitle?: string;
   referenceUrl?: string;
   writerId?: number;
-  tags: Tag[];
+  tags?: Tag[];
+};
+
+export type EpigramResponse = {
+  totalCount: number;
+  nextCursor: number;
+  list: Epigram[];
 };
