@@ -1,24 +1,8 @@
-import Image from "next/image";
 import Link from "next/link";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { InputField } from "../components/InputField";
-
-function Logo() {
-  return (
-    <Link className='mx-auto mb-10' href='/'>
-      <div className='flex gap-3 items-center'>
-        <div className='relative size-9'>
-          <Image src={"/images/logo.png"} fill alt='logo' />
-        </div>
-
-        <div className='relative w-[110px] h-[28px]'>
-          <Image src={"/images/logo_text.png"} fill alt='logo' />
-        </div>
-      </div>
-    </Link>
-  );
-}
+import SNSOauth from "../components/SNSOauth";
+import Logo from "@/components/Logo";
 
 export default function Home() {
   return (
@@ -29,7 +13,10 @@ export default function Home() {
       '
       >
         <div className='flex flex-col'>
-          <Logo />
+          <div className='mx-auto mb-12'>
+            <Logo />
+          </div>
+
           <InputField type='email' placeholder='이메일' />
           <InputField type='password' placeholder='비밀번호' />
           <Button
@@ -54,18 +41,8 @@ export default function Home() {
           >
             SNS 계정으로 로그인하기
           </span>
-          <div className='flex gap-3 justify-center items-center'>
-            <div className='lg:size-[60px] size-[40px] border rounded-xl flex justify-center items-center'>
-              <div className='relative lg:size-[27px] size-[18px]'>
-                <Image src={"/images/logo_google.png"} fill alt='logo' />
-              </div>
-            </div>
-            <div className='lg:size-[60px] size-[40px] border rounded-xl flex justify-center items-center'>
-              <div className='relative lg:w-[30px] w-[20px] lg:h-[27px] h-[18px]'>
-                <Image src={"/images/logo_kakao.png"} fill alt='logo' />
-              </div>
-            </div>
-          </div>
+
+          <SNSOauth />
         </div>
       </div>
     </div>

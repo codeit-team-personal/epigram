@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/popover";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import Logo from "./Logo";
 
 function MobileMenu() {
   const [open, setOpen] = useState(false);
@@ -51,19 +52,6 @@ function MobileMenu() {
   );
 }
 
-function Logo() {
-  return (
-    <div className='flex items-center'>
-      <div className='relative lg:size-9 size-6 mr-3'>
-        <Image src='/images/logo.png' alt='logo' fill />
-      </div>
-      <span className='lg:text-2xl text-xl font-bold lg:mr-10 mr-7'>
-        Epigram
-      </span>
-    </div>
-  );
-}
-
 function DesktopNav() {
   return (
     <nav className='hidden md:block lg:block [&>span]:text-black-600 [&>span]:text-sm [&>span]:lg:text-base'>
@@ -91,7 +79,11 @@ export default function MainGlobalNavigationBar() {
     <header className='max-w-[1920px] lg:h-[80px] md:h-[60px] h-[52px] flex items-center justify-between lg:px-50 md:px-10 px-5 bg-white border'>
       <div className='flex items-center'>
         <MobileMenu />
-        <Logo />
+
+        <div className='mr-10'>
+          <Logo />
+        </div>
+
         <DesktopNav />
       </div>
       <UserProfile />

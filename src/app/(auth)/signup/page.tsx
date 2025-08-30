@@ -1,25 +1,8 @@
-import Image from "next/image";
-import Link from "next/link";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { InputField } from "../components/InputField";
-
-function Logo() {
-  return (
-    <Link className='mx-auto lg:mb-20 md:mb-15 mb-10' href='/'>
-      <div className='flex gap-3 items-center'>
-        <div className='relative size-9'>
-          <Image src={"/images/logo.png"} fill alt='logo' />
-        </div>
-
-        <div className='relative w-[110px] h-[28px]'>
-          <Image src={"/images/logo_text.png"} fill alt='logo' />
-        </div>
-      </div>
-    </Link>
-  );
-}
+import SNSOauth from "../components/SNSOauth";
+import Logo from "@/components/Logo";
 
 export default function Home() {
   return (
@@ -33,7 +16,9 @@ export default function Home() {
       '
       >
         <div className='flex flex-col lg:gap-5 md:gap-4 gap-3'>
-          <Logo />
+          <div className='mx-auto lg:mb-20 md:mb-15 mb-10'>
+            <Logo />
+          </div>
           <div>
             <Label htmlFor='email'>이메일</Label>
             <InputField type='email' id='email' placeholder='이메일' />
@@ -63,18 +48,8 @@ export default function Home() {
           >
             SNS 계정으로 간편 가입하기
           </span>
-          <div className='flex gap-3 justify-center items-center'>
-            <div className='lg:size-[60px] size-[40px] border rounded-xl flex justify-center items-center'>
-              <div className='relative lg:size-[27px] size-[18px]'>
-                <Image src={"/images/logo_google.png"} fill alt='logo' />
-              </div>
-            </div>
-            <div className='lg:size-[60px] size-[40px] border rounded-xl flex justify-center items-center'>
-              <div className='relative lg:w-[30px] w-[20px] lg:h-[27px] h-[18px]'>
-                <Image src={"/images/logo_kakao.png"} fill alt='logo' />
-              </div>
-            </div>
-          </div>
+
+          <SNSOauth />
         </div>
       </div>
     </div>
