@@ -1,6 +1,7 @@
 import { ChevronsDown, EllipsisVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import Link from "next/link";
 import GlobalNavigationBar from "@/components/GlobalNavigationBar";
 
 function LandingStart() {
@@ -18,8 +19,14 @@ function LandingStart() {
         <h3 className='md:text-xl text-sm  text-black-300 lg:mb-15 md:mb-10 mb-5 font-iropke'>
           다른 사람들과 감정을 공유해 보세요.
         </h3>
-        <Button className='lg:w-[286px] lg:h-[64px] w-[112px] h-[48px] mx-auto'>
-          시작하기
+
+        <Button
+          asChild
+          className='lg:w-[286px] lg:h-[64px] w-[112px] h-[48px] mx-auto'
+        >
+          <Link href='/main' aria-label='메인 페이지로 이동'>
+            시작하기
+          </Link>
         </Button>
       </div>
       <div className='flex flex-col text-blue-400 cursor-pointer absolute bottom-30 animate-bounce'>
@@ -118,8 +125,13 @@ function LandingEnd() {
           <Image src={"/images/landing/logo_text.png"} alt='logo_text' fill />
         </span>
 
-        <Button className='lg:w-[286px] lg:h-[64px] w-[112px] h-[48px] mx-auto'>
-          시작하기
+        <Button
+          asChild
+          className='lg:w-[286px] lg:h-[64px] w-[112px] h-[48px] mx-auto'
+        >
+          <Link href='/main' aria-label='메인 페이지로 이동'>
+            시작하기
+          </Link>
         </Button>
       </div>
     </div>
