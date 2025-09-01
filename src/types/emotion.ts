@@ -1,6 +1,6 @@
-export type Emotion = {
+export type EmotionType = {
   createdAt?: string;
-  emotion: string;
+  emotion?: string;
   userId: number;
   id: number;
 };
