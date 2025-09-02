@@ -1,14 +1,21 @@
+"use client";
 import { User, Search } from "lucide-react";
 import Link from "next/link";
 import LogoImage from "./Logo";
+import { useAuthStore } from "@/stores/authStore";
+import MainGlobalNavigationBar from "./MainGlobalNavigatinBar";
 
 export default function GlobalNavigationBar({
   isAuth = false,
 }: {
   isAuth?: boolean;
 }) {
+  const { user } = useAuthStore();
+  if (user) {
+    return <MainGlobalNavigationBar />;
+  }
   return (
-    <div className='max-w-[1920px] lg:h-[80px] md:h-[60px] h-[52px] flex items-center bg-white border'>
+    <div className='lg:h-[80px] md:h-[60px] h-[52px] flex items-center bg-white border'>
       <div className='flex lg:px-20 md:px-15 px-5 justify-between items-center grow'>
         {isAuth ? (
           <div className='mx-auto'>
