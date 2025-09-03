@@ -2,16 +2,13 @@
 
 import { Epigram } from '@/types/today';
 import EpigramCard from '@/components/EpigramCard';
-import { Button } from './ui/button';
+import { Button } from '@/components/ui/button';
 import { useEpigrams } from '@/hooks/useEpigrams';
-import Link from 'next/link';
 
-export default function NewEpigram({
-  title,
-  firstLimit = 3,
-  nextLimit = 5,
+export default function Feed({
+  firstLimit = 6,
+  nextLimit = 6,
 }: {
-  title: string;
   firstLimit?: number;
   nextLimit?: number;
 }) {
@@ -31,11 +28,9 @@ export default function NewEpigram({
 
   return (
     <div className='space-y-4'>
-      <h1>{title}</h1>
+      <h1>피드</h1>
       {epigrams.map((epigram: Epigram) => (
-        <Link key={epigram.id} href={`/detail/${epigram.id}`}>
-          <EpigramCard key={epigram.id} data={epigram} />
-        </Link>
+        <EpigramCard key={epigram.id} data={epigram} />
       ))}
       {hasNextPage && (
         <div className='flex justify-center mt-4'>

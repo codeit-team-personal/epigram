@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -219,3 +219,9 @@
     @apply bg-background text-foreground;
   }
 }
+
+ @layer components {
+  .text-common {
+    @apply text-2xl text-black-600 font-normal;
+  }
+} 
