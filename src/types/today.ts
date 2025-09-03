@@ -12,6 +12,7 @@ export type Epigram = {
   referenceUrl?: string;
   writerId?: number;
   tags?: Tag[];
+  isLiked: boolean;
 };
 
 export type EpigramResponse = {

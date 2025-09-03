@@ -8,7 +8,7 @@ import TodayEpigram from '@/components/TodayEpigram';
 
 export default function Main() {
   return (
-    <section>
+    <section className='lg:w-[640px] my-0 mx-auto'>
       <TodayEpigram title='오늘의 에피그램' />
       <Emotion title='오늘의 감정은 어떠신가요?' />
       <NewEpigram title='최신 에피그램' />
