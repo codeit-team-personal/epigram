@@ -24,8 +24,17 @@ export async function getEmotion(): Promise<EmotionType> {
 }
 
 // 에피그램 리스트
-export async function getEpigram(limit = 3): Promise<EpigramResponse> {
-  const { data } = await api.get<EpigramResponse>(`/epigrams?limit=${limit}`);
+export async function getEpigram({
+  limit,
+  cursor,
+}: {
+  limit: number;
+  cursor: number;
+}): Promise<EpigramResponse> {
+  const cursorParam = cursor > 0 ? `&cursor=${cursor}` : '';
+  const { data } = await api.get<EpigramResponse>(
+    `/epigrams?limit=${limit}${cursorParam}`
+  );
   return data;
 }
 
@@ -57,3 +66,59 @@ export async function deleteComment(id: number) {
   const { data } = await api.delete(`/comments/${id}`);
   return data;
 }
+
+// 에피그램 상세
+export async function getEpigramDetail(id: number): Promise<Epigram> {
+  const { data } = await api.get<Epigram>(`/epigrams/${id}`);
+  return data;
+}
+
+//에피그램 좋아요
+export async function likeEpigram(id: number) {
+  const { data } = await api.post(`/epigrams/${id}/like`);
+  return data;
+}
+
+//에피그램 싫어요
+export async function unlikeEpigram(id: number) {
+  const { data } = await api.delete(`/epigrams/${id}/like`);
+  return data;
+}
+
+
+
+//에피그램 상세 comments
+export async function getEpigramDetailComments({
+  epigramId,
+  limit = 3,
+  cursor,
+}: {
+  epigramId: number;
+  limit?: number;
+  cursor?: number | null;
+}): Promise<CommentsType> {
+  const cursorParam = cursor ? `&cursor=${cursor}` : '';
+  const { data } = await api.get<CommentsType>(
+    `/epigrams/${epigramId}/comments?limit=${limit}${cursorParam}`
+  );
+  return data;
+}
+
+// 댓글 생성 API
+export const createComment = async ({
+  epigramId,
+  isPrivate,
+  content,
+}: {
+  epigramId: number;
+  isPrivate: boolean;
+  content: string;
+}) => {
+  const { data } = await api.post('/comments', {
+    epigramId,
+    isPrivate,
+    content,
+  });
+  return data;
+};
+
