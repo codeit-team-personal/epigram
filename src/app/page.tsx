@@ -187,7 +187,6 @@ function SectionComponent({
 export default function Home() {
   return (
     <>
-      <GlobalNavigationBar />
       <LandingStart />
       <LandingContent />
       <LandingUserEpigram />
