@@ -19,7 +19,7 @@ export default function LoginForm() {
   const onSubmit = async (data: { email: string; password: string }) => {
     try {
       await login(data.email, data.password);
-      router.push("/main");
+      router.push("/");
     } catch (err) {
       alert("로그인 실패");
     }

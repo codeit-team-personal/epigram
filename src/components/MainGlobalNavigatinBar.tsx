@@ -9,6 +9,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import Logo from "./Logo";
+import { useAuthStore } from "@/stores/authStore";
 
 function MobileMenu() {
   const [open, setOpen] = useState(false);
@@ -63,18 +64,23 @@ function DesktopNav() {
   );
 }
 
-function UserProfile() {
+function UserProfile({ nickName, image }: { nickName: string; image: string }) {
   return (
     <div className='flex items-center'>
       <div className='relative size-6 mr-2'>
-        <Image src='/images/user.png' alt='user' fill />
+        {image ? (
+          <Image src={`${image}`} alt='user' fill />
+        ) : (
+          <Image src='/images/user.png' alt='user' fill />
+        )}
       </div>
-      <span className='text-gray-300 text-sm'>최재이</span>
+      <span className='text-gray-300 text-sm'>{nickName}</span>
     </div>
   );
 }
 
 export default function MainGlobalNavigationBar() {
+  const { user } = useAuthStore();
   return (
     <header className='max-w-[1920px] lg:h-[80px] md:h-[60px] h-[52px] flex items-center justify-between lg:px-50 md:px-10 px-5 bg-white border'>
       <div className='flex items-center'>
@@ -86,7 +92,7 @@ export default function MainGlobalNavigationBar() {
 
         <DesktopNav />
       </div>
-      <UserProfile />
+      <UserProfile nickName={user!.nickname} image={user!.image} />
     </header>
   );
 }
