@@ -4,7 +4,7 @@ import { useAuthStore } from "@/stores/authStore";
 import api from "@/lib/axios";
 
 export function useAuth() {
-  const { setTokens, clearTokens, setUser } = useAuthStore();
+  const { setTokens, clearAuth, setUser } = useAuthStore();
 
   const login = async (email: string, password: string) => {
     const res = await api.post("/auth/signIn", { email, password });
@@ -17,7 +17,7 @@ export function useAuth() {
   };
 
   const logout = async () => {
-    clearTokens();
+    clearAuth();
   };
 
   return { login, logout };
