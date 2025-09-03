@@ -3,6 +3,7 @@ import { Label } from "@/components/ui/label";
 import { InputField } from "../components/InputField";
 import SNSOauth from "../components/SNSOauth";
 import Logo from "@/components/Logo";
+import RegisterForm from "../components/RegisterForm";
 
 export default function Home() {
   return (
@@ -12,7 +13,8 @@ export default function Home() {
           <div className='mx-auto lg:mb-20 md:mb-15 mb-10'>
             <Logo />
           </div>
-          <div>
+          <RegisterForm />
+          {/* <div>
             <Label
               className='lg:text-xl md:text-[16px] text-[16px] mb-5 text-blue-900'
               htmlFor='email'
@@ -26,8 +28,8 @@ export default function Home() {
               id='email'
               placeholder='이메일'
             />
-          </div>
-          <div>
+          </div> */}
+          {/* <div>
             <Label
               className='lg:text-xl md:text-[16px] text-[16px] mb-5 text-blue-900'
               htmlFor='password'
@@ -47,8 +49,8 @@ export default function Home() {
               type='password'
               placeholder='비밀번호 확인'
             />
-          </div>
-          <div>
+          </div> */}
+          {/* <div>
             <Label
               className='lg:text-xl md:text-[16px] text-[16px] mb-5 text-blue-900'
               htmlFor='nickname'
@@ -62,14 +64,14 @@ export default function Home() {
               id='nickname'
               placeholder='닉네임'
             />
-          </div>
+          </div> */}
 
-          <Button
+          {/* <Button
             variant='disabled'
             className='lg:text-xl w-full lg:h-[64px] h-[44px] my-5'
           >
             가입하기
-          </Button>
+          </Button> */}
         </div>
         <div>
           <span
