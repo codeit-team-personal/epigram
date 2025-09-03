@@ -13,7 +13,7 @@ export default function LoginForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isValid },
   } = useLoginForm();
 
   const onSubmit = async (data: { email: string; password: string }) => {
@@ -66,7 +66,7 @@ export default function LoginForm() {
       </div>
 
       <Button
-        disabled={isSubmitting}
+        disabled={isSubmitting || !isValid}
         type='submit'
         className='lg:text-xl w-full lg:h-[64px] h-[44px] my-8 cursor-pointer'
       >
