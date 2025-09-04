@@ -13,6 +13,7 @@ export default function LoginForm() {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors, isSubmitting, isValid },
   } = useLoginForm();
 
@@ -21,7 +22,13 @@ export default function LoginForm() {
       await login(data.email, data.password);
       router.push("/");
     } catch (err) {
-      alert("로그인 실패");
+      setError("email", {
+        type: "manual",
+        message: "이메일 혹은 비밀번호를 확인해주세요.",
+      });
+      setError("password", {
+        type: "manual",
+      });
     }
   };
 
