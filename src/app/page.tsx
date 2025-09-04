@@ -2,7 +2,6 @@ import { ChevronsDown, EllipsisVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import GlobalNavigationBar from "@/components/GlobalNavigationBar";
 
 function LandingStart() {
   return (

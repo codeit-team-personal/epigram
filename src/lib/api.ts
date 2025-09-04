@@ -1,25 +1,25 @@
-import axios from 'axios';
-import { Epigram, EpigramResponse } from '@/types/today';
-import { Comments as CommentsType } from '@/types/comments';
-import { EmotionType } from '@/types/emotion';
+import axios from "axios";
+import { Epigram, EpigramResponse } from "@/types/today";
+import { Comments as CommentsType } from "@/types/comments";
+import { EmotionType } from "@/types/emotion";
 
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   headers: {
-    'x-api-id': process.env.NEXT_PUBLIC_API_ID, // 서버 전용
+    "x-api-id": process.env.NEXT_PUBLIC_API_ID, // 서버 전용
     Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
   },
 });
 
 // 오늘의 에피그램
 export async function getTodayEpigram(): Promise<Epigram> {
-  const { data } = await api.get<Epigram>('/epigrams/today');
+  const { data } = await api.get<Epigram>("/epigrams/today");
   return data;
 }
 
 // 오늘의 감정
 export async function getEmotion(): Promise<EmotionType> {
-  const { data } = await api.get<EmotionType>('/emotionLogs/today?userId=2650');
+  const { data } = await api.get<EmotionType>("/emotionLogs/today?userId=2650");
   return data;
 }
 
@@ -31,7 +31,7 @@ export async function getEpigram({
   limit: number;
   cursor: number;
 }): Promise<EpigramResponse> {
-  const cursorParam = cursor > 0 ? `&cursor=${cursor}` : '';
+  const cursorParam = cursor > 0 ? `&cursor=${cursor}` : "";
   const { data } = await api.get<EpigramResponse>(
     `/epigrams?limit=${limit}${cursorParam}`
   );
@@ -40,7 +40,7 @@ export async function getEpigram({
 
 // 댓글 리스트
 export async function getComments(
-  url: string = '/comments?limit=4'
+  url: string = "/comments?limit=4"
 ): Promise<CommentsType> {
   const { data } = await api.get<CommentsType>(url);
   return data;
@@ -85,8 +85,6 @@ export async function unlikeEpigram(id: number) {
   return data;
 }
 
-
-
 //에피그램 상세 comments
 export async function getEpigramDetailComments({
   epigramId,
@@ -97,7 +95,7 @@ export async function getEpigramDetailComments({
   limit?: number;
   cursor?: number | null;
 }): Promise<CommentsType> {
-  const cursorParam = cursor ? `&cursor=${cursor}` : '';
+  const cursorParam = cursor ? `&cursor=${cursor}` : "";
   const { data } = await api.get<CommentsType>(
     `/epigrams/${epigramId}/comments?limit=${limit}${cursorParam}`
   );
@@ -114,7 +112,7 @@ export const createComment = async ({
   isPrivate: boolean;
   content: string;
 }) => {
-  const { data } = await api.post('/comments', {
+  const { data } = await api.post("/comments", {
     epigramId,
     isPrivate,
     content,
@@ -122,3 +120,13 @@ export const createComment = async ({
   return data;
 };
 
+// 회원가입 API
+export const registerUser = async (data: {
+  email: string;
+  password: string;
+  passwordConfirmation: string;
+  nickname: string;
+}) => {
+  const response = await api.post("/auth/signUp", data);
+  return response.data;
+};

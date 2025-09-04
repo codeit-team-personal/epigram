@@ -1,18 +1,22 @@
 "use client";
 
+import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { useLoginForm } from "@/hooks/useLoginForm";
-import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 export default function LoginForm() {
   const { login } = useAuth();
   const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors, isSubmitting, isValid },
   } = useLoginForm();
 
@@ -21,7 +25,13 @@ export default function LoginForm() {
       await login(data.email, data.password);
       router.push("/");
     } catch (err) {
-      alert("로그인 실패");
+      setError("email", {
+        type: "manual",
+        message: "이메일 혹은 비밀번호를 확인해주세요.",
+      });
+      setError("password", {
+        type: "manual",
+      });
     }
   };
 
@@ -47,9 +57,9 @@ export default function LoginForm() {
       </div>
 
       {/* Password */}
-      <div>
+      <div className='relative'>
         <Input
-          type='password'
+          type={showPassword ? "text" : "password"}
           placeholder='비밀번호'
           {...register("password")}
           className={`lg:h-[64px] h-[44px] lg:text-xl md:text-[16px] text-[16px] placeholder:text-blue-400 bg-blue-200 lg:mt-4 mt-2 ${
@@ -63,6 +73,17 @@ export default function LoginForm() {
             {errors.password.message}
           </p>
         )}
+        <button
+          type='button'
+          onClick={() => setShowPassword((prev) => !prev)}
+          className='absolute lg:top-5 md:top-[10px] top-[9px] right-3 flex items-center text-gray-200 cursor-pointer'
+        >
+          {showPassword ? (
+            <EyeOff className='size-6' />
+          ) : (
+            <Eye className='size-6' />
+          )}
+        </button>
       </div>
 
       <Button

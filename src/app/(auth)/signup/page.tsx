@@ -1,6 +1,3 @@
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { InputField } from "../components/InputField";
 import SNSOauth from "../components/SNSOauth";
 import Logo from "@/components/Logo";
 import RegisterForm from "../components/RegisterForm";
@@ -14,64 +11,6 @@ export default function Home() {
             <Logo />
           </div>
           <RegisterForm />
-          {/* <div>
-            <Label
-              className='lg:text-xl md:text-[16px] text-[16px] mb-5 text-blue-900'
-              htmlFor='email'
-            >
-              이메일
-            </Label>
-
-            <InputField
-              className='lg:h-[64px] h-[44px] lg:text-xl md:text-[16px] text-[16px] placeholder:text-blue-400 bg-blue-200 border-red-500 mt-2'
-              type='email'
-              id='email'
-              placeholder='이메일'
-            />
-          </div> */}
-          {/* <div>
-            <Label
-              className='lg:text-xl md:text-[16px] text-[16px] mb-5 text-blue-900'
-              htmlFor='password'
-            >
-              비밀번호
-            </Label>
-
-            <InputField
-              className='lg:h-[64px] h-[44px] lg:text-xl md:text-[16px] text-[16px] placeholder:text-blue-400 bg-blue-200 border-red-500 mt-2'
-              type='password'
-              id='password'
-              placeholder='비밀번호'
-            />
-
-            <InputField
-              className='lg:h-[64px] h-[44px] lg:text-xl md:text-[16px] text-[16px] placeholder:text-blue-400 bg-blue-200 border-red-500 mt-2'
-              type='password'
-              placeholder='비밀번호 확인'
-            />
-          </div> */}
-          {/* <div>
-            <Label
-              className='lg:text-xl md:text-[16px] text-[16px] mb-5 text-blue-900'
-              htmlFor='nickname'
-            >
-              닉네임
-            </Label>
-
-            <InputField
-              className='lg:h-[64px] h-[44px] lg:text-xl md:text-[16px] text-[16px] placeholder:text-blue-400 bg-blue-200 border-red-500 mt-2'
-              type='text'
-              id='nickname'
-              placeholder='닉네임'
-            />
-          </div> */}
-
-          {/* <Button
-            variant='disabled'
-            className='lg:text-xl w-full lg:h-[64px] h-[44px] my-5'
-          >
-            가입하기
-          </Button> */}
         </div>
         <div>
           <span
