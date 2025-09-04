@@ -9,19 +9,19 @@ export function useRegisterForm() {
     defaultValues: {
       email: "",
       password: "",
-      confirmPassword: "",
+      passwordConfirmation: "",
       nickname: "",
     },
     mode: "onChange", // 실시간 validation
   });
 
   const password = form.watch("password");
-  const confirmTouched = form.formState.touchedFields.confirmPassword;
+  const confirmTouched = form.formState.touchedFields.passwordConfirmation;
 
   useEffect(() => {
     if (confirmTouched) {
-      // password가 바뀔 때 confirmPassword도 같이 재검증
-      form.trigger("confirmPassword");
+      // password가 바뀔 때 passwordConfirmation 같이 재검증
+      form.trigger("passwordConfirmation");
     }
   }, [password, confirmTouched, form]);
 

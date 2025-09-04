@@ -14,15 +14,15 @@ export const registerSchema = z
         /^[A-Za-z0-9!@#$%^&*()_\-+=\[\]{};':"\\|,.<>/?`~]+$/,
         "비밀번호는 숫자, 영문, 특수문자로만 가능합니다."
       ),
-    confirmPassword: z.string().nonempty("비밀번호 확인을 입력해주세요."),
+    passwordConfirmation: z.string().nonempty("비밀번호 확인을 입력해주세요."),
     nickname: z
       .string()
       .nonempty("닉네임은 필수 입력입니다.")
       .max(20, "닉네임은 최대 20자까지 가능합니다."),
   })
-  .refine((data) => data.password === data.confirmPassword, {
+  .refine((data) => data.password === data.passwordConfirmation, {
     message: "비밀번호가 일치하지 않습니다.",
-    path: ["confirmPassword"],
+    path: ["passwordConfirmation"],
   });
 
 export type RegisterSchema = z.infer<typeof registerSchema>;
