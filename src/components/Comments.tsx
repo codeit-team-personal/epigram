@@ -11,9 +11,7 @@ import { Button } from './ui/button';
 import { Comments as CommentsType, List } from '@/types/comments';
 import { getComments, updateComment, deleteComment } from '@/lib/api';
 import CommentsCard from './CommentsCard';
-
-const USER_ID = process.env.NEXT_PUBLIC_API_ID;
-const TOKEN = process.env.NEXT_PUBLIC_API_TOKEN as string;
+import { Plus } from 'lucide-react';
 
 export default function Comments({ title }: { title: string }) {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
@@ -35,8 +33,8 @@ export default function Comments({ title }: { title: string }) {
   const comments = data?.pages.flatMap((page) => page.list) ?? [];
 
   return (
-    <div>
-      <h1>{title}</h1>
+    <div className='mb-30'>
+      <h1 className='text-common mb-10'>{title}</h1>
       {comments.map((comment) => (
         <CommentsCard
           key={comment.id}
@@ -49,13 +47,19 @@ export default function Comments({ title }: { title: string }) {
       ))}
 
       {hasNextPage && (
-        <Button
-          variant='outline'
-          onClick={() => fetchNextPage()}
-          disabled={isFetchingNextPage}
-        >
-          {isFetchingNextPage ? '로딩중...' : '댓글 더보기'}
-        </Button>
+        <div className='flex justify-center mt-4 cursor-pointer'>
+          <Button
+            variant='plus'
+            size='plus'
+            onClick={() => fetchNextPage()}
+            disabled={isFetchingNextPage}
+          >
+            <Plus className='text-blue-500 size-6' />
+            <div className='text-blue-500 text-xl  '>
+              {isFetchingNextPage ? '댓글 로딩중' : '댓글 더보기'}
+            </div>
+          </Button>
+        </div>
       )}
     </div>
   );
