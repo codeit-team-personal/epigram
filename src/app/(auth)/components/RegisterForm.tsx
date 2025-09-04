@@ -1,8 +1,10 @@
 "use client";
 
+import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { useRegisterForm } from "@/hooks/useRegisterForm";
-import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,6 +12,8 @@ import { Label } from "@/components/ui/label";
 export default function RegisterForm() {
   const { login } = useAuth();
   const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const {
     register,
@@ -62,37 +66,62 @@ export default function RegisterForm() {
           비밀번호
         </Label>
 
-        <Input
-          type='password'
-          placeholder='비밀번호'
-          {...register("password")}
-          className={`lg:h-[64px] h-[44px] lg:text-xl md:text-[16px] text-[16px] placeholder:text-blue-400 bg-blue-200 mt-2 ${
-            errors.password
-              ? "border-red-500 focus-visible:ring-red-500"
-              : "border-none"
-          }`}
-        />
-        {errors.password && (
-          <p className='text-red-500 lg:text-[16px] text-[13px] mt-1'>
-            {errors.password.message}
-          </p>
-        )}
-
-        <Input
-          type='password'
-          placeholder='비밀번호 확인'
-          {...register("confirmPassword")}
-          className={`lg:h-[64px] h-[44px] lg:text-xl md:text-[16px] text-[16px] placeholder:text-blue-400 bg-blue-200 mt-2 ${
-            errors.confirmPassword
-              ? "border-red-500 focus-visible:ring-red-500"
-              : "border-none"
-          }`}
-        />
-        {errors.confirmPassword && (
-          <p className='text-red-500 lg:text-[16px] text-[13px] mt-1'>
-            {errors.confirmPassword.message}
-          </p>
-        )}
+        <div className='relative'>
+          <Input
+            type={showPassword ? "text" : "password"}
+            placeholder='비밀번호'
+            {...register("password")}
+            className={`lg:h-[64px] h-[44px] lg:text-xl md:text-[16px] text-[16px] placeholder:text-blue-400 bg-blue-200 mt-2 ${
+              errors.password
+                ? "border-red-500 focus-visible:ring-red-500"
+                : "border-none"
+            }`}
+          />
+          {errors.password && (
+            <p className='text-red-500 lg:text-[16px] text-[13px] mt-1'>
+              {errors.password.message}
+            </p>
+          )}
+          <button
+            type='button'
+            onClick={() => setShowPassword((prev) => !prev)}
+            className='absolute lg:top-5 md:top-[10px] top-[9px] right-3 flex items-center text-gray-200 cursor-pointer'
+          >
+            {showPassword ? (
+              <EyeOff className='size-6' />
+            ) : (
+              <Eye className='size-6' />
+            )}
+          </button>
+        </div>
+        <div className='relative'>
+          <Input
+            type={showConfirmPassword ? "text" : "password"}
+            placeholder='비밀번호 확인'
+            {...register("confirmPassword")}
+            className={`lg:h-[64px] h-[44px] lg:text-xl md:text-[16px] text-[16px] placeholder:text-blue-400 bg-blue-200 mt-2 ${
+              errors.confirmPassword
+                ? "border-red-500 focus-visible:ring-red-500"
+                : "border-none"
+            }`}
+          />
+          <button
+            type='button'
+            onClick={() => setShowConfirmPassword((prev) => !prev)}
+            className='absolute lg:top-5 md:top-[10px] top-[9px] right-3 flex items-center text-gray-200 cursor-pointer'
+          >
+            {showConfirmPassword ? (
+              <EyeOff className='size-6' />
+            ) : (
+              <Eye className='size-6' />
+            )}
+          </button>
+          {errors.confirmPassword && (
+            <p className='text-red-500 lg:text-[16px] text-[13px] mt-1'>
+              {errors.confirmPassword.message}
+            </p>
+          )}
+        </div>
       </div>
 
       <div>
