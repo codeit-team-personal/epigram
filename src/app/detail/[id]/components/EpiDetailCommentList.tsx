@@ -7,6 +7,7 @@ import CommentsCard from '@/components/CommentsCard';
 import { getEpigramDetailComments } from '@/lib/api';
 import { useCommentList } from '@/hooks/useCommentList';
 import { useCommentMutation } from '@/hooks/useCommentMutation';
+import { toast } from 'react-toastify';
 
 export default function EpiDetailCommentList() {
   const params = useParams();
@@ -31,12 +32,18 @@ export default function EpiDetailCommentList() {
     e.preventDefault();
     if (!content.trim()) return;
 
+    if (content.length > 100) {
+      toast.error('댓글은 100자 이내로 입력해주세요.');
+      return;
+    }
+
     mutation.mutate(
       { epigramId, isPrivate, content },
       {
         onSuccess: () => {
           setContent('');
           setActive(false);
+          toast.success('댓글이 등록되었습니다.');
         },
       }
     );
@@ -55,6 +62,7 @@ export default function EpiDetailCommentList() {
             rows={3}
             placeholder='댓글을 입력하세요'
           />
+
           {active && (
             <div className='flex gap-2 items-center'>
               <button
@@ -71,6 +79,15 @@ export default function EpiDetailCommentList() {
               >
                 저장
               </button>
+
+              {/* 글자 수 카운트 표시 */}
+              <div
+                className={`text-sm text-right ${
+                  content.length > 100 ? 'text-red-500' : 'text-gray-500'
+                }`}
+              >
+                {content.length}/100
+              </div>
             </div>
           )}
         </form>

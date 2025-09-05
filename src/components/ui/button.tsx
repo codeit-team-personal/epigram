@@ -23,6 +23,7 @@ const buttonVariants = cva(
           'hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50',
         link: 'text-primary underline-offset-4 hover:underline',
         plus: 'border-1 border-line-200 rounded-full cursor-pointer hover:border-blue-200 hover:bg-blue-200',
+        comment: 'font-normal text-base text-black-600 hover:underline',
       },
       size: {
         default: 'h-9 px-4 py-2 has-[>svg]:px-3',
@@ -30,6 +31,7 @@ const buttonVariants = cva(
         lg: 'h-10 rounded-md px-6 has-[>svg]:px-4',
         icon: 'size-9',
         plus: 'px-11 py-4',
+        commnet: 'px-1 py-2',
       },
     },
     defaultVariants: {

@@ -5,6 +5,7 @@ import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 import { Epigram } from '@/types/today';
 import { getEpigramDetail, likeEpigram, unlikeEpigram } from '@/lib/api';
 import EpigramCard from '@/components/EpigramCard';
+import { toast } from 'react-toastify';
 
 export default function EpigramDetailPage() {
   const params = useParams();
@@ -60,6 +61,14 @@ export default function EpigramDetailPage() {
       // 실패하면 롤백
       if (context?.prevData) {
         queryClient.setQueryData(['epigram-detail', id], context.prevData);
+      }
+    },
+    onSuccess: (_, __, ___) => {
+      // 좋아요 성공 시 토스트 메시지
+      if (data?.isLiked) {
+        toast.success('좋아요 성공!');
+      } else {
+        toast.warn('좋아요가 취소되었습니다.');
       }
     },
     onSettled: () => {
