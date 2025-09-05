@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import SNSOauth from "../components/SNSOauth";
+import OauthLogin from "../components/OauthLogin";
 import Logo from "@/components/Logo";
 import LoginForm from "../components/LoginForm";
 
@@ -30,7 +30,7 @@ export default function Home() {
             SNS 계정으로 로그인하기
           </span>
 
-          <SNSOauth />
+          <OauthLogin />
         </div>
       </div>
     </div>
