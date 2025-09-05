@@ -1,4 +1,4 @@
-import SNSOauth from "../components/SNSOauth";
+import OauthLogin from "../components/OauthLogin";
 import Logo from "@/components/Logo";
 import RegisterForm from "../components/RegisterForm";
 
@@ -21,7 +21,7 @@ export default function Home() {
             SNS 계정으로 간편 가입하기
           </span>
 
-          <SNSOauth />
+          <OauthLogin />
         </div>
       </div>
     </div>
