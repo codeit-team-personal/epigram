@@ -35,5 +35,15 @@ export default function KakaoCallbackPage() {
     loginWithKakao();
   }, [code, router]);
 
-  return <p>로그인 처리 중...</p>;
+  return (
+    <div className='flex h-screen items-center justify-center'>
+      <div className='flex flex-col items-center space-y-4'>
+        {/* 스피너 */}
+        <div className='h-10 w-10 animate-spin rounded-full border-4 border-gray-300 border-t-blue-500' />
+
+        {/* 안내 문구 */}
+        <p className='text-gray-600'>카카오 계정으로 로그인 중입니다...</p>
+      </div>
+    </div>
+  );
 }
