@@ -15,6 +15,7 @@ import {
   deleteComment,
   getEpigramDetailComments,
 } from '@/lib/api';
+import { useAuthStore } from '@/stores/authStore';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -26,9 +27,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-
-const USER_ID = process.env.NEXT_PUBLIC_API_ID;
-const TOKEN = process.env.NEXT_PUBLIC_API_TOKEN as string;
+import Image from 'next/image';
 
 export default function CommentsCard({
   comment,
@@ -40,10 +39,11 @@ export default function CommentsCard({
   onFetchOne: (cursor: number) => Promise<CommentsType>;
 }) {
   const queryClient = useQueryClient();
-
+  const { user } = useAuthStore();
   const [hoveredId, setHoveredId] = useState<number | null>(null);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editContent, setEditContent] = useState('');
+  const [isPrivate, setIsPrivate] = useState(false);
 
   // 댓글 수정
   const updateMutation = useMutation({
@@ -104,44 +104,64 @@ export default function CommentsCard({
   });
 
   return (
-    <div className='relative p-2 border-b group'>
-      <p className='flex items-center gap-2'>
-        <span className='font-semibold'>{comment.writer.nickname}</span>
-        <span className='text-gray-500 text-sm'>
-          {formatAgo(comment.createdAt, 'ko')}
-        </span>
-      </p>
+    <div className='flex relative p-2 border-t group pt-10 justify-center'>
+      <div className='mr-4 w-[48px] h-[48px] rounded-full overflow-hidden flex-shrink-0'>
+        <Image
+          src={comment.writer.image || '/images/default-profile.jpg'}
+          alt={`${comment.writer.nickname} 프로필`}
+          width={48}
+          height={48}
+          className='object-cover w-full h-full'
+        />
+      </div>
+      <div className='w-[530px]'>
+        <p className='flex items-center gap-2 font-normal text-black-300 text-base '>
+          <span>{comment.writer.nickname}</span>
+          <span>{formatAgo(comment.createdAt, 'ko')}</span>
+        </p>
 
-      {editingId === comment.id ? (
-        <div className='mt-1 flex gap-2'>
-          <input
-            value={editContent}
-            onChange={(e) => setEditContent(e.target.value)}
-            className='border p-1 flex-1'
-          />
-          <button
-            onClick={() =>
-              updateMutation.mutate({
-                id: comment.id,
-                content: editContent,
-              })
-            }
-            className='text-sm text-blue-500'
-          >
-            저장
-          </button>
-          <button
-            onClick={() => setEditingId(null)}
-            className='text-sm text-gray-500'
-          >
-            취소
-          </button>
-        </div>
-      ) : (
-        <p className='mt-1'>{comment.content}</p>
-      )}
+        {editingId === comment.id ? (
+          <div className='mt-1 flex gap-2'>
+            <input
+              type='textarea'
+              value={editContent}
+              onChange={(e) => setEditContent(e.target.value)}
+              className='border p-1 flex-1 text-black-300'
+            />
+            <button
+              type='button'
+              onClick={() => setIsPrivate((prev) => !prev)}
+              className='px-3 py-1 border rounded'
+            >
+              {isPrivate ? '비공개' : '공개'}
+            </button>
+            <button
+              onClick={() =>
+                updateMutation.mutate({
+                  id: comment.id,
+                  content: editContent,
+                  isPrivate: isPrivate,
+                })
+              }
+              className='text-sm text-blue-500'
+            >
+              저장
+            </button>
+            <button
+              onClick={() => setEditingId(null)}
+              className='text-sm text-gray-500'
+            >
+              취소
+            </button>
+          </div>
+        ) : (
+          <p className='mt-1 text-black-550 font-normal text-xl mb-5 mt-3 leading-8'>
+            {comment.content}
+          </p>
+        )}
+      </div>
 
-      {Number(USER_ID) === comment.writer.id && (
+      {Number(user?.id) === comment.writer.id && (
         <div className='absolute right-2 top-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity'>
           <Button
             className='text-sm text-blue-500 hover:underline'

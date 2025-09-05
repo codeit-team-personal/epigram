@@ -5,6 +5,8 @@ import EpigramCard from '@/components/EpigramCard';
 import { Button } from './ui/button';
 import { useEpigrams } from '@/hooks/useEpigrams';
 import Link from 'next/link';
+import { Plus } from 'lucide-react';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function NewEpigram({
   title,
@@ -24,27 +26,83 @@ export default function NewEpigram({
     isError,
   } = useEpigrams({ firstLimit, nextLimit });
 
-  if (isLoading) return <div>불러오는 중...</div>;
-  if (isError) return <div>에러 발생!</div>;
+  if (isLoading)
+    return (
+      <div>
+        <div className='my-30 '>
+          <h1 className='text-common mb-10'>{title}</h1>
+          <div className='mb-6'>
+            <Skeleton className='h-[130px] w-full rounded-xl' />
+            <div className='flex items-center justify-end mt-4'>
+              <Skeleton className='h-5 w-40 ' />
+            </div>
+          </div>
+          <div className='mb-6'>
+            <Skeleton className='h-[130px] w-full rounded-xl' />
+            <div className='flex items-center justify-end mt-4'>
+              <Skeleton className='h-5 w-40 ' />
+            </div>
+          </div>
+          <div className='mb-6'>
+            <Skeleton className='h-[130px] w-full rounded-xl' />
+            <div className='flex items-center justify-end mt-4'>
+              <Skeleton className='h-5 w-40 ' />
+            </div>
+          </div>
+          <Skeleton className='h-15 w-70 mx-auto rounded-full' />
+        </div>
+      </div>
+    );
+  if (isError)
+    return (
+      <div>
+        <div className='my-30 '>
+          <h1 className='text-common mb-10'>{title}</h1>
+          <div className='mb-6'>
+            <Skeleton className='h-[130px] w-full rounded-xl' />
+            <div className='flex items-center justify-end mt-4'>
+              <Skeleton className='h-5 w-40 ' />
+            </div>
+          </div>
+          <div className='mb-6'>
+            <Skeleton className='h-[130px] w-full rounded-xl' />
+            <div className='flex items-center justify-end mt-4'>
+              <Skeleton className='h-5 w-40 ' />
+            </div>
+          </div>
+          <div className='mb-6'>
+            <Skeleton className='h-[130px] w-full rounded-xl' />
+            <div className='flex items-center justify-end mt-4'>
+              <Skeleton className='h-5 w-40 ' />
+            </div>
+          </div>
+          <Skeleton className='h-15 w-70 mx-auto rounded-full' />
+        </div>
+      </div>
+    );
 
   const epigrams = data?.pages.flatMap((page) => page.list) ?? [];
 
   return (
-    <div className='space-y-4'>
-      <h1>{title}</h1>
+    <div className='mb-30'>
+      <h1 className='text-common mb-10'>{title}</h1>
       {epigrams.map((epigram: Epigram) => (
         <Link key={epigram.id} href={`/detail/${epigram.id}`}>
           <EpigramCard key={epigram.id} data={epigram} />
         </Link>
       ))}
       {hasNextPage && (
-        <div className='flex justify-center mt-4'>
+        <div className='flex justify-center mt-4 cursor-pointer'>
           <Button
-            variant='outline'
+            variant='plus'
+            size='plus'
             onClick={() => fetchNextPage()}
             disabled={isFetchingNextPage}
           >
-            {isFetchingNextPage ? '로딩중...' : '에피그램 더보기'}
+            <Plus className='text-blue-500 size-6' />
+            <div className='text-blue-500 text-xl  '>
+              {isFetchingNextPage ? '에피그램 로딩중' : '에피그램 더보기'}
+            </div>
           </Button>
         </div>
       )}
