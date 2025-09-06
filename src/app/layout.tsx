@@ -1,12 +1,9 @@
-import type { Metadata } from "next";
-import GlobalNavigationBar from "@/components/GlobalNavigationBar";
 import "./globals.css";
 import { pretendard, iropke } from "@/lib/fonts";
-
-export const metadata: Metadata = {
-  title: "Epigram",
-  description: "Sharing feelings",
-};
+import Providers from "./providers";
+import GlobalNavigationBar from "@/components/GlobalNavigationBar";
+import { ToastContainer, Bounce } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function RootLayout({
   children,
@@ -14,10 +11,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko">
+    <html lang='ko'>
       <body className={`${pretendard.variable} ${iropke.variable} font-sans`}>
-        <GlobalNavigationBar />
-        {children}
+        <Providers>
+          <GlobalNavigationBar />
+          {children}
+        </Providers>
+        <ToastContainer
+          position='bottom-right'
+          autoClose={1000}
+          transition={Bounce}
+        />
       </body>
     </html>
   );
