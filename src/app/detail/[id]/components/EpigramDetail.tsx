@@ -4,7 +4,6 @@ import { useParams } from 'next/navigation';
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 import { Epigram } from '@/types/today';
 import { getEpigramDetail, likeEpigram, unlikeEpigram } from '@/lib/api';
-import EpigramCard from '@/components/EpigramCard';
 import { toast } from 'react-toastify';
 
 export default function EpigramDetailPage() {
@@ -17,6 +16,7 @@ export default function EpigramDetailPage() {
     queryFn: () => getEpigramDetail(id),
     enabled: !!id, //id는 Number(params.id)로 만든 값, !!을 붙여 불리언으로 변환
     initialData: () => {
+      //queryClient.getQueriesData는 비동기 통신 없이 즉시 캐시에서 데이터를 조회
       const epigrams = queryClient
         .getQueriesData<{ list: Epigram[] }>({ queryKey: ['epigrams'] })
         //React Query의 queryClient.getQueriesData()의 반환값은 Array<[queryKey, data]> 형태.
@@ -31,16 +31,21 @@ export default function EpigramDetailPage() {
   const toggleLikeMutation = useMutation({
     mutationFn: async () => {
       if (!data) return;
+     
       if (data.isLiked) {
         return unlikeEpigram(id); // DELETE
       } else {
         return likeEpigram(id); // POST
       }
     },
-    // Optimistic Update
+    // 낙관적 업데이트 (Optimistic Update)
+    // onMutate: 뮤테이션 함수가 실행되기 바로 전에 실행하는 함수
     onMutate: async () => {
+      //좋아요 데이터를 refetch하는 것을 막기 위해 cancelQueries()를 실행해서 좋아요 데이터를 받아오는 쿼리가 실행 중이라면 취소
       await queryClient.cancelQueries({ queryKey: ['epigram-detail', id] });
 
+      //그전에 기존의 쿼리 데이터도 따로 저장
+      //뮤테이션 실행 중 에러가 발생하면 이전의 데이터로 롤백하기 위해
       const prevData = queryClient.getQueryData<Epigram>([
         'epigram-detail',
         id,
@@ -55,8 +60,11 @@ export default function EpigramDetailPage() {
         });
       }
 
-      return { prevData }; // 실패 시 롤백용
+      return { prevData }; //수정하기 전의 데이터를 리턴 [실패 시 롤백용]
     },
+    // onError에서는 세 번째 파라미터로 context를 받아오는데,
+    // 이 context에 우리가 onMutate에서 리턴한 데이터가 들어 있음
+    // 이걸로 해당 포스트의 좋아요 데이터를 이전 데이터로 복원 가능
     onError: (err, _, context) => {
       // 실패하면 롤백
       if (context?.prevData) {
@@ -71,14 +79,23 @@ export default function EpigramDetailPage() {
         toast.warn('좋아요가 취소되었습니다.');
       }
     },
+
+    //onSettled는 성공, 실패 여부에 상관없이 항상 실행
     onSettled: () => {
+      // 제대로 된 서버 데이터로 동기화하기 위해 성공과 실패 여부에 상관없이
+      // invalidateQueries() 함수로 데이터를 refetch!
       // 성공/실패 상관없이 서버 데이터 새로 불러오기
       queryClient.invalidateQueries({ queryKey: ['epigram-detail', id] });
       queryClient.invalidateQueries({ queryKey: ['epigrams'] });
     },
   });
 
+  // 좋아요 버튼을 누르면 toggleLikeMutation 실행
   const handleLike = () => {
+    //로그인이 되어 있지 않으면 뮤테이션을 실행하지 않게 리턴한다.
+    if (!id) {
+      return toast.error('로그인이 필요합니다. ');
+    }
     toggleLikeMutation.mutate();
   };
 

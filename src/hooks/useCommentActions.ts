@@ -70,6 +70,9 @@ export function useCommentActions(
         });
       }
 
+      // 삭제 반영 새로고침
+      queryClient.invalidateQueries({ queryKey });
+
       // 편집 중인 댓글이 삭제됐다면 종료
       if (editingId === id) stop();
       toast.success('댓글이 삭제되었습니다');
