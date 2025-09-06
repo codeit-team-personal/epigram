@@ -1,5 +1,7 @@
 "use client";
+
 import Image from "next/image";
+import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import {
   Popover,
@@ -45,9 +47,21 @@ function MobileMenu() {
         </AnimatePresence>
       </PopoverTrigger>
 
-      <PopoverContent className='w-30 text-center [&>div]:cursor-pointer  [&>div]:py-2 [&>div]:hover:bg-gray-50  [&>div]:hover:rounded-lg'>
-        <div>피드</div>
-        <div>검색</div>
+      <PopoverContent className='w-30 text-center flex flex-col'>
+        <Link
+          className='cursor-pointer  py-2 hover:bg-gray-50  hover:rounded-lg'
+          href='/feed'
+          aria-label='피드 페이지로 이동'
+        >
+          피드
+        </Link>
+        <Link
+          className='cursor-pointer  py-2 hover:bg-gray-50  hover:rounded-lg'
+          href='/search'
+          aria-label='검색 페이지로 이동'
+        >
+          검색
+        </Link>
       </PopoverContent>
     </Popover>
   );
@@ -57,9 +71,15 @@ function DesktopNav() {
   return (
     <nav className='hidden md:block lg:block [&>span]:text-black-600 [&>span]:text-sm [&>span]:lg:text-base'>
       <span className='lg:mr-10 mr-7 cursor-pointer hover:text-gray-400'>
-        피드
+        <Link href='/feed' aria-label='피드 페이지로 이동'>
+          피드
+        </Link>
       </span>
-      <span className='cursor-pointer hover:text-gray-400'>검색</span>
+      <span className='cursor-pointer hover:text-gray-400'>
+        <Link href='/search' aria-label='검색 페이지로 이동'>
+          검색
+        </Link>
+      </span>
     </nav>
   );
 }

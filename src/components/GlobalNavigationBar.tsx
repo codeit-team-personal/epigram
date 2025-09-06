@@ -1,23 +1,29 @@
 "use client";
-import { User, Search } from "lucide-react";
-import Link from "next/link";
-import LogoImage from "./Logo";
-import { useAuthStore } from "@/stores/authStore";
-import MainGlobalNavigationBar from "./MainGlobalNavigatinBar";
 
-export default function GlobalNavigationBar({
-  isAuth = false,
-}: {
-  isAuth?: boolean;
-}) {
+import { User, Search } from "lucide-react";
+import LogoImage from "./Logo";
+import { usePathname } from "next/navigation";
+import MainGlobalNavigationBar from "./MainGlobalNavigatinBar";
+import { useAuthStore } from "@/stores/authStore";
+import Link from "next/link";
+
+export default function GlobalNavigationBar() {
+  const pathname = usePathname();
+  const landingPath = ["/"];
+  const authGNBPaths = ["/login", "/signup"];
+  const isLandingPath = landingPath.includes(pathname);
+  const isAuthPath = authGNBPaths.includes(pathname);
+
   const { user } = useAuthStore();
-  if (user) {
+
+  if (!(isLandingPath || isAuthPath) && user) {
     return <MainGlobalNavigationBar />;
   }
+
   return (
     <div className='lg:h-[80px] md:h-[60px] h-[52px] flex items-center bg-white border'>
       <div className='flex lg:px-20 md:px-15 px-5 justify-between items-center grow'>
-        {isAuth ? (
+        {isAuthPath ? (
           <div className='mx-auto'>
             <LogoImage type={"sm"} />
           </div>
@@ -27,7 +33,7 @@ export default function GlobalNavigationBar({
               <Search className='lg:size-9 size-5' />
             </Link>
             <LogoImage />
-            <Link href='/profile' aria-label='마이 페이지로 이동'>
+            <Link href='/mypage' aria-label='마이 페이지로 이동'>
               <User className='lg:size-9 size-5' />
             </Link>
           </>
