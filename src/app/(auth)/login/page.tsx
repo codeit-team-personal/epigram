@@ -4,7 +4,7 @@ import OauthLogin from "../components/OauthLogin";
 import Logo from "@/components/Logo";
 import LoginForm from "../components/LoginForm";
 
-export default function Home() {
+export default function LoginPage() {
   return (
     <div className='flex min-h-screen items-center justify-center'>
       <div className='flex flex-col justify-between lg:w-[640px] lg:h-[568px] md:w-[384px] md:h-[456px] w-[312px] h-[436px]'>

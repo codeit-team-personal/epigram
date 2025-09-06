@@ -12,7 +12,7 @@ function SearchInput() {
   );
 }
 
-export default function Home() {
+export default function SearchPage() {
   return (
     <div className='flex min-h-screen justify-center bg-white'>
       <div className='flex flex-col lg:w-[640px] md:w-[384px] w-[360px]'>

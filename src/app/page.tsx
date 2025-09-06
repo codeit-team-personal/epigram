@@ -183,7 +183,7 @@ function SectionComponent({
   );
 }
 
-export default function Home() {
+export default function LandingPage() {
   return (
     <>
       <LandingStart />
