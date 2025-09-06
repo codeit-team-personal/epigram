@@ -1,4 +1,3 @@
-// src/lib/axios.ts
 import axios from "axios";
 import { useAuthStore } from "@/stores/authStore";
 
@@ -37,10 +36,7 @@ api.interceptors.response.use(
     ) {
       originalRequest._retry = true;
       try {
-        const res = await axios.post(
-          `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh-token`,
-          { refreshToken }
-        );
+        const res = await api.post(`/auth/refresh-token`, { refreshToken });
 
         const newAccessToken = res.data.accessToken;
 
