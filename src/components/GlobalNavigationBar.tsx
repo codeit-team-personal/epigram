@@ -27,7 +27,7 @@ export default function GlobalNavigationBar({
               <Search className='lg:size-9 size-5' />
             </Link>
             <LogoImage />
-            <Link href='/profile' aria-label='마이 페이지로 이동'>
+            <Link href='/mypage' aria-label='마이 페이지로 이동'>
               <User className='lg:size-9 size-5' />
             </Link>
           </>
