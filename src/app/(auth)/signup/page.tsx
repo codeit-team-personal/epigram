@@ -2,7 +2,7 @@ import OauthLogin from "../components/OauthLogin";
 import Logo from "@/components/Logo";
 import RegisterForm from "../components/RegisterForm";
 
-export default function Home() {
+export default function SignupPage() {
   return (
     <div className='flex min-h-screen items-center justify-center'>
       <div className='flex flex-col justify-between lg:w-[640px] lg:h-[960px] md:w-[384px] md:h-[774px] w-[312px] h-[684px]'>
