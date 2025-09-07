@@ -14,6 +14,7 @@ type AuthState = {
   refreshToken: string | null;
   setTokens: (access: string, refresh: string) => void;
   clearAuth: () => void;
+  hasHydrated: boolean;
 };
 
 export const useAuthStore = create<AuthState>()(
@@ -29,9 +30,13 @@ export const useAuthStore = create<AuthState>()(
       clearAuth: () => {
         set({ user: null, accessToken: null, refreshToken: null });
       },
+      hasHydrated: false,
     }),
     {
       name: "auth-storage", // localStorage key
+      onRehydrateStorage: () => (state) => {
+        if (state) state.hasHydrated = true;
+      },
     }
   )
 );
