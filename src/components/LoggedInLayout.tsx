@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/stores/authStore";
 
-export default function LoggedInLayout({
+export default function ProtectedLayout({
   children,
 }: {
   children: React.ReactNode;

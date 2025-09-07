@@ -5,14 +5,10 @@ import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/stores/authStore";
 
 export default function AuthGuard({ children }: { children: React.ReactNode }) {
-  const { user } = useAuthStore();
+  const { user, hasHydrated } = useAuthStore();
   const router = useRouter();
 
-  useEffect(() => {
-    if (!user) router.replace("/login");
-  }, [user, router]);
-
-  if (!user)
+  if (!hasHydrated) {
     return (
       <div className='flex h-screen items-center justify-center'>
         <div className='flex flex-col items-center space-y-4'>
@@ -23,6 +19,12 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
         </div>
       </div>
     );
+  }
+
+  if (!user) {
+    router.replace("/login");
+    return null;
+  }
 
   return <>{children}</>;
 }
