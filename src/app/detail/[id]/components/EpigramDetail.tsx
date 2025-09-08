@@ -3,10 +3,13 @@
 import { useParams } from 'next/navigation';
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 import { Epigram } from '@/types/today';
-import { getEpigramDetail, likeEpigram, unlikeEpigram } from '@/lib/api';
+import { getEpigramDetail, likeEpigram, unlikeEpigram, deleteEpigram } from '@/lib/api';
 import { toast } from 'react-toastify';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function EpigramDetailPage() {
+  const router = useRouter();
   const params = useParams();
   const id = Number(params.id);
   const queryClient = useQueryClient();
@@ -31,7 +34,7 @@ export default function EpigramDetailPage() {
   const toggleLikeMutation = useMutation({
     mutationFn: async () => {
       if (!data) return;
-     
+
       if (data.isLiked) {
         return unlikeEpigram(id); // DELETE
       } else {
@@ -99,6 +102,20 @@ export default function EpigramDetailPage() {
     toggleLikeMutation.mutate();
   };
 
+  // 삭제 mutation
+  const deleteMutation = useMutation({
+    mutationFn: () => deleteEpigram(String(id)),
+    onSuccess: () => {
+      toast.success('에피그램이 삭제되었습니다.');
+      queryClient.invalidateQueries({ queryKey: ['epigrams'] });
+      router.push('/'); // 삭제 후 메인으로 이동
+    },
+    onError: () => {
+      toast.error('삭제 중 오류가 발생했습니다.');
+    },
+  });
+
+  const [menuOpen, setMenuOpen] = useState(false);
   if (isLoading) return <div>불러오는 중...</div>;
   if (isError) return <div>에러가 발생했습니다.</div>;
   if (!data)
@@ -106,26 +123,65 @@ export default function EpigramDetailPage() {
 
   return (
     <div>
-      <div>
-        <div className='p-4 rounded-md shadow bg-white'>
-          <div className='mt-2 flex gap-2 text-blue-500 text-xs flex-wrap'>
-            {data.tags?.map((tag) => (
-              <span key={tag.id}>#{tag.name}</span>
-            ))}
-          </div>
-          <p className='text-gray-700'>{data.content}</p>
-          <p className='text-right mt-2 text-sm text-gray-500'>
-            - {data.author} -
-          </p>
+      <div className='p-4 rounded-md shadow bg-white relative'>
+        {/* 케밥 버튼 */}
+        <div className='absolute top-2 right-2'>
           <button
-            onClick={handleLike}
-            className={`mt-2 px-3 py-1 rounded ${
-              data.likeCount ? 'bg-red-500 text-white' : 'bg-gray-200'
-            }`}
+            onClick={() => setMenuOpen((prev) => !prev)}
+            className='p-1 rounded hover:bg-gray-100'
           >
-            ❤️ {data.likeCount}
+            ⋮
           </button>
+          {menuOpen && (
+            <div className='absolute right-0 mt-2 w-28 bg-white border rounded shadow'>
+              <button
+                onClick={() => {
+                  setMenuOpen(false);
+                  router.push(`/edit/${id}`);
+                }}
+                className='block w-full text-left px-3 py-2 hover:bg-gray-100'
+              >
+                수정
+              </button>
+              <button
+                onClick={() => {
+                  setMenuOpen(false);
+                  if (confirm('정말 삭제하시겠습니까?')) {
+                    deleteMutation.mutate();
+                  }
+                }}
+                className='block w-full text-left px-3 py-2 text-red-500 hover:bg-gray-100'
+              >
+                삭제
+              </button>
+            </div>
+          )}
         </div>
+
+        {/* 태그 */}
+        <div className='mt-2 flex gap-2 text-blue-500 text-xs flex-wrap'>
+          {data.tags?.map((tag) => (
+            <span key={tag.id}>#{tag.name}</span>
+          ))}
+        </div>
+
+        {/* 내용 */}
+        <p className='text-gray-700'>{data.content}</p>
+
+        {/* 저자 */}
+        <p className='text-right mt-2 text-sm text-gray-500'>
+          - {data.author} -
+        </p>
+
+        {/* 좋아요 버튼 */}
+        <button
+          onClick={handleLike}
+          className={`mt-2 px-3 py-1 rounded ${
+            data.isLiked ? 'bg-red-500 text-white' : 'bg-gray-200'
+          }`}
+        >
+          ❤️ {data.likeCount}
+        </button>
       </div>
     </div>
   );

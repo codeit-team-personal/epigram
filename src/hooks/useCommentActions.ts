@@ -1,9 +1,15 @@
 // 댓글 수정/삭제 관련 mutation 로직을 한 곳에 모아둔 커스텀 훅
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  useMutation,
+  useQueryClient,
+  InfiniteData,
+} from '@tanstack/react-query';
 import { updateComment, deleteComment } from '@/lib/api';
 import { toast } from 'react-toastify';
 import { useCommentEditStore } from '@/stores/commentEditStore';
 import { Comments as CommentsType } from '@/types/comments';
+
+type CommentsInfiniteData = InfiniteData<CommentsType>;
 
 export function useCommentActions(
   queryKey: (string | number)[],
@@ -17,16 +23,16 @@ export function useCommentActions(
     mutationFn: updateComment,
     onSuccess: (updated) => {
       // 낙관적 업데이트
-      queryClient.setQueryData(queryKey, (oldData: any) => {
-        if (!oldData) return oldData;
-        return {
-          ...oldData,
-          pages: oldData.pages.map((page: CommentsType) => ({
-            ...page,
-            list: page.list.map((c) => (c.id === updated.id ? updated : c)),
-          })),
-        };
-      });
+       queryClient.setQueryData<CommentsInfiniteData>(queryKey, (oldData) => {
+         if (!oldData) return oldData;
+         return {
+           ...oldData,
+           pages: oldData.pages.map((page: CommentsType) => ({
+             ...page,
+             list: page.list.map((c) => (c.id === updated.id ? updated : c)),
+           })),
+         };
+       });
       // 편집 종료
       stop();
       // 서버와 동기화
@@ -41,33 +47,33 @@ export function useCommentActions(
     mutationFn: deleteComment,
     onSuccess: async (_, id) => {
       // 낙관적 삭제
-      queryClient.setQueryData(queryKey, (oldData: any) => {
-        if (!oldData) return oldData;
-        return {
-          ...oldData,
-          pages: oldData.pages.map((page: CommentsType) => ({
-            ...page,
-            list: page.list.filter((c) => c.id !== id),
-          })),
-        };
-      });
+       queryClient.setQueryData<CommentsInfiniteData>(queryKey, (oldData) => {
+         if (!oldData) return oldData;
+         return {
+           ...oldData,
+           pages: oldData.pages.map((page: CommentsType) => ({
+             ...page,
+             list: page.list.filter((c) => c.id !== id),
+           })),
+         };
+       });
 
       // 1개 보충 (페이징 유지용)
-      const oldData: any = queryClient.getQueryData(queryKey);
+       const oldData = queryClient.getQueryData<CommentsInfiniteData>(queryKey);
       const lastPage = oldData?.pages[oldData.pages.length - 1];
       if (onFetchOne && lastPage?.nextCursor) {
         const newPage = await onFetchOne(lastPage.nextCursor);
-        queryClient.setQueryData(queryKey, (old: any) => {
-          if (!old) return old;
-          const updatedPages = [...old.pages];
-          const last = updatedPages[updatedPages.length - 1];
-          updatedPages[updatedPages.length - 1] = {
-            ...last,
-            list: [...last.list, ...newPage.list],
-            nextCursor: newPage.nextCursor,
-          };
-          return { ...old, pages: updatedPages };
-        });
+           queryClient.setQueryData<CommentsInfiniteData>(queryKey, (old) => {
+             if (!old) return old;
+             const updatedPages = [...old.pages];
+             const last = updatedPages[updatedPages.length - 1];
+             updatedPages[updatedPages.length - 1] = {
+               ...last,
+               list: [...last.list, ...newPage.list],
+               nextCursor: newPage.nextCursor,
+             };
+             return { ...old, pages: updatedPages };
+           });
       }
 
       // 삭제 반영 새로고침
