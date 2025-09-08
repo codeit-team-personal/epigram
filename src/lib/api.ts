@@ -126,3 +126,36 @@ export const registerUser = async (data: {
   const response = await api.post('/auth/signUp', data);
   return response.data;
 };
+
+//에피그램 만들기
+export async function createEpigram(payload: {
+  content: string;
+  author: string;
+  referenceTitle?: string;
+  referenceUrl?: string;
+  tags?: string[];
+}): Promise<Epigram> {
+  const { data } = await api.post<Epigram>('/epigrams', payload);
+  return data;
+}
+
+// 에피그램 수정
+export async function updateEpigram(
+  id: string | number,
+  payload: {
+    content: string;
+    author: string;
+    referenceTitle?: string;
+    referenceUrl?: string;
+    tags?: string[];
+  }
+) {
+  const { data } = await api.patch(`/epigrams/${id}`, payload);
+  return data;
+}
+
+// 에피그램 삭제
+export async function deleteEpigram(id: string) {
+  const { data } = await api.delete(`/epigrams/${id}`);
+  return data;
+}

@@ -5,12 +5,23 @@ import { toast } from 'react-toastify';
 import { UseMutationResult } from '@tanstack/react-query';
 import { useCommentEditStore } from '@/stores/commentEditStore';
 
+type UpdateCommentVariables = {
+  id: number;
+  content: string;
+  isPrivate: boolean;
+};
+
 export function CommentEditor({
   comment,
   updateMutation,
 }: {
   comment: List;
-  updateMutation: UseMutationResult<any, unknown, any, unknown>;
+  updateMutation: UseMutationResult<
+    List,
+    unknown,
+    UpdateCommentVariables,
+    unknown
+  >;
 }) {
   const { stop } = useCommentEditStore();
   const [editContent, setEditContent] = useState('');
