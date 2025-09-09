@@ -60,9 +60,9 @@ export default function EpigramFormLayout({
     // 일부 환경(파폭 등) 방어
     if (e.key === 'Process') return;
 
-    //e.key !== 'Enter' 엔터가 아니면 무시.
+    // e.key !== 'Enter' 엔터가 아니면 무시.
     // Input Method Editor(IME) 조합 중(isComposing === true)이면 무시 → 조합 확정 전 엔터 입력을 걸러서 중복/오작동 방지.
-    //isComposing을 확인하면 입력이 조합 중인 상태인지 파악하여 불필요한 keydown 이벤트를 무시함
+    // isComposing을 확인하면 입력이 조합 중인 상태인지 파악하여 불필요한 keydown 이벤트를 무시함
     if (e.key !== 'Enter' || (e.nativeEvent as any).isComposing) return;
 
     e.preventDefault();
@@ -195,7 +195,7 @@ export default function EpigramFormLayout({
               }`}
             />
           )}
-          {errors.authorName && (
+          {authorType === '직접 입력' && errors.authorName && (
             <p className='text-red-500 text-sm mt-1'>
               {errors.authorName.message}
             </p>
