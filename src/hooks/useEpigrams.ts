@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useInfiniteQuery, InfiniteData } from '@tanstack/react-query';
-import { EpigramResponse } from '@/types/today';
-import { getEpigram } from '@/lib/api';
+import { useInfiniteQuery, InfiniteData } from "@tanstack/react-query";
+import { EpigramResponse } from "@/types/today";
+import { getEpigram } from "@/lib/api";
 
 interface UseEpigramsProps {
   firstLimit?: number;
@@ -27,7 +27,7 @@ export function useEpigrams({
     (string | number)[], // TQueryKey: queryKey 타입
     PageParam // TPageParam: getNextPageParam / pageParam 구조
   >({
-    queryKey: ['epigrams', firstLimit, nextLimit],
+    queryKey: ["epigrams", firstLimit, nextLimit],
     queryFn: ({ pageParam }) => {
       const pageIndex = pageParam?.pageIndex ?? 0;
       const cursor = pageParam?.cursor ?? 0;
