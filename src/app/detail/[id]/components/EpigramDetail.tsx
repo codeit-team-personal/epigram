@@ -1,18 +1,19 @@
-'use client';
+"use client";
 
-import { useParams } from 'next/navigation';
-import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
-import { Epigram } from '@/types/today';
+import { useParams } from "next/navigation";
+import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
+import { Epigram } from "@/types/today";
 import {
   getEpigramDetail,
   likeEpigram,
   unlikeEpigram,
   deleteEpigram,
-} from '@/lib/api';
-import { toast } from 'react-toastify';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuthStore } from '@/stores/authStore';
+} from "@/lib/api";
+import { toast } from "react-toastify";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/stores/authStore";
+import { ThumbsUp } from "lucide-react";
 
 export default function EpigramDetailPage() {
   const router = useRouter();
@@ -22,13 +23,13 @@ export default function EpigramDetailPage() {
   const { user } = useAuthStore();
 
   const { data, isLoading, isError } = useQuery<Epigram>({
-    queryKey: ['epigram-detail', id],
+    queryKey: ["epigram-detail", id],
     queryFn: () => getEpigramDetail(id),
     enabled: !!id, //id는 Number(params.id)로 만든 값, !!을 붙여 불리언으로 변환
     initialData: () => {
       //queryClient.getQueriesData는 비동기 통신 없이 즉시 캐시에서 데이터를 조회
       const epigrams = queryClient
-        .getQueriesData<{ list: Epigram[] }>({ queryKey: ['epigrams'] })
+        .getQueriesData<{ list: Epigram[] }>({ queryKey: ["epigrams"] })
         //React Query의 queryClient.getQueriesData()의 반환값은 Array<[queryKey, data]> 형태.
         //result에는 ({ list: Epigram[] })가 들어감
         //앞의 queryKey는 버리고 뒤의 data만 result로 받는 것.
@@ -39,7 +40,7 @@ export default function EpigramDetailPage() {
 
   // 작성자 여부 체크
   const isAuthor = user && data && Number(user.id) === data.writerId;
-  
+
   // 좋아요 토글 mutation
   const toggleLikeMutation = useMutation({
     mutationFn: async () => {
@@ -55,18 +56,18 @@ export default function EpigramDetailPage() {
     // onMutate: 뮤테이션 함수가 실행되기 바로 전에 실행하는 함수
     onMutate: async () => {
       //좋아요 데이터를 refetch하는 것을 막기 위해 cancelQueries()를 실행해서 좋아요 데이터를 받아오는 쿼리가 실행 중이라면 취소
-      await queryClient.cancelQueries({ queryKey: ['epigram-detail', id] });
+      await queryClient.cancelQueries({ queryKey: ["epigram-detail", id] });
 
       //그전에 기존의 쿼리 데이터도 따로 저장
       //뮤테이션 실행 중 에러가 발생하면 이전의 데이터로 롤백하기 위해
       const prevData = queryClient.getQueryData<Epigram>([
-        'epigram-detail',
+        "epigram-detail",
         id,
       ]);
 
       // 캐시를 즉시 업데이트
       if (prevData) {
-        queryClient.setQueryData<Epigram>(['epigram-detail', id], {
+        queryClient.setQueryData<Epigram>(["epigram-detail", id], {
           ...prevData,
           isLiked: !prevData.isLiked,
           likeCount: (prevData.likeCount ?? 0) + (prevData.isLiked ? -1 : 1),
@@ -81,15 +82,15 @@ export default function EpigramDetailPage() {
     onError: (err, _, context) => {
       // 실패하면 롤백
       if (context?.prevData) {
-        queryClient.setQueryData(['epigram-detail', id], context.prevData);
+        queryClient.setQueryData(["epigram-detail", id], context.prevData);
       }
     },
     onSuccess: (_, __, ___) => {
       // 좋아요 성공 시 토스트 메시지
       if (data?.isLiked) {
-        toast.success('좋아요 성공!');
+        toast.success("좋아요 성공!");
       } else {
-        toast.warn('좋아요가 취소되었습니다.');
+        toast.warn("좋아요가 취소되었습니다.");
       }
     },
 
@@ -98,8 +99,8 @@ export default function EpigramDetailPage() {
       // 제대로 된 서버 데이터로 동기화하기 위해 성공과 실패 여부에 상관없이
       // invalidateQueries() 함수로 데이터를 refetch!
       // 성공/실패 상관없이 서버 데이터 새로 불러오기
-      queryClient.invalidateQueries({ queryKey: ['epigram-detail', id] });
-      queryClient.invalidateQueries({ queryKey: ['epigrams'] });
+      queryClient.invalidateQueries({ queryKey: ["epigram-detail", id] });
+      queryClient.invalidateQueries({ queryKey: ["epigrams"] });
     },
   });
 
@@ -107,7 +108,7 @@ export default function EpigramDetailPage() {
   const handleLike = () => {
     //로그인이 되어 있지 않으면 뮤테이션을 실행하지 않게 리턴한다.
     if (!id) {
-      return toast.error('로그인이 필요합니다. ');
+      return toast.error("로그인이 필요합니다. ");
     }
     toggleLikeMutation.mutate();
   };
@@ -116,30 +117,32 @@ export default function EpigramDetailPage() {
   const deleteMutation = useMutation({
     mutationFn: () => deleteEpigram(String(id)),
     onSuccess: () => {
-      toast.success('에피그램이 삭제되었습니다.');
-      queryClient.invalidateQueries({ queryKey: ['epigrams'] });
-      router.push('/'); // 삭제 후 메인으로 이동
+      toast.success("에피그램이 삭제되었습니다.");
+      queryClient.invalidateQueries({ queryKey: ["epigrams"] });
+      router.push("/"); // 삭제 후 메인으로 이동
     },
     onError: () => {
-      toast.error('삭제 중 오류가 발생했습니다.');
+      toast.error("삭제 중 오류가 발생했습니다.");
     },
   });
 
   const [menuOpen, setMenuOpen] = useState(false);
   if (isLoading) return <div>불러오는 중...</div>;
   if (isError) return <div>에러가 발생했습니다.</div>;
-  if (!data)
-    return <div className='p-4 rounded-md shadow bg-white'>데이터 없음</div>;
+  if (!data) return <div className='p-4 bg-white'>데이터 없음</div>;
 
   return (
-    <div>
-      <div className='p-4 rounded-md shadow bg-white relative'>
+    <div className='bg-white relative'>
+      {/* 줄무늬 배경 */}
+      <div className='absolute inset-0 bg-[linear-gradient(to_bottom,#f5f5f5_1px,transparent_1px)] bg-[length:100%_32px]' />
+
+      <div className='lg:w-[640px] md:w-[384px] w-[312px] mx-auto py-10 px-4 relative'>
         {/* 케밥 버튼 */}
         {isAuthor && (
           <div className='absolute top-2 right-2'>
             <button
               onClick={() => setMenuOpen((prev) => !prev)}
-              className='p-1 rounded hover:bg-gray-100'
+              className='p-1 text-blue-400 rounded hover:bg-gray-100'
             >
               ⋮
             </button>
@@ -157,7 +160,7 @@ export default function EpigramDetailPage() {
                 <button
                   onClick={() => {
                     setMenuOpen(false);
-                    if (confirm('정말 삭제하시겠습니까?')) {
+                    if (confirm("정말 삭제하시겠습니까?")) {
                       deleteMutation.mutate();
                     }
                   }}
@@ -170,29 +173,32 @@ export default function EpigramDetailPage() {
           </div>
         )}
         {/* 태그 */}
-        <div className='mt-2 flex gap-2 text-blue-500 text-xs flex-wrap'>
+        <div className='flex flex-wrap gap-2 text-blue-400 mt-2 lg:mb-8 mb-6  lg:text-xl text-base '>
           {data.tags?.map((tag) => (
             <span key={tag.id}>#{tag.name}</span>
           ))}
         </div>
 
         {/* 내용 */}
-        <p className='text-gray-700'>{data.content}</p>
+        <p className='text-black-700 lg:text-[32px] text-2xl'>{data.content}</p>
 
         {/* 저자 */}
-        <p className='text-right mt-2 text-sm text-gray-500'>
+        <p className='text-right lg:mt-8 mt-6 lg:text-2xl md:text-xl text-base text-blue-400'>
           - {data.author} -
         </p>
 
         {/* 좋아요 버튼 */}
-        <button
-          onClick={handleLike}
-          className={`mt-2 px-3 py-1 rounded ${
-            data.isLiked ? 'bg-red-500 text-white' : 'bg-gray-200'
-          }`}
-        >
-          ❤️ {data.likeCount}
-        </button>
+        <div className='flex justify-center mt-10 lg:mb-10 mb-0 '>
+          <button
+            onClick={handleLike}
+            className='flex items-center gap-2 rounded-full bg-black-600 px-4 py-2 text-white hover:bg-gray-700 cursor-pointer lg:text-xl text-sm'
+          >
+            <ThumbsUp
+              className={`w-5 h-5 ${data.isLiked ? "fill-current" : ""} `}
+            />
+            <span>{data.likeCount}</span>
+          </button>
+        </div>
       </div>
     </div>
   );
