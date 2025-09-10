@@ -3,16 +3,23 @@
 import { useParams } from 'next/navigation';
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 import { Epigram } from '@/types/today';
-import { getEpigramDetail, likeEpigram, unlikeEpigram, deleteEpigram } from '@/lib/api';
+import {
+  getEpigramDetail,
+  likeEpigram,
+  unlikeEpigram,
+  deleteEpigram,
+} from '@/lib/api';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useAuthStore } from '@/stores/authStore';
 
 export default function EpigramDetailPage() {
   const router = useRouter();
   const params = useParams();
   const id = Number(params.id);
   const queryClient = useQueryClient();
+  const { user } = useAuthStore();
 
   const { data, isLoading, isError } = useQuery<Epigram>({
     queryKey: ['epigram-detail', id],
@@ -30,6 +37,9 @@ export default function EpigramDetailPage() {
     },
   });
 
+  // 작성자 여부 체크
+  const isAuthor = user && data && Number(user.id) === data.writerId;
+  
   // 좋아요 토글 mutation
   const toggleLikeMutation = useMutation({
     mutationFn: async () => {
@@ -125,39 +135,40 @@ export default function EpigramDetailPage() {
     <div>
       <div className='p-4 rounded-md shadow bg-white relative'>
         {/* 케밥 버튼 */}
-        <div className='absolute top-2 right-2'>
-          <button
-            onClick={() => setMenuOpen((prev) => !prev)}
-            className='p-1 rounded hover:bg-gray-100'
-          >
-            ⋮
-          </button>
-          {menuOpen && (
-            <div className='absolute right-0 mt-2 w-28 bg-white border rounded shadow'>
-              <button
-                onClick={() => {
-                  setMenuOpen(false);
-                  router.push(`/edit/${id}`);
-                }}
-                className='block w-full text-left px-3 py-2 hover:bg-gray-100'
-              >
-                수정
-              </button>
-              <button
-                onClick={() => {
-                  setMenuOpen(false);
-                  if (confirm('정말 삭제하시겠습니까?')) {
-                    deleteMutation.mutate();
-                  }
-                }}
-                className='block w-full text-left px-3 py-2 text-red-500 hover:bg-gray-100'
-              >
-                삭제
-              </button>
-            </div>
-          )}
-        </div>
-
+        {isAuthor && (
+          <div className='absolute top-2 right-2'>
+            <button
+              onClick={() => setMenuOpen((prev) => !prev)}
+              className='p-1 rounded hover:bg-gray-100'
+            >
+              ⋮
+            </button>
+            {menuOpen && (
+              <div className='absolute right-0 mt-2 w-28 bg-white border rounded shadow'>
+                <button
+                  onClick={() => {
+                    setMenuOpen(false);
+                    router.push(`/edit/${id}`);
+                  }}
+                  className='block w-full text-left px-3 py-2 hover:bg-gray-100'
+                >
+                  수정
+                </button>
+                <button
+                  onClick={() => {
+                    setMenuOpen(false);
+                    if (confirm('정말 삭제하시겠습니까?')) {
+                      deleteMutation.mutate();
+                    }
+                  }}
+                  className='block w-full text-left px-3 py-2 text-red-500 hover:bg-gray-100'
+                >
+                  삭제
+                </button>
+              </div>
+            )}
+          </div>
+        )}
         {/* 태그 */}
         <div className='mt-2 flex gap-2 text-blue-500 text-xs flex-wrap'>
           {data.tags?.map((tag) => (
