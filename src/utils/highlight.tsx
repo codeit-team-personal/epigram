@@ -1,4 +1,3 @@
-// utils/highlight.tsx (선택: 파일로 분리해도 되고 컴포넌트 안에 둬도 됩니다)
 import * as React from "react";
 
 /** 정규식 특수문자 이스케이프 */
@@ -6,7 +5,6 @@ function escapeRegExp(input: string) {
   return input.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-/** 안전한 하이라이트: 어떤 타입이 와도 동작 */
 export function highlightText(
   rawText: unknown,
   rawKeyword: unknown
