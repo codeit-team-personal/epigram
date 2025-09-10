@@ -1,11 +1,13 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import type { User } from '@/types/user'; 
 
-interface User {
-  id: string;
-  nickname: string;
-  image: string;
-}
+//[최재이]type '@/types/user import 하고 우선 주석 처리 했음.
+// interface User {
+//   id: string;
+//   nickname: string;
+//   image: string;
+// }
 
 type AuthState = {
   user: User | null;

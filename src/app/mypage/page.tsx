@@ -1,3 +1,26 @@
+'use client';
+import MyChart from './components/MyChart';
+import MyEmotion from './components/MyEmotion';
+import MyEmotionCalendar from './components/MyEmotionCalendar';
+import MyHistory from './components/MyHistory';
+import MyInfo from './components/MyInfo';
+
+import { useAuthStore } from '@/stores/authStore';
+
+
+
+
 export default function MyPage() {
-  return <div>마이페이지</div>;
+  const { user } = useAuthStore();
+  if (!user) return <div>로그인이 필요합니다.</div>; // user가 null이면 다른 화면 보여주기
+
+  return (
+    <section>
+      <MyInfo user={user} />
+      <MyEmotion user={user} />
+      <MyEmotionCalendar user={user} />
+      {/* <MyChart user={user} />
+      <MyHistory user={user} /> */}
+    </section>
+  );
 }
