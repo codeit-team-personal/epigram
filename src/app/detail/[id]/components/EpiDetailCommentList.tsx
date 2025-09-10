@@ -3,7 +3,7 @@
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import CommentsCard from '@/components/CommentsCard';
+import CommentsCard from '@/components/CommentCard';
 import { getEpigramDetailComments } from '@/lib/api';
 import { useCommentList } from '@/hooks/useCommentList';
 import { useCommentMutation } from '@/hooks/useCommentMutation';

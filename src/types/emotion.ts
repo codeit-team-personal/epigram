@@ -1,6 +1,6 @@
 export type EmotionType = {
-  createdAt?: string;
+  createdAt: string;
   emotion?: string;
   userId: number;
-  id: number;
+  id: number | string;
 };
