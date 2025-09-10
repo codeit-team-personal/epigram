@@ -14,10 +14,14 @@ export default function EpigramCard({ data }: { data: Epigram }) {
         {/* 콘텐츠 */}
         <div className='relative flex flex-col justify-between lg:h-[211px] md:h-[132px] h-[92px]'>
           {/* 본문 */}
-          <p className='leading-relaxed'>{data.content}</p>
+          <p className='leading-relaxed lg:h-[160px] md:h-[150px] overflow-hidden md:line-clamp-4 line-clamp-3'>
+            {data.content}
+          </p>
 
           {/* 저자 */}
-          <p className='mt-3 text-right text-blue-400'>- {data.author} -</p>
+          <p className='lg:mt-3 mt-1 text-right text-blue-400'>
+            - {data.author} -
+          </p>
         </div>
       </div>
 
