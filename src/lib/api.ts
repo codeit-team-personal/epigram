@@ -1,7 +1,7 @@
 import api from "@/lib/axios";
 import { Epigram, EpigramResponse } from "@/types/today";
 import { Comments as CommentsType } from "@/types/comments";
-import { EpigramSearch, EpigramSearchResponse } from "@/types/search";
+import { EpigramSearchResponse } from "@/types/search";
 import { EmotionType } from "@/types/emotion";
 
 // 오늘의 에피그램
@@ -11,7 +11,11 @@ export async function getTodayEpigram(): Promise<Epigram> {
 }
 
 // 오늘의 감정
-export async function getEmotion({ id }: { id: string }): Promise<EmotionType> {
+export async function getEmotion({
+  id,
+}: {
+  id: number | string;
+}): Promise<EmotionType> {
   const { data } = await api.get<EmotionType>(
     `/emotionLogs/today?userId=${id}`
   );
@@ -170,10 +174,27 @@ export async function getSearchEpigram({
   cursor: number;
   keyword: string;
 }): Promise<EpigramSearchResponse> {
-  const cursorParam = cursor > 0 ? `&cursor=${cursor}` : "";
-  const keywordParam = keyword ? `&keyword=${encodeURIComponent(keyword)}` : "";
+  const cursorParam = cursor > 0 ? `&cursor=${cursor}` : '';
+  const keywordParam = keyword ? `&keyword=${encodeURIComponent(keyword)}` : '';
   const { data } = await api.get<EpigramSearchResponse>(
     `/epigrams?limit=${limit}${cursorParam}${keywordParam}`
+  );
+  return data;
+}
+
+
+// 감정 월간 로그 가져오기
+export async function getMonthlyEmotions({
+  userId,
+  year,
+  month,
+}: {
+  userId: number | string;
+  year: number;
+  month: number;
+}) {
+  const { data } = await api.get(
+    `/emotionLogs/monthly?userId=${userId}&year=${year}&month=${month}`
   );
   return data;
 }

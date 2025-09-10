@@ -10,7 +10,7 @@ import { formatAgo } from '@/util/date';
 import { Button } from './ui/button';
 import { Comments as CommentsType, List } from '@/types/comments';
 import { getComments, updateComment, deleteComment } from '@/lib/api';
-import CommentsCard from './CommentsCard';
+import CommentsCard from './CommentCard';
 import { Plus } from 'lucide-react';
 
 export default function Comments({ title }: { title: string }) {
