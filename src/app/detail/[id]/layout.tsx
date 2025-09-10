@@ -1,6 +1,6 @@
 import AuthGuard from "@/components/AuthGuard";
 
-export default function MypageLayout({
+export default function DetailLayout({
   children,
 }: {
   children: React.ReactNode;
