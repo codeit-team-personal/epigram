@@ -56,7 +56,6 @@ export default function EpigramList() {
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   // 로딩 / 에러 처리
-  if (!keyword) return <p className='text-gray-500'>검색어를 입력해주세요.</p>;
   if (isFetchingNextPage || isLoading) return <p>로딩 중...</p>;
   if (isError) return <p>에러 발생</p>;
 
