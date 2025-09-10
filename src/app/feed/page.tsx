@@ -4,6 +4,7 @@ import { Epigram } from "@/types/today";
 import EpigramCard from "@/components/EpigramCard";
 import { Button } from "@/components/ui/button";
 import { useEpigrams } from "@/hooks/useEpigrams";
+import { useRouter } from "next/navigation";
 
 export default function Feed({
   firstLimit = 6,
@@ -12,6 +13,8 @@ export default function Feed({
   firstLimit?: number;
   nextLimit?: number;
 }) {
+  const router = useRouter();
+
   const {
     data,
     fetchNextPage,
@@ -32,7 +35,12 @@ export default function Feed({
         <h1 className='my-10 text-black-600 font-semibold'>피드</h1>
         <div className='flex flex-wrap justify-center lg:gap-4 gap-2'>
           {epigrams.map((epigram: Epigram) => (
-            <EpigramCard key={epigram.id} data={epigram} />
+            <div
+              className='cursor-pointer'
+              onClick={() => router.push(`/detail/${epigram.id}`)}
+            >
+              <EpigramCard key={epigram.id} data={epigram} />
+            </div>
           ))}
         </div>
 
