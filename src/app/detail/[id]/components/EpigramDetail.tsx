@@ -132,7 +132,7 @@ export default function EpigramDetailPage() {
   if (!data) return <div className='p-4 bg-white'>데이터 없음</div>;
 
   return (
-    <div className='bg-white relative'>
+    <div className='bg-white relative font-iropke'>
       {/* 줄무늬 배경 */}
       <div className='absolute inset-0 bg-[linear-gradient(to_bottom,#f5f5f5_1px,transparent_1px)] bg-[length:100%_32px]' />
 
