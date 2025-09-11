@@ -1,34 +1,47 @@
-"use client";
+'use client';
 
-import { useParams } from "next/navigation";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
-import CommentsCard from "@/components/CommentCard";
-import { getEpigramDetailComments } from "@/lib/api";
-import { useCommentList } from "@/hooks/useCommentList";
-import { useCommentMutation } from "@/hooks/useCommentMutation";
-import { toast } from "react-toastify";
-import { CommentAvatar } from "@/components/CommentAvatar";
-import { useAuthStore } from "@/stores/authStore";
-import Image from "next/image";
+import { useParams } from 'next/navigation';
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
+import CommentsCard from '@/components/CommentCard';
+import { getEpigramDetailComments } from '@/lib/api';
+import { useCommentMutation } from '@/hooks/useCommentMutation';
+import { toast } from 'react-toastify';
+import { CommentAvatar } from '@/components/CommentAvatar';
+import { useAuthStore } from '@/stores/authStore';
+import useInfiniteList from '@/hooks/useInfiniteList';
+import { Comments as CommentsType } from '@/types/comments';
+import Image from 'next/image';
 
 export default function EpiDetailCommentList() {
   const params = useParams();
   const epigramId = Number(params.id);
 
+  // 댓글 무한스크롤 쿼리
+  const commentsQuery = useInfiniteList<CommentsType['list'][0], CommentsType>({
+    key: ['comments', epigramId],
+    fetchPage: (cursor) =>
+      getEpigramDetailComments({
+        epigramId,
+        limit: 3,
+        cursor,
+      }),
+    enabled: !!epigramId,
+  });
+
   const {
-    comments,
+    items: comments,
     totalCount,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useCommentList(epigramId);
+  } = commentsQuery;
 
   const mutation = useCommentMutation(epigramId);
 
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState('');
   const [isPrivate, setIsPrivate] = useState(false);
   const [active, setActive] = useState(false);
 
@@ -40,7 +53,7 @@ export default function EpiDetailCommentList() {
     if (!content.trim()) return;
 
     if (content.length > 100) {
-      toast.error("댓글은 100자 이내로 입력해주세요.");
+      toast.error('댓글은 100자 이내로 입력해주세요.');
       return;
     }
 
@@ -48,9 +61,9 @@ export default function EpiDetailCommentList() {
       { epigramId, isPrivate, content },
       {
         onSuccess: () => {
-          setContent("");
+          setContent('');
           setActive(false);
-          toast.success("댓글이 등록되었습니다.");
+          toast.success('댓글이 등록되었습니다.');
         },
       }
     );
@@ -81,9 +94,11 @@ export default function EpiDetailCommentList() {
                   <div className='flex items-center space-x-2'>
                     <Label
                       htmlFor='public-toggle'
-                      className={`lg:text-base md:text-sm text-xs cursor-pointer ${isPrivate ? "text-black-600" : "text-gray-400"}`}
+                      className={`lg:text-base md:text-sm text-xs cursor-pointer ${
+                        isPrivate ? 'text-black-600' : 'text-gray-400'
+                      }`}
                     >
-                      {isPrivate ? "비공개" : "공개"}
+                      {isPrivate ? '비공개' : '공개'}
                     </Label>
                     <Switch
                       id='public-toggle'
@@ -97,7 +112,7 @@ export default function EpiDetailCommentList() {
                   <div className='flex justify-center items-center gap-2'>
                     <div
                       className={`text-sm text-right ${
-                        content.length > 100 ? "text-red-500" : "text-gray-500"
+                        content.length > 100 ? 'text-red-500' : 'text-gray-500'
                       }`}
                     >
                       {content.length}/100
@@ -122,12 +137,14 @@ export default function EpiDetailCommentList() {
         <CommentsCard
           key={comment.id}
           comment={comment}
-          queryKey={["comments", epigramId]}
+          queryKey={['comments', epigramId]}
           onFetchOne={(cursor) =>
             getEpigramDetailComments({ epigramId, limit: 1, cursor })
           }
         />
       ))}
+
+      {/* 더 불러오기 버튼 */}
       {hasNextPage && (
         <div className='flex justify-center mt-4'>
           <Button
@@ -136,7 +153,7 @@ export default function EpiDetailCommentList() {
             onClick={() => fetchNextPage()}
             disabled={isFetchingNextPage}
           >
-            <span>{isFetchingNextPage ? "로딩중..." : "댓글 더보기"}</span>
+            <span>{isFetchingNextPage ? '로딩중...' : '댓글 더보기'}</span>
           </Button>
         </div>
       )}
@@ -144,7 +161,7 @@ export default function EpiDetailCommentList() {
       {comments.length === 0 && (
         <div className='flex flex-col justify-center items-center lg:w-[640px] lg:h-[488px] md:w-[384px] w-[312px] h-[304px] '>
           <span className='relative lg:size-[140px] size-[96px] '>
-            <Image src={"/images/no_comments.png"} alt='no_comments' fill />
+            <Image src={'/images/no_comments.png'} alt='no_comments' fill />
           </span>
           <h2 className='lg:text-xl text-sm font-normal text-center lg:mt-10 mt-5 mb-30 text-black-600'>
             아직 댓글이 없어요!
