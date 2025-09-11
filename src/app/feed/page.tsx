@@ -4,15 +4,20 @@ import { Epigram } from "@/types/today";
 import EpigramCard from "@/components/EpigramCard";
 import { Button } from "@/components/ui/button";
 import { useEpigrams } from "@/hooks/useEpigrams";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
-export default function Feed({
-  firstLimit = 6,
-  nextLimit = 6,
-}: {
-  firstLimit?: number;
-  nextLimit?: number;
-}) {
+export default function Feed() {
+  //   {
+  //   firstLimit = 6,
+  //   nextLimit = 6,
+  // }: {
+  //   firstLimit?: number;
+  //   nextLimit?: number;
+  // }
+  const searchParams = useSearchParams();
+
+  const firstLimit = Number(searchParams.get("firstLimit") ?? 6);
+  const nextLimit = Number(searchParams.get("nextLimit") ?? 6);
   const router = useRouter();
 
   const {
@@ -40,7 +45,7 @@ export default function Feed({
               className='cursor-pointer'
               onClick={() => router.push(`/detail/${epigram.id}`)}
             >
-              <EpigramCard key={epigram.id} data={epigram} />
+              <EpigramCard data={epigram} />
             </div>
           ))}
         </div>
