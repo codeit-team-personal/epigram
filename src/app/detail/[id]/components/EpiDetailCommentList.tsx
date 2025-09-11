@@ -12,6 +12,7 @@ import { useCommentMutation } from "@/hooks/useCommentMutation";
 import { toast } from "react-toastify";
 import { CommentAvatar } from "@/components/CommentAvatar";
 import { useAuthStore } from "@/stores/authStore";
+import Image from "next/image";
 
 export default function EpiDetailCommentList() {
   const params = useParams();
@@ -137,6 +138,19 @@ export default function EpiDetailCommentList() {
           >
             <span>{isFetchingNextPage ? "로딩중..." : "댓글 더보기"}</span>
           </Button>
+        </div>
+      )}
+
+      {comments.length === 0 && (
+        <div className='flex flex-col justify-center items-center lg:w-[640px] lg:h-[488px] md:w-[384px] w-[312px] h-[304px] '>
+          <span className='relative lg:size-[140px] size-[96px] '>
+            <Image src={"/images/no_comments.png"} alt='no_comments' fill />
+          </span>
+          <h2 className='lg:text-xl text-sm font-normal text-center lg:mt-10 mt-5 mb-30 text-black-600'>
+            아직 댓글이 없어요!
+            <br />
+            댓글을 달고 다른 사람들과 교류해보세요.
+          </h2>
         </div>
       )}
     </div>
