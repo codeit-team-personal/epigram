@@ -112,7 +112,7 @@ export default function MainGlobalNavigationBar() {
 
         <DesktopNav />
       </div>
-      <UserProfile nickName={user!.nickname} image={user!.image} />
+      <UserProfile nickName={user!.nickname} image={user!.image!} />
     </header>
   );
 }
