@@ -19,8 +19,8 @@ export default function MyPage() {
       <MyInfo user={user} />
       <MyEmotion user={user} />
       <MyEmotionCalendar user={user} />
-      {/* <MyChart user={user} />
-      <MyHistory user={user} /> */}
+      {/* <MyChart user={user} /> */}
+      <MyHistory user={user} />
     </section>
   );
 }
