@@ -13,7 +13,9 @@ import { toast } from "react-toastify";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/stores/authStore";
-import { ThumbsUp } from "lucide-react";
+import { ThumbsUp, ArrowUpRight } from "lucide-react";
+import Link from "next/link";
+import DeleteEpigramDialog from "@/components/DeleteEpigramDialog";
 
 export default function EpigramDetailPage() {
   const router = useRouter();
@@ -139,35 +141,32 @@ export default function EpigramDetailPage() {
       <div className='lg:w-[640px] md:w-[384px] w-[312px] mx-auto py-10 px-4 relative'>
         {/* 케밥 버튼 */}
         {isAuthor && (
-          <div className='absolute top-2 right-2'>
+          <div className='absolute top-11 right-2 font-sans'>
             <button
               onClick={() => setMenuOpen((prev) => !prev)}
-              className='p-1 text-blue-400 rounded hover:bg-gray-100'
+              className='p-1 text-2xl text-blue-400 rounded hover:bg-gray-100'
             >
               ⋮
             </button>
             {menuOpen && (
-              <div className='absolute right-0 mt-2 w-28 bg-white border rounded shadow'>
+              <div className='absolute right-0 mt-2 lg:w-[134px] lg:h-[112px] w-[97px] h-[80px] flex flex-col justify-center items-center bg-background border rounded-xl shadow overflow-hidden text-black-600 lg:text-xl text-sm'>
                 <button
                   onClick={() => {
                     setMenuOpen(false);
                     router.push(`/edit/${id}`);
                   }}
-                  className='block w-full text-left px-3 py-2 hover:bg-gray-100'
+                  className='block w-full h-full text-center px-3 py-2 hover:bg-gray-100 cursor-pointer '
                 >
-                  수정
+                  수정하기
                 </button>
-                <button
-                  onClick={() => {
-                    setMenuOpen(false);
-                    if (confirm("정말 삭제하시겠습니까?")) {
-                      deleteMutation.mutate();
-                    }
-                  }}
-                  className='block w-full text-left px-3 py-2 text-red-500 hover:bg-gray-100'
-                >
-                  삭제
-                </button>
+                <DeleteEpigramDialog onDelete={() => deleteMutation.mutate()}>
+                  <button
+                    // onClick={() => setMenuOpen(false)} // 메뉴 닫기만
+                    className='block w-full h-full text-center px-3 py-2 hover:bg-gray-100 cursor-pointer'
+                  >
+                    삭제하기
+                  </button>
+                </DeleteEpigramDialog>
               </div>
             )}
           </div>
@@ -188,7 +187,7 @@ export default function EpigramDetailPage() {
         </p>
 
         {/* 좋아요 버튼 */}
-        <div className='flex justify-center mt-10 lg:mb-10 mb-0 '>
+        <div className='flex justify-center mt-10 lg:mb-10 mb-0 gap-4 '>
           <button
             onClick={handleLike}
             className='flex items-center gap-2 rounded-full bg-black-600 px-4 py-2 text-white hover:bg-gray-700 cursor-pointer lg:text-xl text-sm'
@@ -198,6 +197,19 @@ export default function EpigramDetailPage() {
             />
             <span>{data.likeCount}</span>
           </button>
+          {data.referenceTitle && (
+            <Link
+              href={data.referenceUrl!}
+              target='_blank'
+              rel='noopener noreferrer'
+              className='inline-block'
+            >
+              <button className='flex items-center gap-1 rounded-full bg-line-100 hover:bg-gray-100 text-gray-300 lg:max-w-[240px] max-w-[160px] lg:px-6 px-3 py-3 font-sans lg:text-xl text-sm font-medium cursor-pointer'>
+                <span className='truncate'>{data.referenceTitle}</span>
+                <ArrowUpRight className='w-5 h-5 flex-shrink-0' />
+              </button>
+            </Link>
+          )}
         </div>
       </div>
     </div>
