@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/stores/authStore";
 import { ThumbsUp, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
+import DeleteEpigramDialog from "@/components/DeleteEpigramDialog";
 
 export default function EpigramDetailPage() {
   const router = useRouter();
@@ -158,17 +159,14 @@ export default function EpigramDetailPage() {
                 >
                   수정하기
                 </button>
-                <button
-                  onClick={() => {
-                    setMenuOpen(false);
-                    if (confirm("정말 삭제하시겠습니까?")) {
-                      deleteMutation.mutate();
-                    }
-                  }}
-                  className='block w-full h-full text-center px-3 py-2 hover:bg-gray-100 cursor-pointer'
-                >
-                  삭제하기
-                </button>
+                <DeleteEpigramDialog onDelete={() => deleteMutation.mutate()}>
+                  <button
+                    // onClick={() => setMenuOpen(false)} // 메뉴 닫기만
+                    className='block w-full h-full text-center px-3 py-2 hover:bg-gray-100 cursor-pointer'
+                  >
+                    삭제하기
+                  </button>
+                </DeleteEpigramDialog>
               </div>
             )}
           </div>
