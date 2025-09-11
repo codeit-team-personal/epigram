@@ -140,23 +140,23 @@ export default function EpigramDetailPage() {
       <div className='lg:w-[640px] md:w-[384px] w-[312px] mx-auto py-10 px-4 relative'>
         {/* 케밥 버튼 */}
         {isAuthor && (
-          <div className='absolute top-2 right-2'>
+          <div className='absolute top-11 right-2 font-sans'>
             <button
               onClick={() => setMenuOpen((prev) => !prev)}
-              className='p-1 text-blue-400 rounded hover:bg-gray-100'
+              className='p-1 text-2xl text-blue-400 rounded hover:bg-gray-100'
             >
               ⋮
             </button>
             {menuOpen && (
-              <div className='absolute right-0 mt-2 w-28 bg-white border rounded shadow'>
+              <div className='absolute right-0 mt-2 lg:w-[134px] lg:h-[112px] w-[97px] h-[80px] flex flex-col justify-center items-center bg-background border rounded-xl shadow overflow-hidden text-black-600 lg:text-xl text-sm'>
                 <button
                   onClick={() => {
                     setMenuOpen(false);
                     router.push(`/edit/${id}`);
                   }}
-                  className='block w-full text-left px-3 py-2 hover:bg-gray-100'
+                  className='block w-full h-full text-center px-3 py-2 hover:bg-gray-100 cursor-pointer '
                 >
-                  수정
+                  수정하기
                 </button>
                 <button
                   onClick={() => {
@@ -165,9 +165,9 @@ export default function EpigramDetailPage() {
                       deleteMutation.mutate();
                     }
                   }}
-                  className='block w-full text-left px-3 py-2 text-red-500 hover:bg-gray-100'
+                  className='block w-full h-full text-center px-3 py-2 hover:bg-gray-100 cursor-pointer'
                 >
-                  삭제
+                  삭제하기
                 </button>
               </div>
             )}
