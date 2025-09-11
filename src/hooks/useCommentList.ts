@@ -1,3 +1,6 @@
+// 사용안하는 훅 
+// 주석으로 설명을 자세히 적어놔서 우선 지우지 않음
+
 'use client';
 
 import { useInfiniteQuery, InfiniteData } from '@tanstack/react-query';
