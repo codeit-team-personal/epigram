@@ -19,6 +19,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { User } from '@/types/user';
+import MyChart from './MyChart';
 
 interface MyEmotionCalendarProps {
   user: User;
@@ -87,9 +88,12 @@ export default function MyEmotionCalendar({ user }: MyEmotionCalendarProps) {
         emotionByDate={emotionByDate}
         filterEmotion={filterEmotion}
       />
+      <MyChart user={user} year={year} month={month} />
     </div>
   );
 }
+
+// 컴포넌트 분리
 
 function CalendarHeader({
   year,
