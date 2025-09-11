@@ -1,14 +1,10 @@
 'use client';
-import MyChart from './components/MyChart';
 import MyEmotion from './components/MyEmotion';
 import MyEmotionCalendar from './components/MyEmotionCalendar';
 import MyHistory from './components/MyHistory';
 import MyInfo from './components/MyInfo';
 
 import { useAuthStore } from '@/stores/authStore';
-
-
-
 
 export default function MyPage() {
   const { user } = useAuthStore();
@@ -19,7 +15,6 @@ export default function MyPage() {
       <MyInfo user={user} />
       <MyEmotion user={user} />
       <MyEmotionCalendar user={user} />
-      {/* <MyChart user={user} /> */}
       <MyHistory user={user} />
     </section>
   );
