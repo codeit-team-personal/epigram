@@ -1,4 +1,3 @@
-// types/epigram.ts
 export type EpigramItem = {
   id: number;
   content: string;

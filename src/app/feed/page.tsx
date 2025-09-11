@@ -1,9 +1,10 @@
-'use client';
+"use client";
 
-import { Epigram } from '@/types/today';
-import EpigramCard from '@/components/EpigramCard';
-import { Button } from '@/components/ui/button';
-import { useEpigrams } from '@/hooks/useEpigrams';
+import { Epigram } from "@/types/today";
+import EpigramCard from "@/components/EpigramCard";
+import { Button } from "@/components/ui/button";
+import { useEpigrams } from "@/hooks/useEpigrams";
+import { useRouter } from "next/navigation";
 
 export default function Feed({
   firstLimit = 6,
@@ -12,6 +13,8 @@ export default function Feed({
   firstLimit?: number;
   nextLimit?: number;
 }) {
+  const router = useRouter();
+
   const {
     data,
     fetchNextPage,
@@ -27,22 +30,37 @@ export default function Feed({
   const epigrams = data?.pages.flatMap((page) => page.list) ?? [];
 
   return (
-    <div className='space-y-4'>
-      <h1>피드</h1>
-      {epigrams.map((epigram: Epigram) => (
-        <EpigramCard key={epigram.id} data={epigram} />
-      ))}
-      {hasNextPage && (
-        <div className='flex justify-center mt-4'>
-          <Button
-            variant='outline'
-            onClick={() => fetchNextPage()}
-            disabled={isFetchingNextPage}
-          >
-            {isFetchingNextPage ? '로딩중...' : '에피그램 더보기'}
-          </Button>
+    <div className='lg:w-[1200px] md:w-[600px] w-[360px] mx-auto'>
+      <div className='lg:my-20 my-10 space-y-4'>
+        <h1 className='my-10 text-black-600 font-semibold'>피드</h1>
+        <div className='flex flex-wrap justify-center lg:gap-4 gap-2'>
+          {epigrams.map((epigram: Epigram) => (
+            <div
+              key={epigram.id}
+              className='cursor-pointer'
+              onClick={() => router.push(`/detail/${epigram.id}`)}
+            >
+              <EpigramCard key={epigram.id} data={epigram} />
+            </div>
+          ))}
         </div>
-      )}
+
+        {hasNextPage && (
+          <div className='flex justify-center mt-4'>
+            <Button
+              className='flex items-center gap-2 rounded-full border border-line-200 bg-transparent px-4 py-2 lg:text-xl text-sm text-blue-500 hover:bg-gray-50 lg:w-[238px] lg:h-[56px] w-[153px] h-[48px]'
+              variant='outline'
+              onClick={() => fetchNextPage()}
+              disabled={isFetchingNextPage}
+            >
+              <span className=''>+</span>
+              <span>
+                {isFetchingNextPage ? "로딩중..." : "에피그램 더보기"}
+              </span>
+            </Button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
