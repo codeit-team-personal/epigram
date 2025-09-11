@@ -36,6 +36,7 @@ export default function Feed({
         <div className='flex flex-wrap justify-center lg:gap-4 gap-2'>
           {epigrams.map((epigram: Epigram) => (
             <div
+              key={epigram.id}
               className='cursor-pointer'
               onClick={() => router.push(`/detail/${epigram.id}`)}
             >

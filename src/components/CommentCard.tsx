@@ -1,13 +1,13 @@
-'use client';
-import { useAuthStore } from '@/stores/authStore';
-import { useCommentEditStore } from '@/stores/commentEditStore';
-import { List, Comments as CommentsType } from '@/types/comments';
-import { CommentAvatar } from './CommentAvatar';
-import { CommentContent } from './CommentContent';
-import { CommentEditor } from './CommentEditor';
-import { CommentActions } from './CommentActions';
-import { CommentSwitchDialog } from './CommentSwitchDialog';
-import { useCommentActions } from '@/hooks/useCommentActions';
+"use client";
+import { useAuthStore } from "@/stores/authStore";
+import { useCommentEditStore } from "@/stores/commentEditStore";
+import { List, Comments as CommentsType } from "@/types/comments";
+import { CommentAvatar } from "./CommentAvatar";
+import { CommentContent } from "./CommentContent";
+import { CommentEditor } from "./CommentEditor";
+import { CommentActions } from "./CommentActions";
+import { CommentSwitchDialog } from "./CommentSwitchDialog";
+import { useCommentActions } from "@/hooks/useCommentActions";
 
 export default function CommentsCard({
   comment,
@@ -29,7 +29,7 @@ export default function CommentsCard({
   );
 
   return (
-    <div className='flex relative p-2 border-t group py-10 justify-center'>
+    <div className='flex relative p-2 border-t border-line-200 group py-10 justify-center'>
       <div className='mt-2 mr-4 w-[48px] h-[48px] rounded-full overflow-hidden flex-shrink-0'>
         <CommentAvatar
           nickname={comment.writer.nickname}
