@@ -59,59 +59,6 @@ export default function Emotion({
     enabled: !!user, // user 없으면 요청 안 함
   });
 
-  // const { mutate, isPending } = useMutation({
-  //   mutationFn: async (emotion: string) => {
-  //     return (await api.post(`/emotionLogs/today`, { emotion })).data;
-  //   },
-  //   onSuccess: (_, emotion) => {
-  //     queryClient.invalidateQueries({ queryKey: ['emotion', user?.id] });
-
-  //     // 오늘의 감정 선택하면 mypage 달력에서도 동시에 적용되는 로직
-  //     // 낙관적 업데이트(optimistic update)
-  //     //
-  //     // setQueryData는 지정한 쿼리 키(queryKey)에 연결된 캐시 데이터를 즉시 변경
-  //     queryClient.setQueryData<EmotionType[]>(
-  //       // MyEmotionCalendar에서 같은 키로 useQuery를 사용하고 있기 때문에, 여기서 변경하면 달력 컴포넌트가 즉시 바뀜
-  //       [
-  //         'monthlyEmotions',
-  //         user?.id,
-  //         new Date().getFullYear(),
-  //         new Date().getMonth() + 1,
-  //       ],
-  //       // old는 기존 캐시값(감정 로그 배열)입니다. 없으면 그대로 반환. (캐시가 없으면 무엇을 추가할지 모르므로 변경하지 않음.)
-  //       (old) => {
-  //         if (!old) return old;
-  //         // 오늘 날짜의 yyyy-mm-dd 문자열
-  //         const todayKey = new Date().toISOString().split('T')[0]; // yyyy-MM-dd
-  //         // 오늘 날짜에 해당하는 기존 로그(이미 있으면)를 찾음
-  //         const existing = old.find((log) =>
-  //           log.createdAt.startsWith(todayKey)
-  //         );
-
-  //         // 이미 오늘 로그가 있으면 그 항목의 emotion만 바꾸고, 없으면 새 항목을 로컬 캐시에 추가
-  //         if (existing) {
-  //           // 오늘 기록 있으면 업데이트
-  //           return old.map((log) =>
-  //             log.id === existing.id ? { ...log, emotion } : log
-  //           );
-  //         } else {
-  //           // 없으면 새로 추가
-  //           return [
-  //             ...old,
-  //             {
-  //               id: Date.now(), // 가짜 id (클라이언트에서 임시로 만든 유니크 값): 서버 응답을 기다리지 않고 즉시 UI에 반영하려고 임시 데이터를 추가한 것
-  //               userId: user!.id,
-  //               emotion,
-  //               createdAt: new Date().toISOString(),
-  //             },
-
-  //           ];
-  //         }
-  //       }
-  //     );
-  //   },
-  //});
-
   const monthlyKey = [
     'monthlyEmotions',
     user?.id,
@@ -181,8 +128,8 @@ export default function Emotion({
     },
     onSettled: () => {
       // 성공/실패 상관없이 서버 데이터와 싱크 맞추기 위해 재조회
-      queryClient.invalidateQueries({ queryKey: monthlyKey });
-      queryClient.invalidateQueries({ queryKey: ['emotion', user?.id] });
+      queryClient.refetchQueries({ queryKey: monthlyKey });
+      queryClient.refetchQueries({ queryKey: ['emotion', user?.id] });
     },
   });
 
