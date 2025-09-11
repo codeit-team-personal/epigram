@@ -13,7 +13,8 @@ import { toast } from "react-toastify";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/stores/authStore";
-import { ThumbsUp } from "lucide-react";
+import { ThumbsUp, ArrowUpRight } from "lucide-react";
+import Link from "next/link";
 
 export default function EpigramDetailPage() {
   const router = useRouter();
@@ -188,7 +189,7 @@ export default function EpigramDetailPage() {
         </p>
 
         {/* 좋아요 버튼 */}
-        <div className='flex justify-center mt-10 lg:mb-10 mb-0 '>
+        <div className='flex justify-center mt-10 lg:mb-10 mb-0 gap-4 '>
           <button
             onClick={handleLike}
             className='flex items-center gap-2 rounded-full bg-black-600 px-4 py-2 text-white hover:bg-gray-700 cursor-pointer lg:text-xl text-sm'
@@ -198,6 +199,19 @@ export default function EpigramDetailPage() {
             />
             <span>{data.likeCount}</span>
           </button>
+          {data.referenceTitle && (
+            <Link
+              href={data.referenceUrl!}
+              target='_blank'
+              rel='noopener noreferrer'
+              className='inline-block'
+            >
+              <button className='flex items-center gap-1 rounded-full bg-line-100 hover:bg-gray-100 text-gray-300 lg:max-w-[240px] max-w-[160px] lg:px-6 px-3 py-3 font-sans lg:text-xl text-sm font-medium cursor-pointer'>
+                <span className='truncate'>{data.referenceTitle}</span>
+                <ArrowUpRight className='w-5 h-5 flex-shrink-0' />
+              </button>
+            </Link>
+          )}
         </div>
       </div>
     </div>
