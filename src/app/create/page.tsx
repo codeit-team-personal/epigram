@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import { AxiosError } from 'axios';
 
@@ -11,6 +11,7 @@ import { useEpigramForm } from '@/hooks/useEpigramForm';
 
 export default function Create() {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const { form, tags, handleAddTag, handleRemoveTag, buildPayload, setTags } =
     useEpigramForm();
 
@@ -18,6 +19,8 @@ export default function Create() {
     mutationFn: createEpigram,
     onSuccess: (data) => {
       toast.success('에피그램이 업로드 되었습니다.');
+      //캐시 무효화 → MyHistory에서 자동으로 최신 데이터 가져옴
+      queryClient.invalidateQueries({ queryKey: ['myEpigrams'] });
       form.reset(); // 폼 초기화
       setTags([]); // 태그 초기화
       router.push(`/detail/${data.id}`);

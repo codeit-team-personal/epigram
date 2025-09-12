@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import { AxiosError } from 'axios';
 
@@ -12,6 +12,7 @@ import { useEpigramForm } from '@/hooks/useEpigramForm';
 
 export default function Edit() {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const params = useParams();
   const id = Number(params.id);
 
@@ -28,6 +29,8 @@ export default function Edit() {
       updateEpigram(id, payload),
     onSuccess: (data) => {
       toast.success('에피그램이 수정되었습니다.');
+      //캐시 무효화 → MyHistory에서 자동으로 최신 데이터 가져옴
+      queryClient.invalidateQueries({ queryKey: ['myEpigrams'] });
       router.push(`/detail/${data.id}`);
     },
     onError: (err: unknown) => {
@@ -78,8 +81,6 @@ export default function Edit() {
     // 폼에는 tags를 넣었지만, 컴포넌트 내부에서 태그를 별도로 로컬 상태로 관리할 수도 있음
     setTags(tagStrings);
   }, [data, form, setTags]);
-
-
 
   if (isLoading) return <p className='p-6'>로딩 중...</p>;
 

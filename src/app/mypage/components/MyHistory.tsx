@@ -15,7 +15,6 @@ import { getMyComments, getMyEpigrams } from '@/lib/api';
 import { EpigramResponse } from '@/types/today';
 import useInfiniteList from '@/hooks/useInfiniteList';
 
-
 interface MyHistoryProps {
   user: User | null;
 }
@@ -26,15 +25,8 @@ type Tab = 'epigram' | 'comment';
 // UI helpers
 // -----------------------------
 function CountBadge({ count }: { count: number }) {
-  if (count <= 0) return null;
-  return (
-    <span
-      className='ml-1 inline-flex min-w-5 items-center justify-center rounded-full bg-blue-100 px-1.5 py-0.5 text-[10px] font-medium text-blue-700'
-      aria-label={`총 ${count}개`}
-    >
-      {count}
-    </span>
-  );
+  //if (count <= 0) return null;
+  return <span aria-label={`총 ${count}개`}>({count})</span>;
 }
 
 function LoadMoreButton({
@@ -81,7 +73,6 @@ function LoadMoreButton({
   );
 }
 
-
 export default function MyHistory({ user }: MyHistoryProps) {
   const [tab, setTab] = useState<Tab>('epigram');
 
@@ -89,8 +80,7 @@ export default function MyHistory({ user }: MyHistoryProps) {
 
   const writerId = user.id;
 
-  
-  // 내 에피그램 무한스크롤 
+  // 내 에피그램 무한스크롤
   const epigramsQuery = useInfiniteList<
     EpigramResponse['list'][number],
     EpigramResponse
@@ -100,7 +90,6 @@ export default function MyHistory({ user }: MyHistoryProps) {
       getMyEpigrams({ writerId, limit: 3, cursor: cursor ?? undefined }),
   });
 
-  
   // 내 댓글 무한스크롤 (limit=3)
   const commentsQuery = useInfiniteList<
     CommentsType['list'][number],
@@ -118,28 +107,25 @@ export default function MyHistory({ user }: MyHistoryProps) {
   const handleTab = useCallback((next: Tab) => setTab(next), []);
 
   return (
-    <div className='w-[640px] mx-auto'>
+    <div className='w-[640px] mx-auto mt-20 mb-40'>
       {/* 탭 선택 */}
-      <div className='mb-4 flex gap-2'>
+      <div className='mb-15 flex gap-2'>
         <Button
-          variant={tab === 'epigram' ? 'default' : 'outline'}
+          variant={tab === 'epigram' ? 'history' : 'historyoutline'}
           onClick={() => handleTab('epigram')}
           aria-pressed={tab === 'epigram'}
         >
-          내 에피그램
-          <CountBadge count={epigramsQuery.totalCount} />
+          내 에피그램 ({epigramsQuery.totalCount})
         </Button>
         <Button
-          variant={tab === 'comment' ? 'default' : 'outline'}
+          variant={tab === 'comment' ? 'history' : 'historyoutline'}
           onClick={() => handleTab('comment')}
           aria-pressed={tab === 'comment'}
         >
-          내 댓글
-          <CountBadge count={commentsQuery.totalCount} />
+          내 댓글({commentsQuery.totalCount})
         </Button>
       </div>
 
-  
       {/* 내 에피그램 */}
       {tab === 'epigram' && (
         <section aria-label='내 에피그램 목록'>
@@ -197,10 +183,12 @@ export default function MyHistory({ user }: MyHistoryProps) {
 
           {commentsQuery.hasNextPage && (
             <LoadMoreButton
+              variant='plus'
+              icon
               onClick={() => commentsQuery.fetchNextPage()}
               disabled={commentsQuery.isFetchingNextPage}
               label={
-                commentsQuery.isFetchingNextPage ? '로딩중...' : '댓글 더보기'
+                commentsQuery.isFetchingNextPage ? '댓글 로딩중' : '댓글 더보기'
               }
             />
           )}
