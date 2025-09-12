@@ -8,6 +8,7 @@ import { updateComment, deleteComment } from '@/lib/api';
 import { toast } from 'react-toastify';
 import { useCommentEditStore } from '@/stores/commentEditStore';
 import { Comments as CommentsType } from '@/types/comments';
+import { useAuthStore } from '@/stores/authStore';
 
 type CommentsInfiniteData = InfiniteData<CommentsType>;
 
@@ -15,6 +16,7 @@ export function useCommentActions(
   queryKey: (string | number)[],
   onFetchOne?: (cursor: number) => Promise<CommentsType>
 ) {
+  const { user } = useAuthStore();
   const queryClient = useQueryClient();
   const { stop, editingId } = useCommentEditStore();
 
@@ -79,6 +81,13 @@ export function useCommentActions(
 
       // 삭제 반영 새로고침
       queryClient.invalidateQueries({ queryKey });
+
+      // MyHistory 페이지 반영
+      if (user) {
+        queryClient.invalidateQueries({ queryKey: ['myComments', user.id] });
+        // 전체 댓글(메인 리스트)도 필요하면
+        queryClient.invalidateQueries({ queryKey: ['comments'] });
+      }
 
       // 편집 중인 댓글이 삭제됐다면 종료
       if (editingId === id) stop();
