@@ -1,4 +1,3 @@
-// app/(auth)/kakao/callback/KakaoCallbackClient.tsx
 "use client";
 
 import { useEffect } from "react";
