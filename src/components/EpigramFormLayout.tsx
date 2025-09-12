@@ -124,7 +124,7 @@ export default function EpigramFormLayout({
   };
 
   return (
-    <div className='bg-white h-[100vh]'>
+    <div className='bg-white min-h-screen'>
       <div className='max-w-xl mx-auto p-6'>
         <h1 className='lg:text-2xl md:text-xl text-base font-semibold my-10'>
           {title}
