@@ -10,13 +10,6 @@ import { Grid, List } from "lucide-react";
 import { useState } from "react";
 
 export default function Feed() {
-  //   {
-  //   firstLimit = 6,
-  //   nextLimit = 6,
-  // }: {
-  //   firstLimit?: number;
-  //   nextLimit?: number;
-  // }
   const searchParams = useSearchParams();
   const firstLimit = Number(searchParams.get("firstLimit") ?? 6);
   const nextLimit = Number(searchParams.get("nextLimit") ?? 6);

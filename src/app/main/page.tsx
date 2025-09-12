@@ -1,6 +1,5 @@
 "use client";
 
-import EpigramCard from "@/components/TodayEpigram";
 import Emotion from "@/components/Emotion";
 import Comments from "@/components/Comments";
 import NewEpigram from "@/components/NewEpigram";
