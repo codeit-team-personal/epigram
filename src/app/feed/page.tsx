@@ -5,6 +5,7 @@ import EpigramCard from "@/components/EpigramCard";
 import { Button } from "@/components/ui/button";
 import { useEpigrams } from "@/hooks/useEpigrams";
 import { useRouter, useSearchParams } from "next/navigation";
+import { FloatingButtonsGroup } from "@/components/FloatingButtonsGroup";
 
 export default function Feed() {
   //   {
@@ -66,6 +67,7 @@ export default function Feed() {
           </div>
         )}
       </div>
+      <FloatingButtonsGroup />
     </div>
   );
 }

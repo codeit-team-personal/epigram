@@ -1,4 +1,3 @@
-// app/(auth)/kakao/callback/page.tsx
 import KakaoCallbackClient from "./KakaoCallbackClient";
 
 export default async function Page({

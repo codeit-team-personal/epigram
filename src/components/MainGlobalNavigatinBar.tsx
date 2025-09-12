@@ -112,7 +112,9 @@ export default function MainGlobalNavigationBar() {
 
         <DesktopNav />
       </div>
-      <UserProfile nickName={user!.nickname} image={user!.image!} />
+      <Link href='/mypage' aria-label='마이 페이지로 이동'>
+        <UserProfile nickName={user!.nickname} image={user!.image!} />
+      </Link>
     </header>
   );
 }
