@@ -22,8 +22,19 @@ const buttonVariants = cva(
         ghost:
           'hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50',
         link: 'text-primary underline-offset-4 hover:underline',
+        //더보기 plus 버튼
         plus: 'border-1 border-line-200 rounded-full cursor-pointer hover:border-blue-200 hover:bg-blue-200',
         comment: 'font-normal text-base text-black-600 hover:underline',
+        //마이페이지 로그아웃버튼
+        logout:
+          'bg-line-100  text-gray-300 text-lg font-normal cursor-pointer hover:bg-line-200 hover:text-gray-500',
+        //마이페이지 달력 필터
+        filter: 'bg-background rounded-lg text-xl font-semibold text-gray-200 ',
+        //마이페이지 popover
+        popover:
+          ' cursor-pointer border-4 border-gray-300 bg-white text-xl font-semibold text-gray-200',
+        popoveroutline:
+          'cursor-pointer border-gray-300 bg-gray-custom  text-xl font-semibold text-gray-200',
       },
       size: {
         default: 'h-9 px-4 py-2 has-[>svg]:px-3',
@@ -32,6 +43,10 @@ const buttonVariants = cva(
         icon: 'size-9',
         plus: 'px-11 py-4',
         commnet: 'px-1 py-2',
+        logout: 'w-[100px] py-2 rounded-full',
+        filter: 'px-4 py-2 w-[150px]',
+        popover: 'w-[96px] h-[96px] px-3 py-2 rounded-2xl',
+        popoveroutline: 'w-[96px] h-[96px] px-3 py-2 rounded-2xl',
       },
     },
     defaultVariants: {

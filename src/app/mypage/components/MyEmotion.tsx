@@ -9,7 +9,7 @@ interface MyEmotionProps {
 export default function MyEmotion({ user }: MyEmotionProps) {
   if (!user) return <div>로그인이 필요합니다.</div>;
   return (
-    <div>
+    <div className='w-[640px] mx-auto mt-30'>
       <Emotion title='오늘의 감정' showDate={true} />
     </div>
   );

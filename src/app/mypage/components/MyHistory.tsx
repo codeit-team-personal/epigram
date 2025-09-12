@@ -118,7 +118,7 @@ export default function MyHistory({ user }: MyHistoryProps) {
   const handleTab = useCallback((next: Tab) => setTab(next), []);
 
   return (
-    <div>
+    <div className='w-[640px] mx-auto'>
       {/* 탭 선택 */}
       <div className='mb-4 flex gap-2'>
         <Button

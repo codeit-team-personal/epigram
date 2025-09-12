@@ -13,6 +13,7 @@ export type ChartData = {
   color: string;
   value: number;
   percent?: number;
+  image?: string;
 };
 
 interface ChartProps {
@@ -53,7 +54,7 @@ export default function Chart({
   };
 
   return (
-    <div className='flex flex-col lg:flex-row items-center justify-center gap-6 rounded-lg border border-gray-200 p-6'>
+    <div className='flex flex-col lg:flex-row items-center justify-center gap-6 rounded-lg border border-gray-200 p-6 h-[264px]'>
       {/* Chart */}
       <div className='relative w-40 h-40 lg:w-52 lg:h-52'>
         <Doughnut
@@ -64,7 +65,8 @@ export default function Chart({
                 backgroundColor: data.map((d) => d.color),
                 borderWidth: 0,
                 hoverOffset: 8,
-                borderRadius: 8,
+                borderRadius: 3,
+                spacing:3,
               },
             ],
           }}

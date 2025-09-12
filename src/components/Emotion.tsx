@@ -201,7 +201,7 @@ export default function Emotion({
       <div className='flex justify-between'>
         <h1 className='text-common mb-10'>{title}</h1>
         {showDate && data?.createdAt && (
-          <p className='text-sm text-gray-400'>
+          <p className='font-normal text-xl text-blue-400'>
             {new Date(data.createdAt).toLocaleDateString()}
           </p>
         )}
