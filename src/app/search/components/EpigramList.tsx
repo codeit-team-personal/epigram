@@ -69,12 +69,12 @@ export default function EpigramList() {
             className='border-b p-4 cursor-pointer hover:bg-gray-50'
           >
             {/* 에피그램 */}
-            <p className='text-black-600 font-normal leading-relaxed'>
+            <p className='font-iropke text-black-600 font-normal leading-relaxed'>
               {highlightText(epigram.content, keyword)}
             </p>
 
             {/* 작가 */}
-            <p className='my-5 font-normal text-blue-400'>
+            <p className='font-iropke my-5 font-normal text-blue-400'>
               - {highlightText(epigram.author, keyword)} -
             </p>
 

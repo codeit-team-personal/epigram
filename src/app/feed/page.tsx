@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useEpigrams } from "@/hooks/useEpigrams";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FloatingButtonsGroup } from "@/components/FloatingButtonsGroup";
-import { Grid, List } from "lucide-react";
+import { Grid, List, Plus } from "lucide-react";
 import { useState } from "react";
 
 export default function Feed() {
@@ -37,7 +37,9 @@ export default function Feed() {
     <div className='lg:w-[1200px] md:w-[600px] w-[360px] mx-auto'>
       <div className='lg:my-20 my-10 space-y-4'>
         <div className='flex justify-between'>
-          <h1 className='my-10 text-black-600 font-semibold'>피드</h1>
+          <h1 className='my-10 text-black-600 font-semibold lg:text-2xl text-base'>
+            피드
+          </h1>
           {/* 버튼: 모바일에서만 보임 */}
           <button
             onClick={toggleLayout}
@@ -69,12 +71,12 @@ export default function Feed() {
         {hasNextPage && (
           <div className='flex justify-center mt-4'>
             <Button
-              className='flex items-center gap-2 rounded-full border border-line-200 bg-transparent px-4 py-2 lg:text-xl text-sm text-blue-500 hover:bg-gray-50 lg:w-[238px] lg:h-[56px] w-[153px] h-[48px]'
+              className='flex items-center gap-2 rounded-full border border-line-200 bg-transparent px-4 py-2 lg:text-xl text-sm text-blue-500 hover:bg-gray-50 lg:w-[238px] lg:h-[56px] w-[153px] h-[48px] cursor-pointer'
               variant='outline'
               onClick={() => fetchNextPage()}
               disabled={isFetchingNextPage}
             >
-              <span className=''>+</span>
+              <Plus className='!size-6' />
               <span>
                 {isFetchingNextPage ? "로딩중..." : "에피그램 더보기"}
               </span>
