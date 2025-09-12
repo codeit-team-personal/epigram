@@ -36,6 +36,7 @@ export default function SearchPage() {
             name='keyword'
             defaultValue={keyword}
             type='text'
+            placeholder='검색어를 입력해 주세요'
             className='w-full h-full lg:text-2xl md:text-xl  border-b-3 border-blue-800 py-2 pr-10 focus:outline-none caret-gray-200'
           />
           <button type='submit' className='cursor-pointer'>

@@ -2,10 +2,11 @@ import { ChevronsDown, EllipsisVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
+import ScrollButton from "./components/ScrollButton";
 
 function LandingStart() {
   return (
-    <div className='flex min-h-screen flex-col items-center justify-center relative bg-white'>
+    <section className='flex min-h-screen flex-col items-center justify-center relative bg-white'>
       {/* 줄무늬 배경 */}
       <div className='absolute inset-0 bg-[linear-gradient(to_bottom,#f5f5f5_1px,transparent_1px)] bg-[length:100%_32px]' />
 
@@ -28,19 +29,14 @@ function LandingStart() {
           </Link>
         </Button>
       </div>
-      <div className='flex flex-col text-blue-400 cursor-pointer absolute bottom-30 animate-bounce'>
-        <span className='sm:text-[16px] text-[12px]'>더 알아보기</span>
-        <span className='mx-auto'>
-          <ChevronsDown className='size-6' />
-        </span>
-      </div>
-    </div>
+      <ScrollButton />
+    </section>
   );
 }
 
 function LandingContent() {
   return (
-    <div className='flex flex-col min-h-screen items-center relative'>
+    <section className='flex flex-col min-h-screen items-center relative'>
       <SectionComponent
         imgSrc={"/images/landing/landing01.png"}
         text1={
@@ -84,7 +80,7 @@ function LandingContent() {
           </>
         }
       />
-    </div>
+    </section>
   );
 }
 
