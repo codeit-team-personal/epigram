@@ -4,7 +4,7 @@ import { Epigram } from "@/types/today";
 
 export default function EpigramCard({ data }: { data: Epigram }) {
   return (
-    <div className='font-iropke lg:text-2xl md:text-base text-sm text-black-600 lg:w-[585px] lg:h-[307px] md:w-[294px] md:h-[214px] w-[312px] h-[172px]'>
+    <div className='font-iropke lg:text-2xl md:text-base text-sm text-black-600 lg:max-h-[307px] md:max-h-[214px]  max-h-[172px]'>
       <div className='p-6 rounded-xl shadow-sm border border-line-100 bg-card relative overflow-hidden '>
         {/* 줄무늬 배경 */}
         <div
@@ -12,12 +12,11 @@ export default function EpigramCard({ data }: { data: Epigram }) {
           aria-hidden='true'
         />
         {/* 콘텐츠 */}
-        <div className='relative flex flex-col justify-between lg:h-[211px] md:h-[132px] h-[92px]'>
+        <div className='relative flex flex-col justify-between '>
           {/* 본문 */}
-          <p className='leading-relaxed lg:h-[160px] md:h-[150px] overflow-hidden md:line-clamp-4 line-clamp-3'>
+          <p className='leading-relaxed md:line-clamp-4 line-clamp-3'>
             {data.content}
           </p>
-
           {/* 저자 */}
           <p className='lg:mt-3 mt-1 text-right text-blue-400'>
             - {data.author} -
