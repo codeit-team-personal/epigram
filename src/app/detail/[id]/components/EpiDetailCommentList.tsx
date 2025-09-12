@@ -14,9 +14,12 @@ import { useAuthStore } from '@/stores/authStore';
 import useInfiniteList from '@/hooks/useInfiniteList';
 import { Comments as CommentsType } from '@/types/comments';
 import Image from 'next/image';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function EpiDetailCommentList() {
   const params = useParams();
+  const queryClient = useQueryClient();
+  const { user } = useAuthStore();
   const epigramId = Number(params.id);
 
   // 댓글 무한스크롤 쿼리
@@ -45,8 +48,6 @@ export default function EpiDetailCommentList() {
   const [isPrivate, setIsPrivate] = useState(false);
   const [active, setActive] = useState(false);
 
-  const { user } = useAuthStore();
-
   // 댓글 작성 핸들러
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -64,6 +65,11 @@ export default function EpiDetailCommentList() {
           setContent('');
           setActive(false);
           toast.success('댓글이 등록되었습니다.');
+          if (user) {
+            queryClient.invalidateQueries({
+              queryKey: ['myComments', user.id],
+            });
+          }
         },
       }
     );
