@@ -21,8 +21,8 @@ export default function MyInfo({ user }: MyInfoProps) {
   };
 
   return (
-    <div>
-      <div className='mt-2 mr-4 w-[48px] h-[48px] rounded-full overflow-hidden flex-shrink-0'>
+    <div className='mx-auto w-[120px] text-center'>
+      <div className='w-[120px] h-[120px] rounded-full overflow-hidden '>
         <CommentAvatar nickname={user.nickname} image={user.image} />
       </div>
 
