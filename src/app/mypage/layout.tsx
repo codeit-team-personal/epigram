@@ -1,9 +1,9 @@
-import ProtectedLayout from "@/components/ProtectedLayout";
+import AuthGuard from "@/components/AuthGuard";
 
 export default function MypageLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <ProtectedLayout>{children}</ProtectedLayout>;
+  return <AuthGuard>{children}</AuthGuard>;
 }

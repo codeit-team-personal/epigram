@@ -1,5 +1,5 @@
-@import 'tailwindcss';
-@import 'tw-animate-css';
+@import "tailwindcss";
+@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -135,7 +135,7 @@
   --black-400: #525252;
   --black-500: #454545;
   --black-550: #2b2b2b;
-  -- : #373737;
+  --black-600: #373737;
   --black-700: #2b2b2b;
   --black-800: #1f1f1f;
   --black-900: #121212;
@@ -225,7 +225,7 @@
 
 @layer components {
   .text-common {
-    @apply text-2xl text-black font-normal;
+    @apply text-2xl text-black-600 font-semibold;
   }
 
   /* 감정별 border 스타일 정의 */

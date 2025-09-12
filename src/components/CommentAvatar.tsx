@@ -1,14 +1,18 @@
-// 프로필 이미지 또는 닉네임 기반 색상 아바타
+// components/CommentAvatar.tsx
 import Image from 'next/image';
+
+type CommentAvatarProps = {
+  nickname: string;
+  image?: string;
+  /** ex) "w-12 h-12" | "w-[120px] h-[120px] text-lg" */
+  sizeClass?: string;
+};
 
 export function CommentAvatar({
   nickname,
   image,
-}: {
-  nickname: string;
-  image?: string;
-}) {
-  // 기본 색상 팔레트
+  sizeClass = 'w-12 h-12', // ✅ 기본값
+}: CommentAvatarProps) {
   const colors = [
     'bg-[var(--color-illustration-yellow)]',
     'bg-[var(--color-illustration-green)]',
@@ -22,7 +26,6 @@ export function CommentAvatar({
     'bg-[var(--color-illustration-slate)]',
   ];
 
-  // 문자열 해시 → 색상 인덱스
   function getColorByName(name: string) {
     let hash = 0;
     for (let i = 0; i < name.length; i++) {
@@ -35,13 +38,14 @@ export function CommentAvatar({
     <Image
       src={image}
       alt={`${nickname} 프로필`}
-      width={48}
-      height={48}
-      className='object-cover w-full h-full rounded-full'
+      width={0} // ✅ 크기는 CSS class로 제어
+      height={0}
+      sizes='100vw'
+      className={`object-cover rounded-full ${sizeClass}`}
     />
   ) : (
     <span
-      className={`w-12 h-12 flex items-center justify-center text-white font-bold text-lg rounded-full ${getColorByName(
+      className={`flex items-center justify-center text-white font-bold  rounded-full ${sizeClass} ${getColorByName(
         nickname
       )}`}
     >

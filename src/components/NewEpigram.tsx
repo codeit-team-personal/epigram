@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { Epigram } from '@/types/today';
-import EpigramCard from '@/components/EpigramCard';
-import { Button } from './ui/button';
-import { useEpigrams } from '@/hooks/useEpigrams';
-import Link from 'next/link';
-import { Plus } from 'lucide-react';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Epigram } from "@/types/today";
+import EpigramCard from "@/components/EpigramCard";
+import { Button } from "./ui/button";
+import { useEpigrams } from "@/hooks/useEpigrams";
+import Link from "next/link";
+import { Plus } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function NewEpigram({
   title,
@@ -86,11 +86,14 @@ export default function NewEpigram({
   return (
     <div className='mb-30'>
       <h1 className='text-common mb-10'>{title}</h1>
-      {epigrams.map((epigram: Epigram) => (
-        <Link key={epigram.id} href={`/detail/${epigram.id}`}>
-          <EpigramCard key={epigram.id} data={epigram} />
-        </Link>
-      ))}
+      <div className='flex flex-col justify-center'>
+        {epigrams.map((epigram: Epigram) => (
+          <Link key={epigram.id} href={`/detail/${epigram.id}`}>
+            <EpigramCard key={epigram.id} data={epigram} />
+          </Link>
+        ))}
+      </div>
+
       {hasNextPage && (
         <div className='flex justify-center mt-4 cursor-pointer'>
           <Button
@@ -101,7 +104,7 @@ export default function NewEpigram({
           >
             <Plus className='text-blue-500 size-6' />
             <div className='text-blue-500 text-xl  '>
-              {isFetchingNextPage ? '에피그램 로딩중' : '에피그램 더보기'}
+              {isFetchingNextPage ? "에피그램 로딩중" : "에피그램 더보기"}
             </div>
           </Button>
         </div>

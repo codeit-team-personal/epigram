@@ -1,6 +1,7 @@
 import api from '@/lib/axios';
 import { Epigram, EpigramResponse } from '@/types/today';
 import { Comments as CommentsType } from '@/types/comments';
+import { EpigramSearchResponse } from '@/types/search';
 import { EmotionType } from '@/types/emotion';
 
 // 오늘의 에피그램
@@ -10,7 +11,11 @@ export async function getTodayEpigram(): Promise<Epigram> {
 }
 
 // 오늘의 감정
-export async function getEmotion({ id }: { id: string }): Promise<EmotionType> {
+export async function getEmotion({
+  id,
+}: {
+  id: number | string;
+}): Promise<EmotionType> {
   const { data } = await api.get<EmotionType>(
     `/emotionLogs/today?userId=${id}`
   );
@@ -32,13 +37,21 @@ export async function getEpigram({
   return data;
 }
 
-// 댓글 리스트
-export async function getComments(
-  url: string = '/comments?limit=4'
-): Promise<CommentsType> {
-  const { data } = await api.get<CommentsType>(url);
+// 댓글 리스트 
+export async function getComments({
+  limit = 4,
+  cursor,
+}: {
+  limit?: number;
+  cursor?: number | null;
+} ): Promise<CommentsType> {
+  const cursorParam = cursor ? `&cursor=${cursor}` : '';
+  const { data } = await api.get<CommentsType>(
+    `/comments?limit=${limit}${cursorParam}`
+  );
   return data;
 }
+
 
 // 댓글 수정
 export async function updateComment({
@@ -50,11 +63,11 @@ export async function updateComment({
   content: string;
   isPrivate: boolean;
 }) {
-  const { data } = await api.patch(`/comments/${id}`, {
+  const res = await api.patch(`/comments/${id}`, {
     content,
     isPrivate,
   });
-  return data;
+  return res.data;
 }
 
 // 댓글 삭제
@@ -126,3 +139,105 @@ export const registerUser = async (data: {
   const response = await api.post('/auth/signUp', data);
   return response.data;
 };
+
+//에피그램 만들기
+export async function createEpigram(payload: {
+  content: string;
+  author: string;
+  referenceTitle?: string;
+  referenceUrl?: string;
+  tags?: string[];
+}): Promise<Epigram> {
+  const { data } = await api.post<Epigram>('/epigrams', payload);
+  return data;
+}
+
+// 에피그램 수정
+export async function updateEpigram(
+  id: string | number,
+  payload: {
+    content: string;
+    author: string;
+    referenceTitle?: string;
+    referenceUrl?: string;
+    tags?: string[];
+  }
+) {
+  const { data } = await api.patch(`/epigrams/${id}`, payload);
+  return data;
+}
+
+// 에피그램 삭제
+export async function deleteEpigram(id: string) {
+  const { data } = await api.delete(`/epigrams/${id}`);
+  return data;
+}
+// 에피그램 검색
+export async function getSearchEpigram({
+  limit,
+  cursor,
+  keyword,
+}: {
+  limit: number;
+  cursor: number;
+  keyword: string;
+}): Promise<EpigramSearchResponse> {
+  const cursorParam = cursor > 0 ? `&cursor=${cursor}` : '';
+  const keywordParam = keyword ? `&keyword=${encodeURIComponent(keyword)}` : '';
+  const { data } = await api.get<EpigramSearchResponse>(
+    `/epigrams?limit=${limit}${cursorParam}${keywordParam}`
+  );
+  return data;
+}
+
+// 감정 월간 로그 가져오기
+export async function getMonthlyEmotions({
+  userId,
+  year,
+  month,
+}: {
+  userId: number | string;
+  year: number;
+  month: number;
+}) {
+  const { data } = await api.get(
+    `/emotionLogs/monthly?userId=${userId}&year=${year}&month=${month}`
+  );
+  return data;
+}
+
+// 내 에피그램 (writerId 기반)
+export async function getMyEpigrams({
+  writerId,
+  limit = 5,
+  cursor,
+}: {
+  writerId: number | string;
+  limit?: number;
+  cursor?: number;
+}) {
+  const cursorParam = cursor ? `&cursor=${cursor}` : '';
+  const { data } = await api.get<EpigramResponse>(
+    `/epigrams?limit=${limit}${cursorParam}&writerId=${writerId}`
+  );
+  return data;
+}
+
+// 내 댓글
+export async function getMyComments({
+  userId,
+  limit = 3,
+  cursor,
+}: {
+  userId: number | string;
+  limit?: number;
+  cursor?: number | null;
+}): Promise<CommentsType> {
+  const cursorParam = cursor ? `&cursor=${cursor}` : '';
+  const { data } = await api.get<CommentsType>(
+    `/users/${userId}/comments?limit=${limit}${cursorParam}`
+  );
+  return data;
+}
+
+
