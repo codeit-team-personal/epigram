@@ -225,7 +225,7 @@
 
 @layer components {
   .text-common {
-    @apply text-2xl text-black font-normal;
+    @apply text-2xl text-black-600 font-semibold;
   }
 
   /* 감정별 border 스타일 정의 */

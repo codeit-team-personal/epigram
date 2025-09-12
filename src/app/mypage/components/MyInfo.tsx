@@ -21,13 +21,22 @@ export default function MyInfo({ user }: MyInfoProps) {
   };
 
   return (
-    <div className='mx-auto w-[120px] text-center'>
-      <div className='w-[120px] h-[120px] rounded-full overflow-hidden '>
-        <CommentAvatar nickname={user.nickname} image={user.image} />
+    <div className='flex flex-col items-center text-center mt-50 relative top-[-62px]'>
+      <div className='w-[120px] h-[120px] rounded-full overflow-hidden'>
+        <CommentAvatar
+          nickname={user.nickname}
+          image={user.image}
+          sizeClass='w-[120px] h-[120px] text-6xl'
+        />
       </div>
 
-      <h2>{user.nickname} 님</h2>
-      <Button onClick={handleLogout}>로그아웃</Button>
+      <h2 className='text-2xl font-black-950 font-medium my-6'>
+        {user.nickname}
+      </h2>
+
+      <Button variant='logout' size='logout' onClick={handleLogout}>
+        로그아웃
+      </Button>
     </div>
   );
 }

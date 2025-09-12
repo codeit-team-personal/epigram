@@ -11,10 +11,12 @@ export default function MyPage() {
   if (!user) return <div>로그인이 필요합니다.</div>; // user가 null이면 다른 화면 보여주기
 
   return (
-    <section >
-      <MyInfo user={user} />
-      <MyEmotion user={user} />
-      <MyEmotionCalendar user={user} />
+    <section>
+      <div className='bg-white rounded-4xl'>
+        <MyInfo user={user} />
+        <MyEmotion user={user} />
+        <MyEmotionCalendar user={user} />
+      </div>
       <MyHistory user={user} />
     </section>
   );
