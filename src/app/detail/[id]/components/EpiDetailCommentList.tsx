@@ -69,6 +69,13 @@ export default function EpiDetailCommentList() {
             queryClient.invalidateQueries({
               queryKey: ['myComments', user.id],
             });
+            // 현재 페이지 댓글 리스트 반영
+            queryClient.invalidateQueries({
+              queryKey: ['comments', epigramId],
+            });
+
+            // 전체 댓글(메인 리스트)도 필요하면
+            queryClient.invalidateQueries({ queryKey: ['comments'] });
           }
         },
       }
