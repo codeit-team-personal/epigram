@@ -1,13 +1,15 @@
-'use client';
+"use client";
 
-import { UseFormReturn } from 'react-hook-form';
-import { useState } from 'react';
-import { z } from 'zod';
+import { UseFormReturn } from "react-hook-form";
+import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { z } from "zod";
 import {
   CreateSchema,
   singleTagSchema,
   fullTagsSchema,
-} from '@/schemas/createSchema';
+} from "@/schemas/createSchema";
+import { Button } from "./ui/button";
 /**
 - singleTagSchema → 단일 태그 유효성 (길이, 공백 등)
 - prev.some(...) → 현재까지 입력된 태그와 중복 방지
@@ -34,7 +36,6 @@ type EpigramFormLayoutProps = {
   onRemoveTag: (tag: string) => void;
 };
 
-
 export default function EpigramFormLayout({
   title,
   form,
@@ -52,18 +53,18 @@ export default function EpigramFormLayout({
     formState: { errors },
   } = form;
 
-  const authorType = watch('authorType');
-  const [tagInput, setTagInput] = useState('');
+  const authorType = watch("authorType");
+  const [tagInput, setTagInput] = useState("");
   const [tagError, setTagError] = useState<string | null>(null);
 
   const handleTagInput = (e: React.KeyboardEvent<HTMLInputElement>) => {
     // 일부 환경(파폭 등) 방어
-    if (e.key === 'Process') return;
+    if (e.key === "Process") return;
 
     // e.key !== 'Enter' 엔터가 아니면 무시.
     // Input Method Editor(IME) 조합 중(isComposing === true)이면 무시 → 조합 확정 전 엔터 입력을 걸러서 중복/오작동 방지.
     // isComposing을 확인하면 입력이 조합 중인 상태인지 파악하여 불필요한 keydown 이벤트를 무시함
-    if (e.key !== 'Enter' || (e.nativeEvent as any).isComposing) return;
+    if (e.key !== "Enter" || (e.nativeEvent as any).isComposing) return;
 
     e.preventDefault();
     setTagError(null);
@@ -75,7 +76,7 @@ export default function EpigramFormLayout({
     const single = singleTagSchema.safeParse(tagInput);
     if (!single.success) {
       setTagError(
-        single.error.issues[0]?.message ?? '태그 형식이 올바르지 않습니다.'
+        single.error.issues[0]?.message ?? "태그 형식이 올바르지 않습니다."
       );
       return;
     }
@@ -96,7 +97,7 @@ export default function EpigramFormLayout({
 
     //.some() → 배열에서 조건을 만족하는 원소가 하나라도 있으면 true
     if (prev.some((t) => t.toLowerCase() === trimmed.toLowerCase())) {
-      setTagError('이미 추가된 태그예요.');
+      setTagError("이미 추가된 태그예요.");
       return;
     }
 
@@ -106,7 +107,7 @@ export default function EpigramFormLayout({
     const full = fullTagsSchema.safeParse(next);
     if (!full.success) {
       setTagError(
-        full.error.issues[0]?.message ?? '태그 목록이 유효하지 않습니다.'
+        full.error.issues[0]?.message ?? "태그 목록이 유효하지 않습니다."
       );
       return;
     }
@@ -115,170 +116,196 @@ export default function EpigramFormLayout({
     onAddTag(trimmed);
 
     //RHF 값에 반영
-    setValue('tags', next, { shouldValidate: true });
+    setValue("tags", next, { shouldValidate: true });
 
     // 4) 입력/오류 상태 정리
-    setTagInput('');
+    setTagInput("");
     setTagError(null);
   };
 
   return (
-    <div className='max-w-xl mx-auto p-6'>
-      <h1 className='text-xl font-semibold mb-4'>{title}</h1>
-      <form onSubmit={handleSubmit(onSubmit)} className='space-y-6'>
-        {/* 내용 */}
-        <div>
-          <label htmlFor='content' className='block font-medium mb-1'>
-            내용 <span className='text-red-500'>*</span>
-          </label>
-          <textarea
-            id='content'
-            {...register('content')}
-            placeholder='500자 이내로 입력해주세요.'
-            maxLength={500}
-            className={`w-full border rounded-lg p-2 ${
-              errors.content ? 'border-red-500' : ''
-            }`}
-            rows={4}
-          />
-          <p className='text-sm text-gray-500 text-right'>
-            {watch('content')?.length || 0}/500
-          </p>
-          {errors.content && (
-            <p className='text-red-500 text-sm mt-1'>
-              {errors.content.message}
+    <div className='bg-white h-[100vh]'>
+      <div className='max-w-xl mx-auto p-6'>
+        <h1 className='lg:text-2xl md:text-xl text-base font-semibold my-10'>
+          {title}
+        </h1>
+        <form onSubmit={handleSubmit(onSubmit)} className='space-y-6'>
+          {/* 내용 */}
+          <div>
+            <label
+              htmlFor='content'
+              className='block lg:text-xl md:text-base text-sm text-black-600 font-semibold lg:mb-5 mb-2'
+            >
+              내용 <span className='text-red-500'>*</span>
+            </label>
+            <textarea
+              id='content'
+              {...register("content")}
+              placeholder='500자 이내로 입력해주세요.'
+              maxLength={500}
+              className={`w-full border border-blue-300 placeholder-blue-400 lg:text-xl text-base font-normal focus:outline-blue-500 rounded-lg p-4 ${
+                errors.content ? "border-red-500" : ""
+              }`}
+              rows={4}
+            />
+            <p className='text-sm text-gray-500 text-right'>
+              {watch("content")?.length || 0}/500
             </p>
-          )}
-        </div>
-
-        {/* 저자 */}
-        <div>
-          <label className='block font-medium mb-1'>
-            저자 <span className='text-red-500'>*</span>
-          </label>
-          <div className='flex gap-4'>
-            <label htmlFor='author-direct' className='flex items-center gap-1'>
-              <input
-                id='author-direct'
-                type='radio'
-                value='직접 입력'
-                {...register('authorType')}
-              />
-              직접 입력
-            </label>
-            <label htmlFor='author-unknown' className='flex items-center gap-1'>
-              <input
-                id='author-unknown'
-                type='radio'
-                value='알 수 없음'
-                {...register('authorType')}
-              />
-              알 수 없음
-            </label>
-            <label htmlFor='author-self' className='flex items-center gap-1'>
-              <input
-                id='author-self'
-                type='radio'
-                value='본인'
-                {...register('authorType')}
-              />
-              본인
-            </label>
+            {errors.content && (
+              <p className='text-red-500 text-sm mt-1'>
+                {errors.content.message}
+              </p>
+            )}
           </div>
-          {authorType === '직접 입력' && (
+
+          {/* 저자 */}
+          <div>
+            <label className='block lg:text-xl md:text-base text-sm text-black-600 font-semibold lg:mb-5 mb-2'>
+              저자 <span className='text-red-500'>*</span>
+            </label>
+            <div className='flex gap-4 mb-2 lg:text-xl md:text-base text-sm text-black-600 font-medium'>
+              <label
+                htmlFor='author-direct'
+                className='flex items-center gap-1'
+              >
+                <input
+                  id='author-direct'
+                  type='radio'
+                  value='직접 입력'
+                  {...register("authorType")}
+                />
+                직접 입력
+              </label>
+              <label
+                htmlFor='author-unknown'
+                className='flex items-center gap-1'
+              >
+                <input
+                  id='author-unknown'
+                  type='radio'
+                  value='알 수 없음'
+                  {...register("authorType")}
+                />
+                알 수 없음
+              </label>
+              <label htmlFor='author-self' className='flex items-center gap-1'>
+                <input
+                  id='author-self'
+                  type='radio'
+                  value='본인'
+                  {...register("authorType")}
+                />
+                본인
+              </label>
+            </div>
+            {authorType === "직접 입력" && (
+              <input
+                type='text'
+                {...register("authorName")}
+                placeholder='저자 이름 입력'
+                className={`mt-2 w-full border lg:h-[64px] h-[44px] border-blue-300 placeholder-blue-400 focus:outline-blue-500 lg:text-xl text-base font-normal rounded-lg p-4 ${
+                  errors.authorName ? "border-red-500" : ""
+                }`}
+              />
+            )}
+            {authorType === "직접 입력" && errors.authorName && (
+              <p className='text-red-500 text-sm mt-1'>
+                {errors.authorName.message}
+              </p>
+            )}
+          </div>
+
+          {/* 출처 */}
+          <div>
+            <label
+              htmlFor='referenceInput'
+              className='block lg:text-xl md:text-base text-sm text-black-600 font-semibold lg:mb-5 mb-2'
+            >
+              출처
+            </label>
+            <input
+              id='referenceInput'
+              type='text'
+              {...register("referenceTitle")}
+              placeholder='출처 제목 입력'
+              className='w-full border rounded-lg p-4 mb-2 lg:h-[64px] h-[44px] border-blue-300 placeholder-blue-400 focus:outline-blue-500 lg:text-xl text-base font-normal'
+            />
             <input
               type='text'
-              {...register('authorName')}
-              placeholder='저자 이름 입력'
-              className={`mt-2 w-full border rounded-lg p-2 ${
-                errors.authorName ? 'border-red-500' : ''
+              {...register("referenceUrl")}
+              placeholder='URL (ex. https://www.website.com)'
+              className='w-full border rounded-lg p-4 lg:h-[64px] h-[44px] border-blue-300 placeholder-blue-400 focus:outline-blue-500 lg:text-xl text-base font-normal'
+            />
+          </div>
+
+          {/* 태그 */}
+          <div>
+            <label
+              htmlFor='tagInput'
+              className='block lg:text-xl md:text-base text-sm text-black-600 font-semibold lg:mb-5 mb-2'
+            >
+              태그
+            </label>
+            <input
+              id='tagInput'
+              placeholder='입력하여 태그 작성 (최대 10자)'
+              type='text'
+              value={tagInput}
+              onChange={(e) => {
+                setTagInput(e.target.value);
+                if (tagError) setTagError(null);
+              }}
+              onKeyDown={handleTagInput}
+              className={`w-full border rounded-lg p-4 lg:h-[64px] h-[44px] border-blue-300 placeholder-blue-400 focus:outline-blue-500 lg:text-xl text-base font-normal ${
+                tagError ? "border-red-500" : ""
               }`}
             />
-          )}
-          {authorType === '직접 입력' && errors.authorName && (
-            <p className='text-red-500 text-sm mt-1'>
-              {errors.authorName.message}
-            </p>
-          )}
-        </div>
-
-        {/* 출처 */}
-        <div>
-          <label htmlFor='referenceInput' className='block font-medium mb-1'>
-            출처
-          </label>
-          <input
-            id='referenceInput'
-            type='text'
-            {...register('referenceTitle')}
-            placeholder='출처 제목 입력'
-            className='w-full border rounded-lg p-2 mb-2'
-          />
-          <input
-            type='text'
-            {...register('referenceUrl')}
-            placeholder='URL (ex. https://www.website.com)'
-            className='w-full border rounded-lg p-2'
-          />
-        </div>
-
-        {/* 태그 */}
-        <div>
-          <label htmlFor='tagInput' className='block font-medium mb-1'>
-            태그
-          </label>
-          <input
-            id='tagInput'
-            placeholder='입력하여 태그 작성 (최대 10자)'
-            type='text'
-            value={tagInput}
-            onChange={(e) => {
-              setTagInput(e.target.value);
-              if (tagError) setTagError(null);
-            }}
-            onKeyDown={handleTagInput}
-            className={`w-full border rounded-lg p-2 ${
-              tagError ? 'border-red-500' : ''
-            }`}
-          />
-          {tagError && <p className='text-red-500 text-sm mt-1'>{tagError}</p>}
-          <div className='flex flex-wrap gap-2 mt-2'>
-            {tags.map((tag, idx) => (
-              <span
-                key={idx}
-                className='px-2 py-1 text-sm bg-gray-200 rounded-full'
-              >
-                {tag}
-                <button
-                  type='button'
-                  onClick={() => {
-                    onRemoveTag(tag);
-
-                    // RHF 값 갱신
-                    setValue(
-                      'tags',
-                      tags.filter((t) => t !== tag),
-                      { shouldValidate: true }
-                    );
-                  }}
-                  className='text-gray-600 hover:text-red-500'
+            {tagError && (
+              <p className='text-red-500 text-sm mt-1'>{tagError}</p>
+            )}
+            <div className='flex flex-wrap gap-2 lg:mt-4 mt-2'>
+              {tags.map((tag, idx) => (
+                <Badge
+                  key={idx}
+                  variant='secondary'
+                  className='flex gap-3 lg:text-2xl md:text-xl text-base font-normal text-black-300 rounded-2xl px-3 py-1 bg-background hover:bg-gray-200'
                 >
-                  ✕
-                </button>
-              </span>
-            ))}
-          </div>
-        </div>
+                  {tag}
+                  <button
+                    type='button'
+                    onClick={() => {
+                      onRemoveTag(tag);
 
-        {/* 제출 버튼 */}
-        <button
-          type='submit'
-          disabled={isSubmitting}
-          className='w-full bg-blue-500 text-white py-2 rounded-lg disabled:opacity-50'
-        >
-          작성 완료
-        </button>
-      </form>
+                      // RHF 값 갱신
+                      setValue(
+                        "tags",
+                        tags.filter((t) => t !== tag),
+                        { shouldValidate: true }
+                      );
+                    }}
+                    className='text-gray-600 hover:text-red-500 cursor-pointer lg:text-sm text-xs'
+                  >
+                    ✕
+                  </button>
+                </Badge>
+              ))}
+            </div>
+          </div>
+
+          {/* 제출 버튼 */}
+          <Button
+            type='submit'
+            disabled={!form.formState.isValid || form.formState.isSubmitting}
+            className={`w-full lg:h-[64px] h-[48px] lg:mt-4 mt-1 bg-blue-300 text-white py-2 rounded-lg lg:text-xl md:text-base text-sm  ${
+              !form.formState.isValid
+                ? "bg-blue-300 text-white cursor-not-allowed"
+                : "bg-black-500 text-white hover:bg-black-400 cursor-pointer"
+            }`}
+          >
+            작성 완료
+          </Button>
+        </form>
+      </div>
     </div>
   );
 }

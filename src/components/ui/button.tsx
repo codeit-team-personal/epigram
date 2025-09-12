@@ -35,6 +35,9 @@ const buttonVariants = cva(
           ' cursor-pointer border-4 border-gray-300 bg-white text-xl font-semibold text-gray-200',
         popoveroutline:
           'cursor-pointer border-gray-300 bg-gray-custom  text-xl font-semibold text-gray-200',
+        //마이페이지 히스토리
+        history: 'text-2xl text-black-600 font-semibold',
+        historyoutline: 'text-2xl text-gray-200 font-semibold',
       },
       size: {
         default: 'h-9 px-4 py-2 has-[>svg]:px-3',
@@ -47,6 +50,8 @@ const buttonVariants = cva(
         filter: 'px-4 py-2 w-[150px]',
         popover: 'w-[96px] h-[96px] px-3 py-2 rounded-2xl',
         popoveroutline: 'w-[96px] h-[96px] px-3 py-2 rounded-2xl',
+        history: '',
+        historyoutline: '',
       },
     },
     defaultVariants: {
