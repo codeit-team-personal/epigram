@@ -102,7 +102,7 @@ function UserProfile({ nickName, image }: { nickName: string; image: string }) {
 export default function MainGlobalNavigationBar() {
   const { user } = useAuthStore();
   return (
-    <header className='max-w-[1920px] lg:h-[80px] md:h-[60px] h-[52px] flex items-center justify-between lg:px-50 md:px-10 px-5 bg-white border'>
+    <header className='lg:h-[80px] md:h-[60px] h-[52px] flex items-center justify-between lg:px-50 md:px-10 px-5 bg-white border'>
       <div className='flex items-center'>
         <MobileMenu />
 
