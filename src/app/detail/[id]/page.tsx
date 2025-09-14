@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import EpigramDetail from "./components/EpigramDetail";
-import EpiDetailCommentList from "./components/EpiDetailCommentList";
+import EpigramDetail from './components/EpigramDetail';
+import EpiDetailCommentList from './components/EpiDetailCommentList';
 
 export default function Detail() {
   return (

@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import { Epigram } from "@/types/today";
-import EpigramCard from "@/components/EpigramCard";
-import { Button } from "@/components/ui/button";
-import { useEpigrams } from "@/hooks/useEpigrams";
-import { useRouter, useSearchParams } from "next/navigation";
-import { FloatingButtonsGroup } from "@/components/FloatingButtonsGroup";
-import { Grid, List, Plus } from "lucide-react";
-import { useState } from "react";
+import { Epigram } from '@/types/today';
+import EpigramCard from '@/components/EpigramCard';
+import { Button } from '@/components/ui/button';
+import { useEpigrams } from '@/hooks/useEpigrams';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { FloatingButtonsGroup } from '@/components/FloatingButtonsGroup';
+import { Grid, List, Plus } from 'lucide-react';
+import { useState } from 'react';
 
 export default function Feed() {
   const searchParams = useSearchParams();
-  const firstLimit = Number(searchParams.get("firstLimit") ?? 6);
-  const nextLimit = Number(searchParams.get("nextLimit") ?? 6);
+  const firstLimit = Number(searchParams.get('firstLimit') ?? 6);
+  const nextLimit = Number(searchParams.get('nextLimit') ?? 6);
   const router = useRouter();
 
   const {
@@ -43,7 +43,7 @@ export default function Feed() {
           {/* 버튼: 모바일에서만 보임 */}
           <button
             onClick={toggleLayout}
-            className='p-2 block max-[639px]:block sm:hidden'
+            className='p-2 block max-[740px]:block md:hidden'
           >
             {isGrid ? <List size={20} /> : <Grid size={20} />}
           </button>
@@ -53,14 +53,14 @@ export default function Feed() {
           className={
             // PC/태블릿: 2열, 모바일: isGrid 따라 1열/2열
             isGrid
-              ? "grid grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-2"
-              : "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-2"
+              ? 'grid grid-cols-2 gap-3  md:grid-cols-2 lg:grid-cols-2 px-3'
+              : 'grid grid-cols-1 gap-x-3 md:grid-cols-2 lg:grid-cols-2 px-3'
           }
         >
           {epigrams.map((epigram: Epigram) => (
             <div
               key={epigram.id}
-              className='cursor-pointer'
+              className='cursor-pointer '
               onClick={() => router.push(`/detail/${epigram.id}`)}
             >
               <EpigramCard data={epigram} />
@@ -78,7 +78,7 @@ export default function Feed() {
             >
               <Plus className='!size-6' />
               <span>
-                {isFetchingNextPage ? "로딩중..." : "에피그램 더보기"}
+                {isFetchingNextPage ? '로딩중...' : '에피그램 더보기'}
               </span>
             </Button>
           </div>

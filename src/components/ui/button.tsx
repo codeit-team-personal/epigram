@@ -44,7 +44,7 @@ const buttonVariants = cva(
         sm: 'h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5',
         lg: 'h-10 rounded-md px-6 has-[>svg]:px-4',
         icon: 'size-9',
-        plus: 'px-11 py-4',
+        plus: 'px-5 py-3 lg:px-11 lg:py-4',
         commnet: 'px-1 py-2',
         logout: 'w-[100px] py-2 rounded-full',
         filter: 'px-4 py-2 w-[150px]',

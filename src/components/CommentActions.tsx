@@ -1,5 +1,5 @@
 // 수정/삭제 버튼 및 삭제 다이얼로그
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -10,20 +10,24 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import Image from "next/image";
+} from '@/components/ui/alert-dialog';
+import Image from 'next/image';
+
+type Props = {
+  commentId: number;
+  onEdit: () => void;
+  onDelete: () => Promise<void> | void;
+  isDeleting?: boolean;
+};
 
 export function CommentActions({
   commentId,
   onEdit,
   onDelete,
-}: {
-  commentId: number;
-  onEdit: () => void;
-  onDelete: () => void;
-}) {
+  isDeleting = false,
+}: Props) {
   return (
-    <div className='absolute right-2 top-8 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity'>
+    <div className='absolute right-2 top-4 lg:top-8 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity'>
       <Button
         className='lg:text-base md:text-sm text-xs'
         variant='comment'
@@ -49,7 +53,7 @@ export function CommentActions({
             <div className='my-4 grid place-items-center'>
               <span className='relative lg:size-[56px] size-[44px]'>
                 <Image
-                  src={"/images/warning_icon.png"}
+                  src={'/images/warning_icon.png'}
                   alt='warning icon'
                   fill
                 />
@@ -69,8 +73,20 @@ export function CommentActions({
               취소
             </AlertDialogCancel>
             <AlertDialogAction
-              onClick={onDelete}
-              className='lg:h-[58px] h-[48px] lg:text-xl text-base flex-1 rounded-xl bg-blue-900 text-blue-100 hover:bg-blue-950'
+              onClick={async () => {
+                if (isDeleting) return; // 빠른 중복 클릭 방지
+                try {
+                  await onDelete();
+                } catch (err) {
+                  console.error('삭제 실패:', err);
+                }
+              }}
+              disabled={isDeleting}
+              className={
+                isDeleting
+                  ? 'opacity-50 cursor-not-allowed lg:h-[58px] h-[48px] lg:text-xl text-base flex-1 rounded-xl bg-blue-900 text-blue-100 hover:bg-blue-950'
+                  : 'lg:h-[58px] h-[48px] lg:text-xl text-base flex-1 rounded-xl bg-blue-900 text-blue-100 hover:bg-blue-950'
+              }
             >
               삭제하기
             </AlertDialogAction>

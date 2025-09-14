@@ -1,9 +1,9 @@
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
-import Link from "next/link";
-import ScrollButton from "./components/ScrollButton";
-import SlideSection from "@/components/SlideSection";
-import TypingText from "./components/TypingText";
+import { Button } from '@/components/ui/button';
+import Image from 'next/image';
+import Link from 'next/link';
+import ScrollButton from './components/ScrollButton';
+import SlideSection from '@/components/SlideSection';
+import TypingText from './components/TypingText';
 
 function LandingStart() {
   return (
@@ -26,6 +26,7 @@ function LandingStart() {
           </Link>
         </Button>
       </div>
+
       <ScrollButton />
     </section>
   );
@@ -34,9 +35,11 @@ function LandingStart() {
 function LandingContent() {
   return (
     <section className='flex flex-col min-h-screen items-center relative'>
+      {/* 흰색 → 지그재그 → 회색 경계 */}
+      <div className=" h-10 bg-repeat-x bg-[url('/images/paper.svg')] w-full"></div>
       <SlideSection direction='right'>
         <SectionComponent
-          imgSrc={"/images/landing/landing01.png"}
+          imgSrc={'/images/landing/landing01.png'}
           text1={
             <>
               명언이나 글귀, <br />
@@ -54,7 +57,7 @@ function LandingContent() {
 
       <SlideSection direction='left'>
         <SectionComponent
-          imgSrc={"/images/landing/landing02.png"}
+          imgSrc={'/images/landing/landing02.png'}
           text1={
             <>
               감정 상태에 따라,
@@ -68,7 +71,7 @@ function LandingContent() {
       </SlideSection>
       <SlideSection direction='right'>
         <SectionComponent
-          imgSrc={"/images/landing/landing03.png"}
+          imgSrc={'/images/landing/landing03.png'}
           text1={
             <>
               내가 요즘 어떤 감정 상태인지
@@ -139,7 +142,7 @@ function LandingEnd() {
       <SlideSection direction='up'>
         <div className='flex flex-col w-[286px] text-center z-10'>
           <span className='relative lg:w-[184px] lg:h-[105px] w-[122px] h-[70px] lg:mb-15 mb-10 mx-auto'>
-            <Image src={"/images/landing/logo_text.png"} alt='logo_text' fill />
+            <Image src={'/images/landing/logo_text.png'} alt='logo_text' fill />
           </span>
 
           <Button
@@ -170,7 +173,7 @@ function SectionComponent({
   return (
     <div
       className={`flex lg:justify-between lg:items-end ${
-        isReversed ? "lg:flex-row-reverse" : "lg:flex-row"
+        isReversed ? 'lg:flex-row-reverse' : 'lg:flex-row'
       } flex-col justify-between lg:w-[1188px] lg:my-[300px] my-[150px] md:w-[384px] md:h-[390px] w-[312px] h-[372px]`}
     >
       <span className='relative lg:w-[744px] lg:h-[388px] md:w-[384px] md:h-[240px] w-[312px] h-[210px] rounded-lg border overflow-hidden'>
@@ -178,21 +181,21 @@ function SectionComponent({
           src={imgSrc}
           fill
           alt='landing_image'
-          style={{ objectFit: "cover" }}
+          style={{ objectFit: 'cover' }}
         />
       </span>
 
       <div className='flex flex-col'>
         <h2
           className={`${
-            isReversed ? "text-right" : ""
+            isReversed ? 'text-right' : ''
           } lg:text-[32px] text-2xl font-bold lg:mb-10 mb-5 text-black-950`}
         >
           {text1}
         </h2>
         <span
           className={`${
-            isReversed ? "text-right" : ""
+            isReversed ? 'text-right' : ''
           } lg:text-2xl text-[16px] font-[500] text-blue-600`}
         >
           {text2}

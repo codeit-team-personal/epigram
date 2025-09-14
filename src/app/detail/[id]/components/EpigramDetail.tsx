@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'next/navigation';
 import {
   useQuery,
@@ -15,7 +16,6 @@ import {
   deleteEpigram,
 } from '@/lib/api';
 import { toast } from 'react-toastify';
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/stores/authStore';
 import { ThumbsUp, ArrowUpRight } from 'lucide-react';
@@ -23,6 +23,7 @@ import Link from 'next/link';
 import DeleteEpigramDialog from '@/components/DeleteEpigramDialog';
 import { Comments as CommentsType } from '@/types/comments';
 import type { AxiosError } from 'axios';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function EpigramDetailPage() {
   const router = useRouter();
@@ -30,6 +31,25 @@ export default function EpigramDetailPage() {
   const id = Number(params.id);
   const queryClient = useQueryClient();
   const { user } = useAuthStore();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  // 외부 클릭 감지
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setMenuOpen(false);
+      }
+    }
+    if (menuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [menuOpen]);
 
   const { data, isLoading, isError } = useQuery<Epigram>({
     queryKey: ['epigramDetail', id],
@@ -59,7 +79,7 @@ export default function EpigramDetailPage() {
 
     // 낙관적 업데이트
     onMutate: async () => {
-      // 좋아요 데이터를 refetch하는 것을 막기 위해 cancelQueries()를 실행해서 
+      // 좋아요 데이터를 refetch하는 것을 막기 위해 cancelQueries()를 실행해서
       // 좋아요 데이터를 받아오는 쿼리가 실행 중이라면 취소
       await queryClient.cancelQueries({ queryKey: ['epigramDetail', id] });
       // 그전에 기존의 쿼리 데이터도 따로 저장
@@ -218,9 +238,53 @@ export default function EpigramDetailPage() {
     },
   });
 
-  const [menuOpen, setMenuOpen] = useState(false);
-  if (isLoading) return <div>불러오는 중...</div>;
-  if (isError) return <div>에러가 발생했습니다.</div>;
+  if (isLoading || isError) {
+    return (
+      <div className='bg-white relative font-iropke'>
+        {/* 줄무늬 배경 */}
+        <div className='absolute inset-0 bg-[linear-gradient(to_bottom,#f5f5f5_1px,transparent_1px)] bg-[length:100%_32px]' />
+
+        <div className='lg:w-[640px] md:w-[384px] w-[312px] mx-auto py-10 px-4 relative space-y-6'>
+          {/* 태그 자리 */}
+          <div className='flex gap-2'>
+            {isError ? (
+              <p className='text-red-500 text-sm'>에러가 발생했습니다.</p>
+            ) : (
+              <>
+                <Skeleton className='h-5 w-12 rounded' />
+                <Skeleton className='h-5 w-10 rounded' />
+              </>
+            )}
+          </div>
+
+          {/* 본문 */}
+          {isError ? (
+            <div className='h-20 flex items-center justify-center text-gray-500'>
+              데이터를 불러오지 못했습니다.
+            </div>
+          ) : (
+            <div className='space-y-3'>
+              <Skeleton className='h-8 w-3/4 rounded' />
+              <Skeleton className='h-8 w-2/3 rounded' />
+            </div>
+          )}
+
+          {/* 저자 */}
+          <div className='flex justify-end'>
+            <Skeleton className='h-6 w-24 rounded' />
+          </div>
+
+          {/* 버튼 영역 */}
+          <div className='flex justify-center gap-4 mt-6'>
+            <>
+              <Skeleton className='h-10 w-20 rounded-full' />
+              <Skeleton className='h-10 w-32 rounded-full' />
+            </>
+          </div>
+        </div>
+      </div>
+    );
+  }
   if (!data) return <div className='p-4 bg-white'>데이터 없음</div>;
 
   return (
@@ -231,10 +295,10 @@ export default function EpigramDetailPage() {
       <div className='lg:w-[640px] md:w-[384px] w-[312px] mx-auto py-10 px-4 relative'>
         {/* 케밥 버튼 */}
         {isAuthor && (
-          <div className='absolute top-11 right-2 font-sans'>
+          <div className='absolute top-11 right-2 font-sans' ref={menuRef}>
             <button
               onClick={() => setMenuOpen((prev) => !prev)}
-              className='p-1 text-2xl text-blue-400 rounded hover:bg-gray-100'
+              className='p-1 text-2xl text-blue-400 rounded-lg hover:bg-line-100 hover:text-blue-300'
             >
               ⋮
             </button>
@@ -249,7 +313,10 @@ export default function EpigramDetailPage() {
                 >
                   수정하기
                 </button>
-                <DeleteEpigramDialog onDelete={() => deleteMutation.mutate()}>
+                <DeleteEpigramDialog
+                  onDelete={() => deleteMutation.mutate()}
+                  isDeleting={deleteMutation.isPending}
+                >
                   <button
                     // onClick={() => setMenuOpen(false)} // 메뉴 닫기만
                     className='block w-full h-full text-center px-3 py-2 hover:bg-gray-100 cursor-pointer'
@@ -262,18 +329,22 @@ export default function EpigramDetailPage() {
           </div>
         )}
         {/* 태그 */}
-        <div className='flex flex-wrap gap-2 text-blue-400 mt-2 lg:mb-8 mb-6  lg:text-xl text-base '>
+        <div className='flex flex-wrap gap-2 text-blue-400 mt-2 lg:mb-8 mb-6  lg:text-[19px] text-base '>
           {data.tags?.map((tag) => (
             <span key={tag.id}>#{tag.name}</span>
           ))}
         </div>
 
         {/* 내용 */}
-        <p className='text-black-700 lg:text-[32px] text-2xl'>{data.content}</p>
+        <p className='text-black-700 lg:text-[32px] text-2xl whitespace-pre-wrap'>
+          {data.content}
+        </p>
 
         {/* 저자 */}
-        <p className='text-right lg:mt-8 mt-6 lg:text-2xl md:text-xl text-base text-blue-400'>
-          - {data.author} -
+        <p className='flex items-center justify-end gap-1 text-right lg:mt-8 mt-6 lg:text-2xl md:text-xl text-base text-blue-400'>
+          <span className='shrink-0'>-</span>
+          <span className='truncate'>{data.author}</span>
+          <span className='shrink-0'>-</span>
         </p>
 
         {/* 좋아요 버튼 */}
@@ -302,6 +373,8 @@ export default function EpigramDetailPage() {
           )}
         </div>
       </div>
+      {/* 흰색 → 지그재그 → 회색 경계 */}
+      <div className="relative top-10 h-10 bg-repeat-x bg-[url('/images/paper.svg')]"></div>
     </div>
   );
 }

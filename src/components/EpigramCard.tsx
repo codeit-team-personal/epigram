@@ -4,7 +4,7 @@ import { Epigram } from "@/types/today";
 
 export default function EpigramCard({ data }: { data: Epigram }) {
   return (
-    <div className='font-iropke lg:text-2xl md:text-base text-sm text-black-600 lg:max-h-[307px] md:max-h-[214px]  max-h-[172px]'>
+    <div className='font-iropke lg:text-2xl md:text-base text-sm text-black-600 lg:max-h-[407px] md:max-h-[304px]  max-h-[242px]'>
       <div className='p-6 rounded-xl shadow-sm border border-line-100 bg-card relative overflow-hidden '>
         {/* 줄무늬 배경 */}
         <div
@@ -18,19 +18,26 @@ export default function EpigramCard({ data }: { data: Epigram }) {
             {data.content}
           </p>
           {/* 저자 */}
-          <p className='lg:mt-3 mt-1 text-right text-blue-400'>
-            - {data.author} -
+          <p className='flex items-center justify-end gap-1 lg:mt-3 mt-1 text-right text-blue-400'>
+            <span className='shrink-0'>-</span>
+            <span className='truncate'>{data.author}</span>
+            <span className='shrink-0'>-</span>
           </p>
         </div>
       </div>
 
       {/* 태그 */}
       <div className='text-right text-blue-400 mb-4 mt-2'>
-        {data.tags?.map((tag) => (
-          <span key={tag.id} className='m-2'>
-            #{tag.name}
-          </span>
-        ))}
+        <div className='inline-flex flex-wrap gap-2 justify-end'>
+          {data.tags?.map((tag) => (
+            <span
+              key={tag.id}
+              className='px-2 py-1 rounded bg-blue-50 text-blue-500'
+            >
+              #{tag.name}
+            </span>
+          ))}
+        </div>
       </div>
     </div>
   );
