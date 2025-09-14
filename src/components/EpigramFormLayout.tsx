@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { UseFormReturn } from "react-hook-form";
-import { useState } from "react";
-import { Badge } from "@/components/ui/badge";
-import { z } from "zod";
+import { UseFormReturn } from 'react-hook-form';
+import { useState } from 'react';
+import { Badge } from '@/components/ui/badge';
+import { z } from 'zod';
 import {
   CreateSchema,
   singleTagSchema,
   fullTagsSchema,
-} from "@/schemas/createSchema";
-import { Button } from "./ui/button";
+} from '@/schemas/createSchema';
+import { Button } from './ui/button';
 /**
 - singleTagSchema → 단일 태그 유효성 (길이, 공백 등)
 - prev.some(...) → 현재까지 입력된 태그와 중복 방지
@@ -53,18 +53,18 @@ export default function EpigramFormLayout({
     formState: { errors },
   } = form;
 
-  const authorType = watch("authorType");
-  const [tagInput, setTagInput] = useState("");
+  const authorType = watch('authorType');
+  const [tagInput, setTagInput] = useState('');
   const [tagError, setTagError] = useState<string | null>(null);
 
   const handleTagInput = (e: React.KeyboardEvent<HTMLInputElement>) => {
     // 일부 환경(파폭 등) 방어
-    if (e.key === "Process") return;
+    if (e.key === 'Process') return;
 
     // e.key !== 'Enter' 엔터가 아니면 무시.
     // Input Method Editor(IME) 조합 중(isComposing === true)이면 무시 → 조합 확정 전 엔터 입력을 걸러서 중복/오작동 방지.
     // isComposing을 확인하면 입력이 조합 중인 상태인지 파악하여 불필요한 keydown 이벤트를 무시함
-    if (e.key !== "Enter" || (e.nativeEvent as any).isComposing) return;
+    if (e.key !== 'Enter' || (e.nativeEvent as any).isComposing) return;
 
     e.preventDefault();
     setTagError(null);
@@ -76,7 +76,7 @@ export default function EpigramFormLayout({
     const single = singleTagSchema.safeParse(tagInput);
     if (!single.success) {
       setTagError(
-        single.error.issues[0]?.message ?? "태그 형식이 올바르지 않습니다."
+        single.error.issues[0]?.message ?? '태그 형식이 올바르지 않습니다.'
       );
       return;
     }
@@ -97,7 +97,7 @@ export default function EpigramFormLayout({
 
     //.some() → 배열에서 조건을 만족하는 원소가 하나라도 있으면 true
     if (prev.some((t) => t.toLowerCase() === trimmed.toLowerCase())) {
-      setTagError("이미 추가된 태그예요.");
+      setTagError('이미 추가된 태그예요.');
       return;
     }
 
@@ -107,7 +107,7 @@ export default function EpigramFormLayout({
     const full = fullTagsSchema.safeParse(next);
     if (!full.success) {
       setTagError(
-        full.error.issues[0]?.message ?? "태그 목록이 유효하지 않습니다."
+        full.error.issues[0]?.message ?? '태그 목록이 유효하지 않습니다.'
       );
       return;
     }
@@ -116,10 +116,10 @@ export default function EpigramFormLayout({
     onAddTag(trimmed);
 
     //RHF 값에 반영
-    setValue("tags", next, { shouldValidate: true });
+    setValue('tags', next, { shouldValidate: true });
 
     // 4) 입력/오류 상태 정리
-    setTagInput("");
+    setTagInput('');
     setTagError(null);
   };
 
@@ -140,16 +140,16 @@ export default function EpigramFormLayout({
             </label>
             <textarea
               id='content'
-              {...register("content")}
+              {...register('content')}
               placeholder='500자 이내로 입력해주세요.'
-              maxLength={500}
+              maxLength={501}
               className={`w-full border border-blue-300 placeholder-blue-400 lg:text-xl text-base font-normal focus:outline-blue-500 rounded-lg p-4 ${
-                errors.content ? "border-red-500" : ""
+                errors.content ? 'border-red-500' : ''
               }`}
               rows={4}
             />
             <p className='text-sm text-gray-500 text-right'>
-              {watch("content")?.length || 0}/500
+              {watch('content')?.length || 0}/500
             </p>
             {errors.content && (
               <p className='text-red-500 text-sm mt-1'>
@@ -172,7 +172,7 @@ export default function EpigramFormLayout({
                   id='author-direct'
                   type='radio'
                   value='직접 입력'
-                  {...register("authorType")}
+                  {...register('authorType')}
                 />
                 직접 입력
               </label>
@@ -184,7 +184,7 @@ export default function EpigramFormLayout({
                   id='author-unknown'
                   type='radio'
                   value='알 수 없음'
-                  {...register("authorType")}
+                  {...register('authorType')}
                 />
                 알 수 없음
               </label>
@@ -193,22 +193,23 @@ export default function EpigramFormLayout({
                   id='author-self'
                   type='radio'
                   value='본인'
-                  {...register("authorType")}
+                  {...register('authorType')}
                 />
                 본인
               </label>
             </div>
-            {authorType === "직접 입력" && (
+            {authorType === '직접 입력' && (
               <input
                 type='text'
-                {...register("authorName")}
+                {...register('authorName')}
                 placeholder='저자 이름 입력'
+                maxLength={31}
                 className={`mt-2 w-full border lg:h-[64px] h-[44px] border-blue-300 placeholder-blue-400 focus:outline-blue-500 lg:text-xl text-base font-normal rounded-lg p-4 ${
-                  errors.authorName ? "border-red-500" : ""
+                  errors.authorName ? 'border-red-500' : ''
                 }`}
               />
             )}
-            {authorType === "직접 입력" && errors.authorName && (
+            {authorType === '직접 입력' && errors.authorName && (
               <p className='text-red-500 text-sm mt-1'>
                 {errors.authorName.message}
               </p>
@@ -226,15 +227,23 @@ export default function EpigramFormLayout({
             <input
               id='referenceInput'
               type='text'
-              {...register("referenceTitle")}
+              {...register('referenceTitle')}
               placeholder='출처 제목 입력'
-              className='w-full border rounded-lg p-4 mb-2 lg:h-[64px] h-[44px] border-blue-300 placeholder-blue-400 focus:outline-blue-500 lg:text-xl text-base font-normal'
+              maxLength={101}
+              className={`w-full border rounded-lg p-4  lg:h-[64px] h-[44px] border-blue-300 placeholder-blue-400 focus:outline-blue-500 lg:text-xl text-base font-normal${
+                errors.referenceTitle ? 'border-red-500' : ''
+              }`}
             />
+            {errors.referenceTitle && (
+              <p className='text-red-500 text-sm mt-1'>
+                {errors.referenceTitle.message}
+              </p>
+            )}
             <input
               type='text'
-              {...register("referenceUrl")}
+              {...register('referenceUrl')}
               placeholder='URL (ex. https://www.website.com)'
-              className='w-full border rounded-lg p-4 lg:h-[64px] h-[44px] border-blue-300 placeholder-blue-400 focus:outline-blue-500 lg:text-xl text-base font-normal'
+              className='w-full border rounded-lg p-4 mt-2 lg:h-[64px] h-[44px] border-blue-300 placeholder-blue-400 focus:outline-blue-500 lg:text-xl text-base font-normal'
             />
           </div>
 
@@ -251,13 +260,14 @@ export default function EpigramFormLayout({
               placeholder='입력하여 태그 작성 (최대 10자)'
               type='text'
               value={tagInput}
+              maxLength={10}
               onChange={(e) => {
                 setTagInput(e.target.value);
                 if (tagError) setTagError(null);
               }}
               onKeyDown={handleTagInput}
               className={`w-full border rounded-lg p-4 lg:h-[64px] h-[44px] border-blue-300 placeholder-blue-400 focus:outline-blue-500 lg:text-xl text-base font-normal ${
-                tagError ? "border-red-500" : ""
+                tagError ? 'border-red-500' : ''
               }`}
             />
             {tagError && (
@@ -278,7 +288,7 @@ export default function EpigramFormLayout({
 
                       // RHF 값 갱신
                       setValue(
-                        "tags",
+                        'tags',
                         tags.filter((t) => t !== tag),
                         { shouldValidate: true }
                       );
@@ -298,8 +308,8 @@ export default function EpigramFormLayout({
             disabled={!form.formState.isValid || form.formState.isSubmitting}
             className={`w-full lg:h-[64px] h-[48px] lg:mt-4 mt-1 bg-blue-300 text-white py-2 rounded-lg lg:text-xl md:text-base text-sm  ${
               !form.formState.isValid
-                ? "bg-blue-300 text-white cursor-not-allowed"
-                : "bg-black-500 text-white hover:bg-black-400 cursor-pointer"
+                ? 'bg-blue-300 text-white cursor-not-allowed'
+                : 'bg-black-500 text-white hover:bg-black-400 cursor-pointer'
             }`}
           >
             작성 완료

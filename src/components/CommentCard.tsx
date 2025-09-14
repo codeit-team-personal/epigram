@@ -30,7 +30,7 @@ export default function CommentsCard({
   );
 
   return (
-    <div className='flex relative p-2 border-t border-line-200 group py-10 justify-center'>
+    <div className='flex relative p-2 border-t border-line-200 group py-5 lg:py-10 justify-center'>
       <div className='mt-2 mr-4 w-[48px] h-[48px] rounded-full overflow-hidden flex-shrink-0'>
         <CommentAvatar
           nickname={comment.writer.nickname}
@@ -52,6 +52,7 @@ export default function CommentsCard({
           commentId={comment.id}
           onEdit={() => tryStart(comment.id)}
           onDelete={() => deleteMutation.mutate(comment.id)}
+          isDeleting={deleteMutation.isPending}
         />
       )}
 

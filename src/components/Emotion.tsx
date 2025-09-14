@@ -135,84 +135,45 @@ export default function Emotion({
 
   const selected = data?.emotion || null;
 
-  if (isLoading)
+  if (isLoading || isError) {
     return (
-      <div>
-        <div className='mb-30 '>
-          <h1 className='text-common mb-10'>{title}</h1>
-          <div className='flex gap-5 px-10 h-[132px]'>
-            <div className=''>
-              <Skeleton className='w-24 h-24 rounded-xl' />
-              <Skeleton className='h-5 w-24 mt-2' />
+      <div className='my-16 md:my-24 lg:my-30 mx-auto w-[312px] md:w-[384px] lg:w-[640px]'>
+        <h1 className='text-black-600 text-lg md:text-xl lg:text-2xl font-semibold mb-6 md:mb-8 lg:mb-10'>
+          {isError ? '에러가 발생' : title}
+        </h1>
+        <div className='flex gap-2 md:gap-3 lg:gap-5 lg:px-10 h-[132px]'>
+          {Array.from({ length: 5 }).map((_, idx) => (
+            <div key={idx} className='flex flex-col items-center'>
+              {/* 버튼과 동일한 반응형 크기 */}
+              <Skeleton className='rounded-2xl w-14 h-14 md:w-16 md:h-16 lg:w-24 lg:h-24' />
+              {/* 라벨도 반응형 */}
+              <Skeleton className='mt-2 h-4 w-10 md:w-16 lg:w-24' />
             </div>
-            <div className=''>
-              <Skeleton className='w-24 h-24 rounded-xl' />
-              <Skeleton className='h-5 w-24 mt-2' />
-            </div>
-            <div className=''>
-              <Skeleton className='w-24 h-24 rounded-xl' />
-              <Skeleton className='h-5 w-24 mt-2' />
-            </div>
-            <div className=''>
-              <Skeleton className='w-24 h-24 rounded-xl' />
-              <Skeleton className='h-5 w-24 mt-2' />
-            </div>
-            <div className=''>
-              <Skeleton className='w-24 h-24 rounded-xl' />
-              <Skeleton className='h-5 w-24 mt-2' />
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     );
-  if (isError)
-    return (
-      <div>
-        <div className='mb-30 '>
-          <h1 className='text-common mb-10'>에러가 발생</h1>
-          <div className='flex gap-5 px-10 h-[132px]'>
-            <div className=''>
-              <Skeleton className='w-24 h-24 rounded-xl' />
-              <Skeleton className='h-5 w-24 mt-2' />
-            </div>
-            <div className=''>
-              <Skeleton className='w-24 h-24 rounded-xl' />
-              <Skeleton className='h-5 w-24 mt-2' />
-            </div>
-            <div className=''>
-              <Skeleton className='w-24 h-24 rounded-xl' />
-              <Skeleton className='h-5 w-24 mt-2' />
-            </div>
-            <div className=''>
-              <Skeleton className='w-24 h-24 rounded-xl' />
-              <Skeleton className='h-5 w-24 mt-2' />
-            </div>
-            <div className=''>
-              <Skeleton className='w-24 h-24 rounded-xl' />
-              <Skeleton className='h-5 w-24 mt-2' />
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+  }
 
   return (
-    <div className='mb-30'>
+    <div className='my-16 md:my-24 lg:my-30 mx-auto w-[312px] md:w-[384px] lg:w-[640px]'>
       <div className='flex justify-between'>
-        <h1 className='text-common mb-10'>{title}</h1>
+        <h1 className='text-black-600 text-lg md:text-xl lg:text-2xl font-semibold mb-6 md:mb-8 lg:mb-10'>
+          {title}
+        </h1>
         {showDate && data?.createdAt && (
           <p className='font-normal text-xl text-blue-400'>
             {new Date(data.createdAt).toLocaleDateString()}
           </p>
         )}
       </div>
-      <div className='flex gap-5 px-10'>
+      <div className='flex gap-2 md:gap-3 lg:gap-5  lg:px-10 '>
         {emotions.map((emotion) => (
           <div key={emotion.id}>
             <button
               onClick={() => mutate(emotion.id)}
               disabled={isPending}
-              className={`cursor-pointer px-3 py-2 rounded-2xl w-24 h-24
+              className={`cursor-pointer px-2 py-2 rounded-2xl w-14 h-14 md:w-16 md:h-16 lg:w-24 lg:h-24
             ${
               selected === emotion.id
                 ? `selected-border-${emotion.id}`
@@ -222,12 +183,12 @@ export default function Emotion({
               <Image
                 src={emotion.src}
                 alt={emotion.label}
-                width={48}
+                width={48} // 원본 기준 사이즈 (fallback)
                 height={48}
-                className='mx-auto'
+                className='mx-auto w-8 h-8 md:w-8 md:h-8 lg:w-12 lg:h-12'
               />
             </button>
-            <div className='mt-2 text-center text-gray-400 font-semibold text-xl'>
+            <div className='mt-2 text-center text-gray-400 font-semibold text-xs md:text-sm lg:text-xl'>
               {emotion.label}
             </div>
           </div>

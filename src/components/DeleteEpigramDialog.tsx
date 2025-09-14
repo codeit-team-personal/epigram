@@ -14,11 +14,16 @@ import {
 } from "@/components/ui/alert-dialog";
 
 type Props = {
-  onDelete: () => void;
+  onDelete: () => Promise<void> | void;
+  isDeleting?: boolean;
   children: React.ReactNode; // Trigger로 쓸 버튼/요소
 };
 
-export default function DeleteEpigramDialog({ onDelete, children }: Props) {
+export default function DeleteEpigramDialog({
+  onDelete,
+  isDeleting = false,
+  children,
+}: Props) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
@@ -44,10 +49,22 @@ export default function DeleteEpigramDialog({ onDelete, children }: Props) {
             취소
           </AlertDialogCancel>
           <AlertDialogAction
-            onClick={onDelete}
-            className='lg:h-[58px] h-[48px] lg:text-xl text-base flex-1 rounded-xl bg-blue-900 text-blue-100 hover:bg-blue-950'
+            onClick={async () => {
+              if (isDeleting) return; // 빠른 중복 클릭 방지
+              try {
+                await onDelete();
+              } catch (err) {
+                console.error('삭제 실패:', err);
+              }
+            }}
+            disabled={isDeleting} // ← 버튼 비활성화
+            className={
+              isDeleting
+                ? 'opacity-50 cursor-not-allowed lg:h-[58px] h-[48px] lg:text-xl text-base flex-1 rounded-xl bg-blue-900 text-blue-100 hover:bg-blue-950'
+                : 'lg:h-[58px] h-[48px] lg:text-xl text-base flex-1 rounded-xl bg-blue-900 text-blue-100 hover:bg-blue-950'
+            }
           >
-            삭제하기
+            {isDeleting ? '삭제 중...' : '삭제하기'}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
