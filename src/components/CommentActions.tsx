@@ -31,7 +31,7 @@ export function CommentActions({
       <Button
         className='lg:text-base md:text-sm text-xs'
         variant='comment'
-        size='commnet'
+        size='comment'
         onClick={onEdit}
       >
         수정
@@ -41,7 +41,7 @@ export function CommentActions({
         <AlertDialogTrigger asChild>
           <Button
             variant='comment'
-            size='commnet'
+            size='comment'
             className='text-state lg:text-base md:text-sm text-xs'
           >
             삭제
@@ -88,7 +88,7 @@ export function CommentActions({
                   : 'lg:h-[58px] h-[48px] lg:text-xl text-base flex-1 rounded-xl bg-blue-900 text-blue-100 hover:bg-blue-950'
               }
             >
-              삭제하기
+              {isDeleting ? '삭제 중...' : '삭제하기'}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
