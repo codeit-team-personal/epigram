@@ -4,7 +4,7 @@ export type Tag = {
 };
 
 export type Epigram = {
-  likeCount?: number;
+  likeCount: number;
   id: number;
   content: string;
   author: string;

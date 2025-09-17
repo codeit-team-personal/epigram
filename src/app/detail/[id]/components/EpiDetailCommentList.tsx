@@ -15,6 +15,7 @@ import useInfiniteList from '@/hooks/useInfiniteList';
 import { Comments as CommentsType } from '@/types/comments';
 import Image from 'next/image';
 import { useQueryClient } from '@tanstack/react-query';
+import { createCommentSchema } from '@/schemas/createCommentSchema';
 
 export default function EpiDetailCommentList() {
   const params = useParams();
@@ -51,10 +52,10 @@ export default function EpiDetailCommentList() {
   // 댓글 작성 핸들러
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!content.trim()) return;
 
-    if (content.length > 100) {
-      toast.error('댓글은 100자 이내로 입력해주세요.');
+    const result = createCommentSchema.safeParse({ content, isPrivate });
+    if (!result.success) {
+      toast.error(result.error.issues[0].message);
       return;
     }
 
@@ -83,7 +84,7 @@ export default function EpiDetailCommentList() {
   };
 
   return (
-    <div className='lg:w-[640px] md:w-[384px] w-[312px] mx-auto py-10'>
+    <div className='lg:w-[640px] md:w-[384px] w-[312px] mx-auto pt-18 pb-10'>
       <div className='py-4'>
         <div className='font-semibold mb-2 lg:text-xl text-base'>
           댓글 ({totalCount})
@@ -101,6 +102,7 @@ export default function EpiDetailCommentList() {
                 className='w-full rounded-md border border-gray-300 outline p-2 outline-line-200 focus:outline-black-600 placeholder:text-blue-400'
                 rows={3}
                 placeholder='100자 이내로 입력해주세요.'
+                maxLength={101}
               />
               {active && (
                 <div className='my-2 flex gap-2 items-center justify-between'>

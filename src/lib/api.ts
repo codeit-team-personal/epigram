@@ -82,15 +82,16 @@ export async function getEpigramDetail(id: number): Promise<Epigram> {
   return data;
 }
 
+
 //에피그램 좋아요
-export async function likeEpigram(id: number) {
-  const { data } = await api.post(`/epigrams/${id}/like`);
+export async function likeEpigram(id: number): Promise<Epigram> {
+  const { data } = await api.post<Epigram>(`/epigrams/${id}/like`);
   return data;
 }
 
 //에피그램 싫어요
-export async function unlikeEpigram(id: number) {
-  const { data } = await api.delete(`/epigrams/${id}/like`);
+export async function unlikeEpigram(id: number): Promise<Epigram> {
+  const { data } = await api.delete<Epigram>(`/epigrams/${id}/like`);
   return data;
 }
 

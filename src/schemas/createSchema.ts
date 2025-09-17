@@ -43,10 +43,19 @@ export const createSchema = z
     content: z
       .string()
       .min(1, '내용을 입력해주세요.')
-      .max(500, '500자 이내로 입력해주세요.'),
+      .max(500, '500자 이내로 입력해주세요.')
+      .refine((s) => s.trim().length > 0, {
+        message: '내용을 입력해주세요.', // 공백만 입력했을 때도 동일한 메시지
+      }),
     authorType: z.enum(['직접 입력', '알 수 없음', '본인']),
-    authorName: z.string().optional(),
-    referenceTitle: z.string().optional(),
+    authorName: z
+      .string()
+      .max(30, '저자 이름은 최대 30자까지 가능합니다.') // 길이 제한 추가
+      .optional(),
+    referenceTitle: z
+      .string()
+      .max(100, '출처는 최대 100자까지 가능합니다.')
+      .optional(),
     referenceUrl: z.string().optional(), // 빈 값은 허용
     tags: fullTagsSchema.optional(),
   })

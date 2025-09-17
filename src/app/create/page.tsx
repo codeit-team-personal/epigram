@@ -27,6 +27,15 @@ export default function Create() {
     },
     onError: (err: unknown) => {
       const e = err as AxiosError<any>;
+
+      // referenceUrl 검증 실패만 따로 처리
+      if (e.response?.data?.details?.['body.referenceUrl']) {
+        toast.error(
+          '사이트 주소 형식이 잘못되었어요. (http:// 또는 https:// 로 시작)'
+        );
+        return;
+      }
+
       const msg = Array.isArray(e.response?.data?.message)
         ? e.response?.data?.message.join('\n')
         : e.response?.data?.message ||
