@@ -21,16 +21,16 @@ export default function MyInfo({ user }: MyInfoProps) {
   };
 
   return (
-    <div className='flex flex-col items-center text-center mt-50 relative top-[-62px]'>
-      <div className='w-[120px] h-[120px] rounded-full overflow-hidden'>
+    <div className='flex flex-col items-center text-center mt-20 lg:mt-50 relative top-[-42px] lg:top-[-62px]'>
+      <div className='w-[80px] h-[80px] lg:w-[120px] lg:h-[120px] rounded-full overflow-hidden'>
         <CommentAvatar
           nickname={user.nickname}
           image={user.image}
-          sizeClass='w-[120px] h-[120px] text-6xl'
+          sizeClass='w-[80px] h-[80px] lg:w-[120px] lg:h-[120px] text-2xl lg:text-6xl'
         />
       </div>
 
-      <h2 className='text-2xl font-black-950 font-medium my-6'>
+      <h2 className='text-base lg:text-2xl font-black-950 font-medium my-6'>
         {user.nickname}
       </h2>
 

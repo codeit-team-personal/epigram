@@ -18,7 +18,7 @@ import {
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/stores/authStore';
-import { ThumbsUp, ArrowUpRight } from 'lucide-react';
+import { ThumbsUp, ArrowUpRight, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 import DeleteEpigramDialog from '@/components/DeleteEpigramDialog';
 import { Comments as CommentsType } from '@/types/comments';
@@ -367,17 +367,41 @@ export default function EpigramDetailPage() {
             <span>{data.likeCount}</span>
           </button>
           {data.referenceTitle && (
-            <Link
-              href={data.referenceUrl!}
-              target='_blank'
-              rel='noopener noreferrer'
-              className='inline-block'
-            >
-              <button className='flex items-center gap-1 rounded-full bg-line-100 hover:bg-gray-100 text-gray-300 lg:max-w-[240px] max-w-[160px] lg:px-6 px-3 py-3 font-sans lg:text-xl text-sm font-medium cursor-pointer'>
-                <span className='truncate'>{data.referenceTitle}</span>
-                <ArrowUpRight className='w-5 h-5 flex-shrink-0' />
+            <div className='flex items-center gap-1 rounded-full bg-line-100 hover:bg-gray-100 text-gray-300 lg:px-6 px-3 py-3 font-sans lg:text-xl text-sm font-medium cursor-pointer'>
+              {/* 원래 레퍼런스 버튼 */}
+              <Link
+                href={data.referenceUrl!}
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                <button className='flex items-center '>
+                  <span className='lg:max-w-[240px] max-w-[160px] truncate'>
+                    {data.referenceTitle}
+                  </span>
+                </button>
+              </Link>
+
+              {/* 복사 버튼 */}
+              <button
+                type='button'
+                onClick={() => {
+                  if (data.referenceUrl) {
+                    navigator.clipboard
+                      .writeText(data.referenceUrl)
+                      .then(() => {
+                        toast.success('주소가 클립보드에 복사되었습니다!');
+                      })
+                      .catch(() => {
+                        toast.error('주소 복사에 실패했습니다.');
+                      });
+                  }
+                }}
+                className=' hover:text-gray-200 cursor-pointer'
+                title='주소 복사'
+              >
+                <ExternalLink className='w-5 h-5 flex-shrink-0' />
               </button>
-            </Link>
+            </div>
           )}
         </div>
       </div>
