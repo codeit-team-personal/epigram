@@ -1,6 +1,7 @@
-"use client";
+'use client';
 
-import Image from "next/image";
+import Image from 'next/image';
+import { MouseEvent } from 'react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -11,24 +12,48 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+} from '@/components/ui/alert-dialog';
+import { toast } from 'react-toastify';
 
 type Props = {
   onDelete: () => Promise<void> | void;
   isDeleting?: boolean;
-  children: React.ReactNode; // Trigger로 쓸 버튼/요소
+  // 제어 모드용 (선택)
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  // 비제어 트리거 모드로도 쓸 수 있게 유지
+  children?: React.ReactNode;
 };
 
 export default function DeleteEpigramDialog({
   onDelete,
   isDeleting = false,
+  open,
+  onOpenChange,
   children,
 }: Props) {
-  return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
+  const handleDelete = async (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault(); // 혹시 폼 안일 때 제출 방지
+    if (isDeleting) return;
+    try {
+      await onDelete(); // mutateAsync 대기 가능
+      onOpenChange?.(false); // 성공 시 닫기 (네비게이션 되면 자동 unmount)
+    } catch (err) {
+      console.error('삭제 실패:', err);
+      // 실패 시에는 열어둔 채로 토스트 등 안내 가능
+      toast.error('삭제 실패');
+    }
+  };
 
-      <AlertDialogContent className='rounded-3xl lg:w-[452px] md:w-[372px] w-[320px] p-6'>
+  return (
+    <AlertDialog open={open} onOpenChange={onOpenChange}>
+      {children && <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>}
+
+      <AlertDialogContent
+        className='rounded-3xl lg:w-[452px] md:w-[372px] w-[320px] p-6'
+        // 메뉴의 document.mousedown 외부클릭 핸들러로 전파되지 않도록
+        onMouseDownCapture={(e) => e.stopPropagation()}
+      >
         <AlertDialogHeader className='text-center'>
           <div className='my-4 grid place-items-center'>
             <span className='relative lg:size-[56px] size-[44px]'>
@@ -45,19 +70,16 @@ export default function DeleteEpigramDialog({
         </AlertDialogHeader>
 
         <AlertDialogFooter className='mt-6 flex gap-3'>
-          <AlertDialogCancel className='lg:h-[58px] h-[48px] lg:text-xl text-base flex-1 rounded-xl bg-blue-200 text-black-700 hover:bg-gray-200'>
+          <AlertDialogCancel
+            type='button'
+            className='lg:h-[58px] h:[48px] lg:text-xl text-base flex-1 rounded-xl bg-blue-200 text-black-700 hover:bg-gray-200'
+          >
             취소
           </AlertDialogCancel>
           <AlertDialogAction
-            onClick={async () => {
-              if (isDeleting) return; // 빠른 중복 클릭 방지
-              try {
-                await onDelete();
-              } catch (err) {
-                console.error('삭제 실패:', err);
-              }
-            }}
-            disabled={isDeleting} // ← 버튼 비활성화
+            type='button'
+            onClick={handleDelete}
+            disabled={isDeleting}
             className={
               isDeleting
                 ? 'opacity-50 cursor-not-allowed lg:h-[58px] h-[48px] lg:text-xl text-base flex-1 rounded-xl bg-blue-900 text-blue-100 hover:bg-blue-950'

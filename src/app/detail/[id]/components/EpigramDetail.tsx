@@ -32,6 +32,7 @@ export default function EpigramDetailPage() {
   const queryClient = useQueryClient();
   const { user } = useAuthStore();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false); // ★ 다이얼로그 제어
   const menuRef = useRef<HTMLDivElement>(null);
 
   // 외부 클릭 감지
@@ -289,6 +290,13 @@ export default function EpigramDetailPage() {
 
   return (
     <div className='bg-white relative font-iropke'>
+      {/* 페이지 루트 근처에 다이얼로그 렌더 (메뉴 밖에 위치) */}
+      <DeleteEpigramDialog
+        open={deleteOpen}
+        onOpenChange={setDeleteOpen}
+        onDelete={() => deleteMutation.mutateAsync()} // ★ mutateAsync 사용
+        isDeleting={deleteMutation.isPending}
+      />
       {/* 줄무늬 배경 */}
       <div className='absolute inset-0 bg-[linear-gradient(to_bottom,#f5f5f5_1px,transparent_1px)] bg-[length:100%_32px]' />
 
@@ -313,17 +321,17 @@ export default function EpigramDetailPage() {
                 >
                   수정하기
                 </button>
-                <DeleteEpigramDialog
-                  onDelete={() => deleteMutation.mutate()}
-                  isDeleting={deleteMutation.isPending}
+                {/* 트리거 버튼은 이제 다이얼로그 open을 직접 true로 */}
+                <button
+                  type='button'
+                  onClick={() => {
+                    setMenuOpen(false); // 먼저 메뉴 닫기
+                    setDeleteOpen(true); // 다이얼로그 열기
+                  }}
+                  className='block w-full h-full text-center px-3 py-2 hover:bg-gray-100 cursor-pointer'
                 >
-                  <button
-                    // onClick={() => setMenuOpen(false)} // 메뉴 닫기만
-                    className='block w-full h-full text-center px-3 py-2 hover:bg-gray-100 cursor-pointer'
-                  >
-                    삭제하기
-                  </button>
-                </DeleteEpigramDialog>
+                  삭제하기
+                </button>
               </div>
             )}
           </div>

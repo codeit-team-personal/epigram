@@ -1,13 +1,14 @@
-"use client";
-import { useAuthStore } from "@/stores/authStore";
-import { useCommentEditStore } from "@/stores/commentEditStore";
-import { List, Comments as CommentsType } from "@/types/comments";
-import { CommentAvatar } from "./CommentAvatar";
-import { CommentContent } from "./CommentContent";
-import { CommentEditor } from "./CommentEditor";
-import { CommentActions } from "./CommentActions";
-import { CommentSwitchDialog } from "./CommentSwitchDialog";
-import { useCommentActions } from "@/hooks/useCommentActions";
+'use client';
+import { useAuthStore } from '@/stores/authStore';
+import { useCommentEditStore } from '@/stores/commentEditStore';
+import { List, Comments as CommentsType } from '@/types/comments';
+import { CommentAvatar } from './CommentAvatar';
+import { CommentContent } from './CommentContent';
+import { CommentEditor } from './CommentEditor';
+import { CommentActions } from './CommentActions';
+import { CommentSwitchDialog } from './CommentSwitchDialog';
+import { useCommentActions } from '@/hooks/useCommentActions';
+import { CommentUserProfileDialog } from './CommentUserProfileDialog';
 
 export default function CommentsCard({
   comment,
@@ -23,7 +24,6 @@ export default function CommentsCard({
     useCommentEditStore();
   const isEditing = editingId === comment.id;
 
-
   const { updateMutation, deleteMutation } = useCommentActions(
     queryKey,
     onFetchOne
@@ -31,12 +31,13 @@ export default function CommentsCard({
 
   return (
     <div className='flex relative p-2 border-t border-line-200 group py-5 lg:py-10 justify-center'>
-      <div className='mt-2 mr-4 w-[48px] h-[48px] rounded-full overflow-hidden flex-shrink-0'>
+      {/* <div className='mt-2 mr-4 w-[48px] h-[48px] rounded-full overflow-hidden flex-shrink-0'>
         <CommentAvatar
           nickname={comment.writer.nickname}
           image={comment.writer.image}
         />
-      </div>
+      </div> */}
+      <CommentUserProfileDialog comment={comment} />
 
       <div className='w-[530px]'>
         {isEditing ? (
